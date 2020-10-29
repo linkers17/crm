@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 // Роуты
 const contactsRoutes = require('./routes/contacts');
 const authRoutes = require('./routes/auth');
+const usersRoutes = require('./routes/users');
 
 // Файл конфигураций
 const config = require('./config/config');
@@ -42,5 +43,6 @@ app.use(require('cors')());
 // Регистрация роутов
 app.use('/api/contacts', contactsRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 
 startApp();
