@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 
 // Роуты
 const contactsRoutes = require('./routes/contacts');
-const rolesRoutes = require('./routes/roles');
 const authRoutes = require('./routes/auth');
 
 // Файл конфигураций
@@ -26,6 +25,7 @@ const startApp = async () => {
         app.listen(config.PORT, () => console.log(`Server has been started on port: ${config.PORT}`));
     } catch (err) {
         console.log('MongoDB connected error:', err);
+        startApp();
     }
 }
 
@@ -41,7 +41,6 @@ app.use(require('cors')());
 
 // Регистрация роутов
 app.use('/api/contacts', contactsRoutes);
-app.use('/api/roles', rolesRoutes);
 app.use('/api/auth', authRoutes);
 
 startApp();

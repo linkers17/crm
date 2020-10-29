@@ -13,9 +13,13 @@ const usersSсhema = new Schema({
         required: true
     },
     role: {
-        ref: 'roles',
-        type: Schema.Types.ObjectId,
-        default: ''
+        type: String,
+        default: 'manager',
+        enum: [
+            'manager',
+            'admin', 
+            'director'
+        ]
     },
     surname: {
         type: String,

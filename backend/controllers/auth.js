@@ -65,7 +65,6 @@ module.exports.register = async (req, res) => {
     const user = new User({
         login: req.body.login,
         password: bcrypt.hashSync(password, salt),
-        role: '5f96d8219bd5f91eb0f8b2c1',
         surname: req.body.surname,
         name: req.body.name,
         patronym: req.body.patronym,
