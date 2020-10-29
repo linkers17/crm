@@ -51,10 +51,6 @@ const usersSсhema = new Schema({
         required: true,
         default: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    },
     email: {
         type: String,
         required: true,
@@ -78,6 +74,6 @@ const usersSсhema = new Schema({
             }
         }
     ]
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model('users', usersSсhema);
