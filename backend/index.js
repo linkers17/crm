@@ -20,7 +20,7 @@ const startApp = async () => {
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useCreateIndex: true,
-            useFindAndModify: true
+            useFindAndModify: false
         });
         console.log('MongoDB connected.');
         app.listen(config.PORT, () => console.log(`Server has been started on port: ${config.PORT}`));

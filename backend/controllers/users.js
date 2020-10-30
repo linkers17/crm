@@ -1,5 +1,6 @@
 const Users = require('../models/Users');
 const findAccess = require('../utils/findAccess');
+const errorHandler = require('../utils/errorHandler');
 
 module.exports.getUserById = async (req, res) => {
 
@@ -21,5 +22,49 @@ module.exports.getUserById = async (req, res) => {
             return res.status(200).json(user);
         }
     }
+
+};
+
+module.exports.updateUserById = async (req, res) => {
+
+    const id = req.params.id;
+
+    if (!findAccess(req.user.role, req.params.role)) {
+        return res.status(403).json({errors: 'У вас недостаточно прав для редактирования этой страницы'});
+    } else {
+       if (req.user.role === 'admin' && req.body.role === 'director') {
+           return res.status(403).json({
+               errors: 'Администратор не может давать пользователю роль директора'
+           });
+        } else {
+
+            // Меняем роль пользователя
+
+            try {
+
+                const user = await Users.findOneAndUpdate(
+                    {_id: id},
+                    { $set: {
+                        role: req.body.role,
+                        status: req.body.status
+                        }
+                    },
+                    {new: true}
+                );
+
+                res.status(200).json({
+                    login: user.login,
+                    email: user.email,
+                    surname: user.surname,
+                    name: user.name,
+                    role: user.role,
+                    status: user.status
+                });
+
+            } catch (err) {
+                errorHandler(res, err);
+            }
+        }
+    }    
 
 };
