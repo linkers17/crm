@@ -54,14 +54,10 @@ const usersSсhema = new Schema({
         required: true,
         unique: true
     },
-    phones: [
-        {
-            phone: {
-                type: String,
-                required: true
-            }
-        }
-    ],
+    phones: {
+        type: [String],
+        required: true
+    },
     contacts: [
         {
             value: {

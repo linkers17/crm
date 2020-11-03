@@ -70,7 +70,8 @@ module.exports.register = async (req, res) => {
         bithday: req.body.bithday,
         userImg: req.file ? req.file.path : 'uploads\\no-photo.png',
         address: req.body.address,
-        email: req.body.email
+        email: req.body.email,
+        phones: req.body.phones ? req.body.phones : null
     });
 
     try {
