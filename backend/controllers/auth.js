@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/Users');
-const Role = require('../models/Roles');
 const errorHandler = require('../utils/errorHandler');
 const {tlt, jwtSecret} = require('../config/config');
 
@@ -69,7 +68,7 @@ module.exports.register = async (req, res) => {
         name: req.body.name,
         patronym: req.body.patronym,
         bithday: req.body.bithday,
-        userImg: req.body.userImg,
+        userImg: req.file ? req.file.path : 'uploads\\no-photo.png',
         address: req.body.address,
         email: req.body.email
     });

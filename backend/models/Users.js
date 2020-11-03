@@ -38,9 +38,7 @@ const usersSсhema = new Schema({
         required: true
     },
     userImg: {
-        type: String,
-        required: true,
-        default: 'no-photo'
+        type: String
     },
     address: {
         type: String,
