@@ -4,7 +4,7 @@ const userAuth = require('../middleware/userAuth');
 const checkRole = require('../middleware/checkRole');
 const router = Router();
 
-router.get('/', userAuth, controller.getContacts);
+router.get('/', controller.getContacts);
 
 router.post('/', userAuth, checkRole(['director', 'admin']), controller.addContact);
 

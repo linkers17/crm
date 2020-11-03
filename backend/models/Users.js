@@ -60,11 +60,13 @@ const usersSсhema = new Schema({
     },
     contacts: [
         {
-            value: {
-                type: String
+            contactId: {
+                ref: 'contacts',
+                type: Schema.Types.ObjectId
             },
-            name: {
-                type: String
+            value: {
+                type: String,
+                default: ''
             }
         }
     ]
