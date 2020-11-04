@@ -10,4 +10,6 @@ router.get('/:id', controller.getContactById);
 
 router.post('/', userAuth, checkRole(['director', 'admin']), controller.addContact);
 
+router.patch('/:id', userAuth, checkRole(['director', 'admin']), controller.updateContact);
+
 module.exports = router;

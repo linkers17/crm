@@ -50,3 +50,29 @@ module.exports.addContact = async (req, res) => {
         }
     }
 }
+
+module.exports.updateContact = async (req, res) => {
+    try {
+
+        const candidate = await Contacts.findOne({name: req.body.name});
+
+        if (candidate) {
+            res.status(409).json({
+                errors: [
+                    'Мессенджер или соц. сеть с таким именем уже существует.'
+                ]
+            });
+        } else {
+            const contact = await Contacts.findOneAndUpdate(
+                {_id: req.params.id},
+                {$set: req.body},
+                {new: true}
+            );
+    
+            res.status(200).json(contact);
+        }
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+}
