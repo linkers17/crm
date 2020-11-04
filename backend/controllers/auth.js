@@ -11,25 +11,32 @@ module.exports.login = async (req, res) => {
     const candidate = await User.findOne({login: req.body.login});
 
     if (candidate) {
-        const passwordResult = bcrypt.compareSync(req.body.password, candidate.password);
 
-        if (passwordResult) {
-            const token = jwt.sign({
-                userId: candidate._id,
-                login: candidate.login,
-                role: candidate.role
-            }, jwtSecret, {expiresIn: tlt});
-
-            return res.status(200).json({
-                currentUser: {
-                    login: candidate.login,
-                    role: candidate.role,
-                    userImg: candidate.userImg,
-                    token: `Bearer ${token}`
-                }
-            });
+        if (!candidate.status) {
+            res.status(401).json({errors: 'Ваш аккаунт отключен'});
         } else {
-            return res.status(401).json({errors: ['Неверный пароль']});
+
+            const passwordResult = bcrypt.compareSync(req.body.password, candidate.password);
+
+            if (passwordResult) {
+                const token = jwt.sign({
+                    userId: candidate._id,
+                    login: candidate.login,
+                    role: candidate.role
+                }, jwtSecret, {expiresIn: tlt});
+
+                return res.status(200).json({
+                    currentUser: {
+                        login: candidate.login,
+                        role: candidate.role,
+                        userImg: candidate.userImg,
+                        token: `Bearer ${token}`
+                    }
+                });
+            } else {
+                return res.status(401).json({errors: ['Неверный пароль']});
+            }
+
         }
 
     } else {
