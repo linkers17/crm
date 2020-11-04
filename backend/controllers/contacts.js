@@ -1,4 +1,5 @@
 const Contacts = require('../models/Contacts');
+const Users = require('../models/Users');
 const errorHandler = require('../utils/errorHandler');
 
 module.exports.getContacts = async (req, res) => {
@@ -43,6 +44,16 @@ module.exports.addContact = async (req, res) => {
         });
 
         try {
+            // Добавляем в таблицу пользователей созданный контакт
+            await Users.updateMany({}, {
+                $push: {
+                    contacts: {
+                        contactId: contact._id,
+                        value: ''
+                    }
+                }
+            });
+
             await contact.save();
             res.status(201).json(contact);
         } catch (e) {
