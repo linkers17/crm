@@ -10,6 +10,23 @@ module.exports.getContacts = async (req, res) => {
     res.status(200).json(contacts);
 }
 
+module.exports.getContactById = async (req, res) => {
+
+    try {
+
+        const contact = await Contacts.findById(req.params.id);
+
+        if (contact) {
+            return res.status(200).json(contact);
+        } else {
+            return res.status(404).json({errors: 'Страница не найдена'});
+        }
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+}
+
 module.exports.addContact = async (req, res) => {
     const candidate = await Contacts.findOne({name: req.body.name});
 

@@ -6,6 +6,8 @@ const router = Router();
 
 router.get('/', controller.getContacts);
 
+router.get('/:id', controller.getContactById);
+
 router.post('/', userAuth, checkRole(['director', 'admin']), controller.addContact);
 
 module.exports = router;
