@@ -87,3 +87,24 @@ module.exports.updateContact = async (req, res) => {
         return errorHandler(res, err);
     }
 }
+
+module.exports.removeContact = async (req, res) => {
+
+    try {
+
+        await Contacts.deleteMany({_id: req.params.id});
+        await Users.updateMany({}, {
+            $pull: {
+                contacts: {
+                    contactId: req.params.id
+                }
+            }
+        });
+
+        res.status(200).json({message: 'Категория успешно удалена'});
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}

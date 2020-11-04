@@ -12,4 +12,6 @@ router.post('/', userAuth, checkRole(['director', 'admin']), controller.addConta
 
 router.patch('/:id', userAuth, checkRole(['director', 'admin']), controller.updateContact);
 
+router.delete('/:id', userAuth, checkRole(['director', 'admin']), controller.removeContact);
+
 module.exports = router;
