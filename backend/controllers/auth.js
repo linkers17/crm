@@ -1,10 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer  =require('nodemailer');
+const crypto = require('crypto');
 
 const User = require('../models/Users');
 const Contacts = require('../models/Contacts');
 const errorHandler = require('../utils/errorHandler');
-const {tlt, jwtSecret} = require('../config/config');
+const resetEmail = require('../emails/resetEmail');
+const {tlt, jwtSecret, EMAIL_FROM, EMAIL_PASS, TOKEN_EXP} = require('../config/config');
 
 module.exports.login = async (req, res) => {
 
@@ -109,4 +112,49 @@ module.exports.register = async (req, res) => {
     } catch (e) {
         errorHandler(res, e);
     }
+};
+
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: EMAIL_FROM,
+        pass: EMAIL_PASS
+    }
+});
+
+module.exports.reset = async (req, res) => {
+    try {
+
+        // Генерируем рандомный ключ для токена
+        crypto.randomBytes(32, async (err, buffer) => {
+            if (err) {
+                return res.status(500).json({errors: 'Что-то пошло не так'});
+            }
+
+            const token = buffer.toString('hex'); // Получаем токен в случае успешной генерации ключа
+
+            const candidate = await User.findOne({
+                $or: [{login: req.body.user}, {email: req.body.user}]
+            });
+
+            if (candidate) {
+                candidate.resetToken = token;
+                candidate.resetTokenExp = Date.now() + TOKEN_EXP;
+                await candidate.save();
+                await transporter.sendMail(resetEmail(candidate.email, candidate.name, token));
+                return res.status(200).json({message: 'Письмо с дальнейшими инструкциями отправлено на эл. почту'});
+            } else {
+                return res.status(404).json({errors: 'Пользователь с таким email или логином не найден'});
+            }
+        });
+
+    } catch (err) {
+        return errorHandler(err);
+    }
+    //$2a$10$tqV9z27ZwbrNjLVK4VzNX.CC5rGuplU2Vvt/knPiJx5F50L.SOPQC
+};
+
+module.exports.updatePassword = async (req, res) => {
+
 };

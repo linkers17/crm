@@ -69,7 +69,9 @@ const usersSсhema = new Schema({
                 default: ''
             }
         }
-    ]
+    ],
+    resetToken: String,
+    resetTokenExp: String
 }, {timestamps: true});
 
 module.exports = mongoose.model('users', usersSсhema);
