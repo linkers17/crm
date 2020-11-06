@@ -152,9 +152,38 @@ module.exports.reset = async (req, res) => {
     } catch (err) {
         return errorHandler(err);
     }
-    //$2a$10$tqV9z27ZwbrNjLVK4VzNX.CC5rGuplU2Vvt/knPiJx5F50L.SOPQC
+    //$2a$10$tqV9z27ZwbrNjLVK4VzNX.CC5rGuplU2Vvt/knPiJx5F50L.SOPQC - temp_manager_2
+    //$2a$10$sP/vhkCcMS0W/cE71SlvG.0lvxdtKrzsZvkQ/B8ucptZwgFPV7VA6 - manager2
 };
 
 module.exports.updatePassword = async (req, res) => {
+
+    try {
+
+        const user = await User.findOne({
+            resetToken: req.params.token,
+            resetTokenExp: {$gt: Date.now()}
+        });
+
+        if (user) {
+
+            if (req.body.password) {
+                user.password = await bcrypt.hash(req.body.password, 10);
+                user.resetToken = undefined;
+                user.resetTokenExp = undefined;
+                await user.save();
+                res.status(200).json({message: 'Пароль успешно обновлен.'});
+            } else {
+                res.status(409).json({errors: 'Пароль не может быть пустым'});
+            }
+
+            
+        } else {
+            res.status(409).json({errors: 'Время действия ссылки истекло.'});
+        }
+
+    } catch (err) {
+        return errorHandler(err);
+    }
 
 };
