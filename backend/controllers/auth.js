@@ -152,8 +152,6 @@ module.exports.reset = async (req, res) => {
     } catch (err) {
         return errorHandler(err);
     }
-    //$2a$10$tqV9z27ZwbrNjLVK4VzNX.CC5rGuplU2Vvt/knPiJx5F50L.SOPQC - temp_manager_2
-    //$2a$10$sP/vhkCcMS0W/cE71SlvG.0lvxdtKrzsZvkQ/B8ucptZwgFPV7VA6 - manager2
 };
 
 module.exports.updatePassword = async (req, res) => {

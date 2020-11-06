@@ -68,3 +68,40 @@ module.exports.updateUserById = async (req, res) => {
     }    
 
 };
+
+module.exports.getUsers = async (req, res) => {
+
+    try {
+
+        const query = {};
+
+        if (req.query.login) {
+            query.login = req.query.login;
+        }
+
+        if (req.query.surname) {
+            query.surname = req.query.surname;
+        }
+
+        if (req.query.status) {
+            query.status = req.query.status;
+        }
+
+        if (req.query.director || req.query.admin || req.query.manager) {
+            query['$or'] = [
+                {role: req.query.director ? 'director' : null},
+                {role: req.query.admin ? 'admin' : null},
+                {role: req.query.manager ? 'manager' : null},
+            ]
+        }
+
+        const users = await Users.find(query, 'login role status surname name patronym').skip(+req.query.offset).limit(+req.query.limit);
+        const usersCount = await Users.countDocuments();
+
+        res.status(200).json({users, count: usersCount});
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+};
