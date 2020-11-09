@@ -8,7 +8,7 @@ router.get('/', controller.getContacts);
 
 router.get('/:id', controller.getContactById);
 
-router.post('/', userAuth, checkRole(['director', 'admin']), controller.addContact);
+router.post('/', userAuth, checkRole(['director', 'admin']), controller.createContact);
 
 router.patch('/:id', userAuth, checkRole(['director', 'admin']), controller.updateContact);
 

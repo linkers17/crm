@@ -28,7 +28,7 @@ module.exports.getContactById = async (req, res) => {
     }
 }
 
-module.exports.addContact = async (req, res) => {
+module.exports.createContact = async (req, res) => {
     const candidate = await Contacts.findOne({name: req.body.name});
 
     if (candidate) {
