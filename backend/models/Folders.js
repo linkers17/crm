@@ -11,15 +11,19 @@ const foldersSchema = new Schema({
         ref: 'users',
         type: Schema.Types.ObjectId
     },
+    createdByLogin: String,
     updatedById: {
         ref: 'users',
         type: Schema.Types.ObjectId,
         default: null
     },
+    updatedByLogin: {
+        type: String,
+        default: ''
+    },
     parentId: {
-        ref: 'folders',
-        type: Schema.Types.ObjectId,
-        default: null
+        type: String,
+        default: ''
     }
 
 }, {timestamps: true});
