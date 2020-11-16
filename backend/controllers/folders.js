@@ -109,7 +109,11 @@ module.exports.createFolder = async (req, res) => {
 // 5faac83500303a3e285679d5 -> Тест 7-6
 // 5faac883dad32b2090390af3 -> Тест 8-7
 // 5fb219d4d3272e3eb813fca7 -> Тест 9-6
-
+// 5fb2ab0cbf5e14157869cf46 -> Тест 10
+// 5fb2ab2dbf5e14157869cf47 -> Тест 11-10
+// 5fb2ab50bf5e14157869cf48 -> Тест 12-10
+// 5fb2ab6fbf5e14157869cf49 -> Тест 13-11
+// 5fb2ab91bf5e14157869cf4a -> Тест 14-13
 
 module.exports.updateFolder = async (req, res) => {
     try {
@@ -177,6 +181,24 @@ module.exports.updateFolder = async (req, res) => {
 
 module.exports.removeFolder = async (req, res) => {
     try {
+
+        const folder = await Folders.findById(req.params.id);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            folder.createdById != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете редактировать эту папку'});
+        } else {
+
+            await Folders.deleteMany({$or: [
+                {_id: req.params.id},
+                {parentIds: {$in: [req.params.id]}}
+            ]});
+
+            return res.status(200).json({message: 'Папка успешно удалена'});
+
+        }
 
     } catch (err) {
         return errorHandler(res, err);
