@@ -24,7 +24,8 @@ const foldersSchema = new Schema({
     parentId: {
         type: String,
         default: ''
-    }
+    },
+    parentIds: [String]
 
 }, {timestamps: true});
 

@@ -81,12 +81,24 @@ module.exports.createFolder = async (req, res) => {
         if (candidate) {
             return res.status(409).json({errors: 'Папка с таким именем уже существует.'});
         } else {
+            
+            let parents = [];
+            if (req.body.parent) {
+                console.log(1);
+                parents = await Folders.findById(req.body.parent, 'parentIds');
+                parents.parentIds.push(req.body.parent)
+            }
+
+            console.log('parents', parents.parentIds);
+
             const folder = await new Folders({
                 name: req.body.name,
                 description: req.body.description,
                 createdById: req.user.id,
                 createdByLogin: req.user.login,
-                parentId: req.body.parent
+                parentId: req.body.parent,
+                parentIds: parents.parentIds
+                
             }).save();
 
             return res.status(201).json(folder);
@@ -96,6 +108,16 @@ module.exports.createFolder = async (req, res) => {
         return errorHandler(res, err);
     }
 }
+
+// 5faabfe09a92873bf4291ceb -> Тест 1
+// 5faabff59a92873bf4291cec -> Тест 2
+// 5faac7c400303a3e285679d1 -> Тест 3-1
+// 5faac7e400303a3e285679d2 -> Тест 4-2
+// 5faac7f900303a3e285679d3 -> Тест 5-1
+// 5faac81000303a3e285679d4 -> Тест 6-3
+// 5faac83500303a3e285679d5 -> Тест 7-6
+// 5faac883dad32b2090390af3 -> Тест 8
+
 
 module.exports.updateFolder = async (req, res) => {
     try {
