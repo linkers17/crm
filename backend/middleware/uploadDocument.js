@@ -1,5 +1,6 @@
 const multer = require('multer');
 const moment = require('moment');
+const path = require('path');
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
@@ -7,7 +8,9 @@ const storage = multer.diskStorage({
     },
     filename(req, file, cb) {
         const date = moment().format('DDMMYYYY-HHmmss_SSS');
-        cb(null, `${date}-${file.originalname}`);
+        const ext = path.extname(file.originalname);
+        cb(null, `${date}${ext}`);
+        //cb(null, `${date}-${file.originalname}`);
     }
 });
 

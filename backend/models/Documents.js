@@ -24,8 +24,7 @@ const documentsSchema = new Schema({
             'pattern',      // Шаблон
             'report',        // Отчёт
             null            // Нет
-        ],
-        default: null
+        ]
     },
     createdById: {
         ref: 'users',

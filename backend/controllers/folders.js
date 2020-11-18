@@ -80,8 +80,6 @@ module.exports.createFolder = async (req, res) => {
                 parents.parentIds.push(req.body.parent)
             }
 
-            console.log('parents', parents.parentIds);
-
             const folder = await new Folders({
                 name: req.body.name,
                 description: req.body.description,
