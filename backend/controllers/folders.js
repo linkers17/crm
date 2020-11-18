@@ -187,7 +187,7 @@ module.exports.removeFolder = async (req, res) => {
         if (req.user.role !== 'director' && req.user.role !== 'admin' &&
             folder.createdById != req.user.id) {
             
-            return res.status(409).json({errors: 'Вы не можете редактировать эту папку'});
+            return res.status(409).json({errors: 'Вы не можете удалить эту папку'});
         } else {
 
             await Folders.deleteMany({$or: [

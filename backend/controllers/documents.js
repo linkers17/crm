@@ -6,7 +6,21 @@ const errorHandler = require('../utils/errorHandler');
 module.exports.getDocuments = async (req, res) => {
     try {
 
-        
+        const query = {
+            folderId: null
+        };
+
+        if (req.query.folder) {
+            query.folderId = req.query.folder;
+        }
+
+        const documents = await Documents.find(query, 'status assignedUserId id name type createdByLogin filePath createdAt');
+
+        if (!documents) {
+            return res.status(404).json({error: 'Ниодного документа не найдено'});
+        } else {
+            return res.status(200).json(documents);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
@@ -24,6 +38,8 @@ module.exports.getDocumentById = async (req, res) => {
 }
 
 module.exports.createDocument = async (req, res) => {
+
+    req.body.folderId = req.body.folderId ? req.body.folderId : null
 
     try {
 
