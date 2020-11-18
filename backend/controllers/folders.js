@@ -183,7 +183,7 @@ module.exports.removeFolder = async (req, res) => {
 
         const folder = await Folders.findById(req.params.id);
 
-        // Ограничение прав редактирования
+        // Ограничение прав удаления
         if (req.user.role !== 'director' && req.user.role !== 'admin' &&
             folder.createdById != req.user.id) {
             
