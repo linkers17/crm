@@ -1,4 +1,5 @@
 const Folders = require('../models/Folders');
+const Documents = require('../models/Documents');
 const errorHandler = require('../utils/errorHandler');
 
 module.exports.getFolders = async (req, res) => {
@@ -44,14 +45,14 @@ module.exports.getFolderById = async (req, res) => {
             const children = await Folders.find({parentId: folder._id}, 'id name');
 
             // Ищем документы в папке
-            //const documents = await documents.find({folderId: folder._id});
+            const documents = await Documents.find({folderId: folder._id}, 'id name filePath createdAt');
 
             return res.status(200).json({
                 folder: {
                     folder,
                     parent,
                     children,
-                    //documents
+                    documents
                 }
             });
         }
