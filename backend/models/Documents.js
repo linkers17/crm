@@ -22,9 +22,10 @@ const documentsSchema = new Schema({
             'agreement',    // Договор
             'contract',     // Контракт
             'pattern',      // Шаблон
-            'report'        // Отчёт
+            'report',        // Отчёт
+            null            // Нет
         ],
-        default: ''
+        default: null
     },
     createdById: {
         ref: 'users',
