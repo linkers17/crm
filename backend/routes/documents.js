@@ -8,7 +8,7 @@ const router = Router();
 router.get('/', userAuth, controller.getDocuments);
 router.get('/:id', userAuth, controller.getDocumentById);
 router.post('/', userAuth, uploadDocument.single('filePath'), controller.createDocument);
-router.patch('/:id', userAuth, controller.updateDocument);
+router.patch('/:id', userAuth, uploadDocument.single('filePath'), controller.updateDocument);
 router.delete('/:id', userAuth, controller.removeDocument);
 
 module.exports = router;
