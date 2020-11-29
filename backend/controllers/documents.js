@@ -30,7 +30,13 @@ module.exports.getDocuments = async (req, res) => {
 module.exports.getDocumentById = async (req, res) => {
     try {
 
-        
+        const document = await Documents.findById(req.params.id);
+
+        if (!document) {
+            return res.status(404).json({errors: 'Документ не найден, возможно он был удален.'});
+        } else {
+            return res.status(200).json(document);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
