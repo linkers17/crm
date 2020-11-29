@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const Folders = require('../models/Folders');
 const Documents = require('../models/Documents');
 const errorHandler = require('../utils/errorHandler');
@@ -113,6 +115,7 @@ module.exports.createFolder = async (req, res) => {
 // 5fb2ab50bf5e14157869cf48 -> Тест 12-10
 // 5fb2ab6fbf5e14157869cf49 -> Тест 13-11
 // 5fb2ab91bf5e14157869cf4a -> Тест 14-13
+// 5fc386c5dd52e43b10610ff4 -> Тест 15
 
 module.exports.updateFolder = async (req, res) => {
     try {
@@ -194,6 +197,30 @@ module.exports.removeFolder = async (req, res) => {
                 {_id: req.params.id},
                 {parentIds: {$in: [req.params.id]}}
             ]});
+
+            // Документы, которые нужно переместить
+            await Documents.updateMany(
+                {
+                    folderId: req.params.id,
+                    createdById: {$ne: req.user.id}
+                },
+                {
+                    $set: {
+                        folderId: null
+                    }
+                }
+            );
+
+            // Список путей документов, которые нужно удалить
+            const removeDocuments = await Documents.find({folderId: req.params.id}, 'filePath')
+            await Documents.deleteMany({folderId: req.params.id});
+
+            // Удаляем файлы с сервера
+            removeDocuments.map(doc => {
+                fs.unlink(doc.filePath, err => {
+                    if (err) throw err;
+                });
+            });
 
             return res.status(200).json({message: 'Папка успешно удалена'});
 
