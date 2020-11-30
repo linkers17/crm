@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
 const foldersRoutes = require('./routes/folders');
 const documentsRoutes = require('./routes/documents');
+const customersRoutes = require('./routes/customers');
 
 // Файл конфигураций
 const config = require('./config/config');
@@ -49,5 +50,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/folders', foldersRoutes);
 app.use('/api/documents', documentsRoutes);
+app.use('/api/customers', customersRoutes);
 
 startApp();
