@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const Documents = require('../models/Documents');
+const Customers =  require('../models/Customers');
 const errorHandler = require('../utils/errorHandler');
 
 module.exports.getDocuments = async (req, res) => {
@@ -172,6 +173,16 @@ module.exports.removeDocument = async (req, res) => {
             return res.status(409).json({errors: 'Вы не можете удалить этот файл'});
         } else {
             await Documents.deleteOne({_id: req.params.id});
+
+            // Удаляем id документа из коллекции клиентов
+            await Customers.updateMany(
+                {documentIds: {$in: [req.params.id]}},
+                {
+                    $pull: {
+                        documentIds: req.params.id
+                    }
+                }
+            );
 
             // Удаляем файл c сервера
             fs.unlink(document.filePath, err => {
