@@ -98,7 +98,7 @@ module.exports.register = async (req, res) => {
         surname: req.body.surname,
         name: req.body.name,
         patronym: req.body.patronym,
-        bithday: req.body.bithday,
+        birthday: req.body.birthday,
         userImg: req.file ? req.file.path : 'uploads\\no-photo.png',
         address: req.body.address,
         email: req.body.email,

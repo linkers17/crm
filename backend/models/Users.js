@@ -33,7 +33,7 @@ const usersSсhema = new Schema({
         type: String,
         required: true
     },
-    bithday: {
+    birthday: {
         type: Date,
         required: true
     },
