@@ -48,8 +48,9 @@ module.exports.getCustomers = async (req, res) => {
                 'assignedUserLogin.login': 1
             }}
         ]);
+        const customersCount = await Customers.countDocuments();
 
-        res.status(200).json(customers);
+        res.status(200).json({customers, customersCount});
 
     } catch (err) {
         return errorHandler(res, err);
