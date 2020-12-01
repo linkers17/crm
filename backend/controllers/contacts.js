@@ -1,6 +1,9 @@
+const fs = require('fs');
+
 const Contacts = require('../models/Contacts');
 const Users = require('../models/Users');
 const errorHandler = require('../utils/errorHandler');
+const {PLACEHOLDER_CONTACT_PATH} = require('../config/config');
 
 module.exports.getContacts = async (req, res) => {
 
@@ -32,6 +35,12 @@ module.exports.createContact = async (req, res) => {
     const candidate = await Contacts.findOne({name: req.body.name});
 
     if (candidate) {
+
+        // Удаляем файл в случае ошибки запроса
+        fs.unlink(req.file.path, err => {
+            if (err) throw err;
+        });
+
         res.status(409).json({
             errors: [
                 'Мессенджер или соц. сеть с таким именем уже существует.'
@@ -40,7 +49,7 @@ module.exports.createContact = async (req, res) => {
     } else {
         const contact = new Contacts({
             name: req.body.name,
-            img: req.body.img
+            img: req.file ? req.file.path : PLACEHOLDER_CONTACT_PATH
         });
 
         try {
@@ -65,20 +74,45 @@ module.exports.createContact = async (req, res) => {
 module.exports.updateContact = async (req, res) => {
     try {
 
-        const candidate = await Contacts.findOne({name: req.body.name});
+        const candidate = await Contacts.findOne(
+            {$and: [
+                {name: req.body.name},
+                {_id: {$ne: req.params.id}}
+            ]}
+        );
 
         if (candidate) {
+
+            // Удаляем файл в случае ошибки запроса
+            if (req.file) {
+                fs.unlink(req.file.path, err => {
+                    if (err) throw err;
+                });
+            }
+
             res.status(409).json({
                 errors: [
                     'Мессенджер или соц. сеть с таким именем уже существует.'
                 ]
             });
         } else {
+
+            const contactInfo = await Contacts.findById(req.params.id);
             const contact = await Contacts.findOneAndUpdate(
                 {_id: req.params.id},
-                {$set: req.body},
+                {$set: {
+                    name: req.body.name,
+                    img: req.file ? req.file.path : PLACEHOLDER_CONTACT_PATH
+                }},
                 {new: true}
             );
+
+            // Удаляем старое изображение (кроме placeholder)
+            if (contactInfo.img !== PLACEHOLDER_CONTACT_PATH) {
+                fs.unlink(contactInfo.img, err => {
+                    if (err) throw err;
+                });
+            }
     
             res.status(200).json(contact);
         }
@@ -92,7 +126,8 @@ module.exports.removeContact = async (req, res) => {
 
     try {
 
-        await Contacts.deleteMany({_id: req.params.id});
+        const contactInfo = await Contacts.findById(req.params.id);
+        await Contacts.deleteOne({_id: req.params.id});
         await Users.updateMany({}, {
             $pull: {
                 contacts: {
@@ -100,6 +135,13 @@ module.exports.removeContact = async (req, res) => {
                 }
             }
         });
+
+        // Удаляем изображение (кроме placeholder)
+        if (contactInfo.img !== PLACEHOLDER_CONTACT_PATH) {
+            fs.unlink(contactInfo.img, err => {
+                if (err) throw err;
+            });
+        }
 
         res.status(200).json({message: 'Категория успешно удалена'});
 

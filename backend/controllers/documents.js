@@ -60,7 +60,7 @@ module.exports.createDocument = async (req, res) => {
             // Удаляем файл в случае ошибки запроса
             fs.unlink(req.file.path, err => {
                 if (err) throw err;
-            })
+            });
 
             return res.status(409).json({errors: 'Файл с таким именем уже есть.'});
         } else {

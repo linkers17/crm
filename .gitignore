@@ -1,3 +1,4 @@
 /backend/node_modules
 /backend/config/*config.js
 /backend/uploads/documents/*
+/backend/uploads/contact-images/*

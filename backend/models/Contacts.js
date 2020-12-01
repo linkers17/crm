@@ -8,8 +8,7 @@ const contactsSchema = new Schema({
         unique: true
     },
     img: {
-        type: String,
-        default: ''
+        type: String
     }
 });
 
