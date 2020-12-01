@@ -1,11 +1,55 @@
 const Customers = require('../models/Customers');
 const errorHandler = require('../utils/errorHandler');
+const mongoose = require('mongoose');
 
 module.exports.getCustomers = async (req, res) => {
 
     try {
 
+        const query = {};
 
+        if (req.user.role === 'manager') {
+            query.assignedUserId = mongoose.Types.ObjectId(req.user.id);
+        }
+
+        if (req.query.surname) {
+            query.surname = req.query.surname;
+        }
+
+        if (req.query.birthday) {
+            query.birthday = new Date(req.query.birthday);
+        }
+
+        if (req.query.email) {
+            query.email = req.query.email;
+        }
+
+        // Данный параметр доступен только директорам и админам
+        if (req.query.assignedUserId) {
+            query.assignedUserId = mongoose.Types.ObjectId(req.query.assignedUserId);
+        }
+
+        const customers = await Customers.aggregate([
+            {$match: query},
+            {$lookup: {
+                from: 'users',
+                localField: 'assignedUserId',
+                foreignField: '_id',
+                as: 'assignedUserLogin'
+            }},
+            {$project: {
+                '_id': 1,
+                surname: 1,
+                name: 1,
+                patronym: 1,
+                birthday: 1,
+                email: 1,
+                assignedUserId: 1,
+                'assignedUserLogin.login': 1
+            }}
+        ]);
+
+        res.status(200).json(customers);
 
     } catch (err) {
         return errorHandler(res, err);
@@ -43,8 +87,6 @@ module.exports.createCustomer = async (req, res) => {
             }
         }
 
-        console.log('body', req.body);
-
         const customer = await new Customers({
             surname: req.body.surname,
             name: req.body.name,
@@ -60,7 +102,7 @@ module.exports.createCustomer = async (req, res) => {
             site: req.body.site,
             description: req.body.description,
             doNotCall: req.body.doNotCall,
-            assignedUserId: req.body.assignedUserId,
+            assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
             documentIds: req.body.documentIds,
             createdById: req.user.id,
             createdByLogin: req.user.login
