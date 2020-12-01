@@ -191,7 +191,85 @@ module.exports.updateCustomer = async (req, res) => {
 
     try {
 
+        const customer = await Customers.findById(req.params.id);
 
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            customer.assignedUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете редактировать этого клиента'});
+        }
+
+        const candidate = await Customers.findOne({email: req.body.email});
+
+        if (candidate) {
+            return res.status(409).json({errors: 'Клиент с таким email уже существует'});
+        } else if (
+            req.body.surname.trim() === '' ||
+            req.body.name.trim() === '' ||
+            req.body.patronym.trim() === '' ||
+            req.body.birthday.trim() === '' ||
+            req.body.addressPostalCode.trim() === '' ||
+            req.body.addressCity.trim() === '' ||
+            req.body.addressStreet.trim() === '' ||
+            req.body.addressHome.trim() === '' ||
+            req.body.addressRoom.trim() === '' ||
+            req.body.phones.length === 0 ||
+            req.body.email.trim() === '' ||
+            req.body.assignedUserId.trim() === '' ||
+            req.body.documentIds.length === 0
+        ) {
+            
+            return res.status(409).json({errors: 'Заполните обязательные поля'});
+            
+        } else {
+
+            // Проверка на заполнение телефонов
+            if (req.body.phones) {
+                for (let i = 0; i < req.body.phones.length; i++) { 
+                    if (req.body.phones[i].trim() === '') {
+                        return res.status(409).json({errors: 'Номер телефона не может быть пустым'});
+                    }
+                }
+            }
+
+            // Проверка на заполнение документов
+            if (req.body.documentIds) {
+                for (let i = 0; i < req.body.documentIds.length; i++) { 
+                    if (req.body.documentIds[i].trim() === '') {
+                        return res.status(409).json({errors: 'Выберите документ'});
+                    }
+                }
+            }
+
+            const newCustomer = await Customers.findOneAndUpdate(
+                {_id: req.params.id},
+                {
+                    $set: {
+                        surname: req.body.surname,
+                        name: req.body.name,
+                        patronym: req.body.patronym,
+                        birthday: req.body.birthday,
+                        addressPostalCode: req.body.addressPostalCode,
+                        addressCity: req.body.addressCity,
+                        addressStreet: req.body.addressStreet,
+                        addressHome: req.body.addressHome,
+                        addressRoom: req.body.addressRoom,
+                        phones: req.body.phones,
+                        email: req.body.email,
+                        site: req.body.site,
+                        description: req.body.description,
+                        doNotCall: req.body.doNotCall,
+                        assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
+                        documentIds: req.body.documentIds
+                    }
+                },
+                {new: true}
+            );
+
+            res.status(200).json(newCustomer);
+
+        }
         
     } catch (err) {
         return errorHandler(res, err);
