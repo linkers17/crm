@@ -280,7 +280,18 @@ module.exports.removeCustomer = async (req, res) => {
 
     try {
 
+        const customer = await Customers.findById(req.params.id);
 
+        // Ограничение прав удаления
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            customer.assignedUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете удалить этого клиента'});
+        } else {
+            await Customers.deleteOne({_id: req.params.id});
+
+            return res.status(200).json({message: 'Клиент успешно удален.'});
+        }
         
     } catch (err) {
         return errorHandler(res, err);
