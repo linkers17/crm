@@ -61,7 +61,78 @@ module.exports.getCustomerById = async (req, res) => {
 
     try {
 
+        const candidate = await Customers.findById(req.params.id);
 
+        if (!candidate) {
+            return res.status(404).json({errors: 'Клиент не найден, возможно он был удален.'});
+        } else if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            candidate.assignedUserId != req.user.id) {
+            return res.status(409).json({errors: 'У вас недостаточно прав для просмотра'});
+        } else {
+
+            const customer = await Customers.aggregate([
+                {$match: {
+                    '_id': mongoose.Types.ObjectId(req.params.id)
+                }},
+                {$lookup: {
+                    from: 'documents',
+                    localField: 'documentIds',
+                    foreignField: '_id',
+                    as: 'documents'
+                }},
+                {$lookup: {
+                    from: 'users',
+                    localField: 'assignedUserId',
+                    foreignField: '_id',
+                    as: 'assignedUserLogin'
+                }},
+                {$lookup: {
+                    from: 'orders',
+                    localField: 'orderIds',
+                    foreignField: '_id',
+                    as: 'orders'
+                }},
+                {$lookup: {
+                    from: 'tasks',
+                    localField: 'taskIds',
+                    foreignField: '_id',
+                    as: 'tasks'
+                }},
+                {$lookup: {
+                    from: 'notes',
+                    localField: 'noteIds',
+                    foreignField: '_id',
+                    as: 'notes'
+                }},
+                {$project: {
+                    '_id': 1,
+                    phones: 1,
+                    doNotCall: 1,
+                    surname: 1,
+                    name: 1,
+                    patronym: 1,
+                    birthday: 1,
+                    addressPostalCode: 1,
+                    addressCity: 1,
+                    addressStreet: 1,
+                    addressHome: 1,
+                    addressRoom: 1,
+                    email: 1,
+                    site: 1,
+                    description: 1,
+                    assignedUserId: 1,
+                    createdById: 1,
+                    createdByLogin: 1,
+                    createdAt: 1,
+                    'documents._id': 1,
+                    'documents.name': 1,
+                    'assignedUserLogin.login': 1
+                }}
+            ]);
+
+            return res.status(200).json(customer);
+
+        }
 
     } catch (err) {
         return errorHandler(res, err);
