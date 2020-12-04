@@ -70,4 +70,4 @@ const companiesSchema = new Schema({
     }
 }, {timestamps: true});
 
-module.exports = mongoose.model('customers', companiesSchema);
+module.exports = mongoose.model('companies', companiesSchema);
