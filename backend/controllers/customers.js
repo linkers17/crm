@@ -159,6 +159,15 @@ module.exports.createCustomer = async (req, res) => {
             }
         }
 
+        // Проверка на выбор документа
+        if (req.body.documentIds) {
+            for (let i = 0; i < req.body.documentIds.length; i++) { 
+                if (req.body.documentIds[i].trim() === '') {
+                    return res.status(409).json({errors: 'Документ должен быть выбран'});
+                }
+            }
+        }
+
         const customer = await new Customers({
             surname: req.body.surname,
             name: req.body.name,

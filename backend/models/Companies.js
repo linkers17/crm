@@ -27,10 +27,9 @@ const companiesSchema = new Schema({
         type: [String],
         required: true
     },
-    email: {
+    emails: {
         type: [String],
         required: true,
-        unique: true
     },
     site: String,
     description: String,

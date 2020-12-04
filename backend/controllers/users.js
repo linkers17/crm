@@ -1,5 +1,6 @@
 const Users = require('../models/Users');
 const Customers = require('../models/Customers');
+const Companies = require('../models/Companies');
 const findAccess = require('../utils/findAccess');
 const errorHandler = require('../utils/errorHandler');
 
@@ -56,6 +57,13 @@ module.exports.updateUserById = async (req, res) => {
                 // Если пользователь стал неактивен переводим его клиентов и компании текущему
                 if (!req.body.status) {
                     await Customers.updateMany(
+                        {assignedUserId: id},
+                        {$set: {
+                            assignedUserId: req.user.id
+                        }}
+                    );
+
+                    await Companies.updateMany(
                         {assignedUserId: id},
                         {$set: {
                             assignedUserId: req.user.id
