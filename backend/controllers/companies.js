@@ -297,7 +297,18 @@ module.exports.removeCompany = async (req, res) => {
 
     try {
 
+        const company = await Companies.findById(req.params.id);
 
+        // Ограничение прав удаления
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            company.assignedUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете удалить эту компанию'});
+        } else {
+            await Companies.deleteOne({_id: req.params.id});
+
+            return res.status(200).json({message: 'Компания успешно удалена.'});
+        }
         
     } catch (err) {
         return errorHandler(res, err);
