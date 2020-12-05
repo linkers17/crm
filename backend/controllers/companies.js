@@ -207,7 +207,86 @@ module.exports.updateCompany = async (req, res) => {
 
     try {
 
-        
+        const company = await Companies.findById(req.params.id);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            company.assignedUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете редактировать эту компанию'});
+        }
+
+        const candidate = await Companies.findOne(
+            {$and: [
+                {emails: {$in: req.body.emails}},
+                {_id: {$ne: req.params.id}}
+            ]}
+        );
+
+        if (candidate) {
+            return res.status(409).json({errors: 'Компания с таким email уже существует'});
+        } else if (
+            req.body.title.trim() === '' ||
+            req.body.addressPostalCode.trim() === '' ||
+            req.body.addressCity.trim() === '' ||
+            req.body.addressStreet.trim() === '' ||
+            req.body.addressHome.trim() === '' ||
+            req.body.phones.length === 0 ||
+            req.body.emails.length === 0 ||
+            req.body.assignedUserId.trim() === '' ||
+            req.body.documentIds.length === 0
+        ) {
+            return res.status(409).json({errors: 'Заполните обязательные поля'});
+        } else {
+
+            // Проверка на заполнение телефонов
+            if (req.body.phones) {
+                for (let i = 0; i < req.body.phones.length; i++) { 
+                    if (req.body.phones[i].trim() === '') {
+                        return res.status(409).json({errors: 'Номер телефона не может быть пустым'});
+                    }
+                }
+            }
+
+            // Проверка на заполнение email
+            if (req.body.emails) {
+                for (let i = 0; i < req.body.emails.length; i++) { 
+                    if (req.body.emails[i].trim() === '') {
+                        return res.status(409).json({errors: 'Email не может быть пустым'});
+                    }
+                }
+            }
+
+            // Проверка на выбор документа
+            if (req.body.documentIds) {
+                for (let i = 0; i < req.body.documentIds.length; i++) { 
+                    if (req.body.documentIds[i].trim() === '') {
+                        return res.status(409).json({errors: 'Документ должен быть выбран'});
+                    }
+                }
+            }
+
+            const newCompany = await Companies.findOneAndUpdate(
+                {_id: req.params.id},
+                {$set: {
+                    title: req.body.title,
+                    addressPostalCode: req.body.addressPostalCode,
+                    addressCity: req.body.addressCity,
+                    addressStreet: req.body.addressStreet,
+                    addressHome: req.body.addressHome,
+                    addressRoom: req.body.addressRoom,
+                    phones: req.body.phones,
+                    emails: req.body.emails,
+                    site: req.body.site,
+                    description: req.body.description,
+                    assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
+                    documentIds: req.body.documentIds
+                }},
+                {new: true}
+            );
+
+            res.status(200).json(newCompany);
+        }
         
     } catch (err) {
         return errorHandler(res, err);
