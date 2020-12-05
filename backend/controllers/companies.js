@@ -6,7 +6,40 @@ module.exports.getCompanies = async (req, res) => {
 
     try {
 
+        const query = {};
+
+        if (req.query.title) {
+            query.title = req.query.title;
+        }
         
+        if (req.query.email) {
+            query.emails = {$in: [req.query.email]};
+        }
+
+        if (req.query.assignedUserId) {
+            query.assignedUserId = mongoose.Types.ObjectId(req.query.assignedUserId);
+        }
+
+        const companies = await Companies.aggregate([
+            {$match: query},
+            {$lookup: {
+                from: 'users',
+                localField: 'assignedUserId',
+                foreignField: '_id',
+                as: 'assignedUserLogin'
+            }},
+            {$project: {
+                '_id': 1,
+                title: 1,
+                site: 1,
+                assignedUserId: 1,
+                'assignedUserLogin.login': 1
+            }}
+        ]);
+
+        const companiesCount = await Companies.countDocuments(query);
+
+        res.status(200).json({companies, companiesCount});
 
     } catch (err) {
         return errorHandler(res, err);
@@ -17,7 +50,91 @@ module.exports.getCompanyById = async (req, res) => {
 
     try {
 
-        
+        const candidate = await Companies.findById(req.params.id);
+
+        if (!candidate) {
+            return res.status(404).json({errors: 'Компания не найдена, возможно она была удалена.'});
+        } else {
+
+            const company = await Companies.aggregate([
+                {$match: {
+                    '_id': mongoose.Types.ObjectId(req.params.id)
+                }},
+                {$lookup: {
+                    from: 'documents',
+                    localField: 'documentIds',
+                    foreignField: '_id',
+                    as: 'documents'
+                }},
+                {$lookup: {
+                    from: 'users',
+                    localField: 'assignedUserId',
+                    foreignField: '_id',
+                    as: 'assignedUserLogin'
+                }},
+                {$lookup: {
+                    from: 'orders',
+                    localField: 'orderIds',
+                    foreignField: '_id',
+                    as: 'orders'
+                }},
+                {$lookup: {
+                    from: 'tasks',
+                    localField: 'taskIds',
+                    foreignField: '_id',
+                    as: 'tasks'
+                }},
+                {$lookup: {
+                    from: 'notes',
+                    localField: 'noteIds',
+                    foreignField: '_id',
+                    as: 'notes'
+                }},
+                {$lookup: {
+                    from: 'customers',
+                    localField: 'employees.customerId',
+                    foreignField: '_id',
+                    as: 'employeesList'
+                }},
+                {$project: {
+                    '_id': 1,
+                    phones: 1,
+                    emails: 1,
+                    title: 1,
+                    addressPostalCode: 1,
+                    addressCity: 1,
+                    addressStreet: 1,
+                    addressHome: 1,
+                    addressRoom: 1,
+                    site: 1,
+                    description: 1,
+                    assignedUserId: 1,
+                    createdById: 1,
+                    createdByLogin: 1,
+                    createdAt: 1,
+                    'documents._id': 1,
+                    'documents.name': 1,
+                    'assignedUserLogin.login': 1,
+                    employees: 1,
+                    'employeesList._id': 1,
+                    'employeesList.surname': 1,
+                    'employeesList.name': 1,
+                    'employeesList.patronym': 1
+                }}
+            ]);
+
+            company[0].employeesList.map(employee => {
+                employee.position = company[0].employees.find(el => {
+                    if ((el.customerId).toString() === (employee._id).toString()) return el;
+                    return false;
+                }).position;
+            });
+
+            delete company[0].employees;
+
+            res.status(200).json(company);
+
+        }
 
     } catch (err) {
         return errorHandler(res, err);
