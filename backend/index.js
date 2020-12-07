@@ -12,6 +12,7 @@ const documentsRoutes = require('./routes/documents');
 const customersRoutes = require('./routes/customers');
 const companiesRoutes = require('./routes/companies');
 const servicesRoutes = require('./routes/services');
+const notesRoutes = require('./routes/notes');
 
 // Файл конфигураций
 const config = require('./config/config');
@@ -55,5 +56,6 @@ app.use('/api/documents', documentsRoutes);
 app.use('/api/customers', customersRoutes);
 app.use('/api/companies', companiesRoutes);
 app.use('/api/services', servicesRoutes);
+app.use('/api/notes', notesRoutes);
 
 startApp();
