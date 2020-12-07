@@ -85,7 +85,37 @@ module.exports.createService = async (req, res) => {
 module.exports.updateService = async (req, res) => {
     try {
 
-        
+        if (!req.body.title) {
+            return res.status(409).json({errors: 'Название услуги обязательно для заполнения'});
+        }
+
+        const candidate = await Services.findOne(
+            {$and: [
+                {title: req.body.title},
+                {_id: {$ne: req.params.id}}
+            ]}
+        );
+
+        if (candidate) {
+            res.status(409).json({errors: 'Услуга с таким названием уже существует.'});
+        } else {
+            if (+req.body.amount < 0) {
+                return res.status(409).json({errors: 'Стоимость не может быть меньше 0.'});
+            }
+
+            const service = await Services.findOneAndUpdate(
+                {_id: req.params.id},
+                {$set: {
+                    title: req.body.title,
+                    amount: req.body.amount,
+                    description: req.body.description
+                }},
+                {new: true}
+            );
+
+            res.status(200).json(service);
+        }
+
 
     } catch (err) {
         return errorHandler(res, err);
