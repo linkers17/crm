@@ -125,7 +125,9 @@ module.exports.updateService = async (req, res) => {
 module.exports.removeService = async (req, res) => {
     try {
 
-        
+        await Services.deleteOne({_id: req.params.id});
+
+        res.status(200).json({message: 'Услуга успешно удалена'});
 
     } catch (err) {
         return errorHandler(res, err);
