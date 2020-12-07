@@ -41,7 +41,13 @@ module.exports.getServices = async (req, res) => {
 module.exports.getServiceById = async (req, res) => {
     try {
 
-        
+        const service = await Services.findById(req.params.id);
+
+        if (!service) {
+            return res.status(404).json({errors: 'Услуга не найдена, возможно она была удалена.'});
+        } else {
+            return res.status(200).json(service);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
