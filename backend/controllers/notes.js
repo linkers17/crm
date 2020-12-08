@@ -4,7 +4,13 @@ const errorHandler = require('../utils/errorHandler');
 module.exports.getNotes = async (req, res) => {
     try {
 
-        
+        const notes = await Notes.find({parentId: req.query.parentId});
+
+        if (!notes) {
+            return res.status(404).json({errors: 'Ниодной заметки не найдено.'});
+        }
+
+        res.status(200).json(notes);
 
     } catch (err) {
         return errorHandler(res, err);
@@ -14,7 +20,13 @@ module.exports.getNotes = async (req, res) => {
 module.exports.getNoteById = async (req, res) => {
     try {
 
-        
+        const note = await Notes.findById(req.params.id);
+
+        if (!note) {
+            return res.status(404).json({errors: 'Заметка не найдена, возможно она была удалена.'});
+        } else {
+            res.status(200).json(note);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
