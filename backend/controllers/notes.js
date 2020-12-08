@@ -61,7 +61,7 @@ module.exports.updateNote = async (req, res) => {
 
         // Ограничение прав редактирования
         if (req.user.role !== 'director' && req.user.role !== 'admin' &&
-            note.createdUserId != req.user.id) {
+            note.createdById != req.user.id) {
             
             return res.status(409).json({errors: 'Вы не можете редактировать эту заметку.'});
         }
@@ -91,7 +91,18 @@ module.exports.updateNote = async (req, res) => {
 module.exports.removeNote = async (req, res) => {
     try {
 
-        
+        const note = await Notes.findById(req.params.id);
+
+        // Ограничение прав удаления
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            note.createdById != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете удалить эту заметку.'});
+        } else {
+            await Notes.deleteOne({_id: req.params.id});
+
+            return res.status(200).json({message: 'Заметка успешно удалена.'});
+        }
 
     } catch (err) {
         return errorHandler(res, err);
