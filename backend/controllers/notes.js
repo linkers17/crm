@@ -24,7 +24,18 @@ module.exports.getNoteById = async (req, res) => {
 module.exports.createNote = async (req, res) => {
     try {
 
-        
+        if (!req.body.description) {
+            return res.status(409).json({errors: 'Текст не может быть пустым'});
+        } else {
+            const note = await new Notes({
+                createdById: req.user.id,
+                createdByLogin: req.user.login,
+                description: req.body.description,
+                parentId: req.params.parentId
+            }).save();
+
+            res.status(201).json(note);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
