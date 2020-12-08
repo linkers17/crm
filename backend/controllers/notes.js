@@ -57,7 +57,30 @@ module.exports.createNote = async (req, res) => {
 module.exports.updateNote = async (req, res) => {
     try {
 
-        
+        const note = await Notes.findById(req.params.id);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            note.createdUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете редактировать эту заметку.'});
+        }
+
+        if (!req.body.description) {
+            return res.status(409).json({errors: 'Текст не может быть пустым'});
+        } else {
+            const newNote = await Notes.findOneAndUpdate(
+                {_id: req.params.id},
+                {
+                    $set: {
+                        description: req.body.description
+                    }
+                },
+                {new: true}
+            );
+
+            res.status(200).json(newNote);
+        }
 
 
     } catch (err) {
