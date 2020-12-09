@@ -235,7 +235,7 @@ module.exports.updateTask = async (req, res) => {
         if (req.body.title.trim() === '') {
             return res.status(409).json({errors: 'Название задачи обязательно для заполнения'})
         }
-        
+
         // Проверка на выбор документа
         if (req.body.documentIds) {
             for (let i = 0; i < req.body.documentIds.length; i++) { 
@@ -273,7 +273,18 @@ module.exports.removeTask = async (req, res) => {
 
     try {
 
-        
+        const task = await Tasks.findById(req.params.id);
+
+        // Ограничение прав удаления
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            task.createdById != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете удалить эту задачу.'});
+        } else {
+            await Tasks.deleteOne({_id: req.params.id});
+
+            return res.status(200).json({message: 'Задача успешно удалена.'});
+        }
         
     } catch (err) {
         return errorHandler(res, err);
