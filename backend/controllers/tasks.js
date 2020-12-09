@@ -219,7 +219,50 @@ module.exports.updateTask = async (req, res) => {
 
     try {
 
+        const task = await Tasks.findById(req.params.id);
+
+        console.log('task', task);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+        task.createdById != req.user.id && task.assignedUserId != req.user.id) {
+            return res.status(409).json({errors: 'Вы не можете редактировать эту задачу.'});
+        }
+
+        // Если статус задачи "завершена"
+        const dateEnd = req.body.status === 'completed' ? Date.now() : null;
+
+        if (req.body.title.trim() === '') {
+            return res.status(409).json({errors: 'Название задачи обязательно для заполнения'})
+        }
         
+        // Проверка на выбор документа
+        if (req.body.documentIds) {
+            for (let i = 0; i < req.body.documentIds.length; i++) { 
+                if (req.body.documentIds[i].trim() === '') {
+                    return res.status(409).json({errors: 'Документ должен быть выбран'});
+                }
+            }
+        }
+
+        const newTask = await Tasks.findOneAndUpdate(
+            {_id: req.params.id},
+            {$set: {
+                title: req.body.title,
+                description: req.body.description,
+                deadline: req.body.deadline,
+                priority: req.body.priority,
+                status: req.body.status,
+                parentId: req.body.parentId ? req.body.parentId : null,
+                dateEnd,
+                documentIds: req.body.documentIds,
+                updatedById: req.user.id,
+                updatedByLogin: req.user.login
+            }},
+            {new: true}
+        );
+
+        res.status(200).json(newTask);
         
     } catch (err) {
         return errorHandler(res, err);
