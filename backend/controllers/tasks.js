@@ -117,7 +117,58 @@ module.exports.getTaskById = async (req, res) => {
 
     try {
 
-        
+        const candidate = await Tasks.findById(req.params.id);
+
+        if (!candidate) {
+            return res.status(404).json({errors: 'Задача не найдена, возможно она была удалена.'});
+        } else {
+
+            // Ограничение прав просмотра
+            if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            candidate.createdById != req.user.id && candidate.assignedUserId != req.user.id) {
+                return res.status(409).json({errors: 'У вас недостаточно прав для просмотра этой страницы'});
+            }
+
+            const task = await Tasks.aggregate([
+                {$match: {
+                    '_id': mongoose.Types.ObjectId(req.params.id)
+                }},
+                {$lookup: {
+                    from: 'documents',
+                    localField: 'documentIds',
+                    foreignField: '_id',
+                    as: 'documents'
+                }},
+                {$lookup: {
+                    from: 'users',
+                    localField: 'assignedUserId',
+                    foreignField: '_id',
+                    as: 'assignedUserLogin'
+                }},
+                {$project: {
+                    '_id': 1,
+                    dateEnd: 1,
+                    status: 1,
+                    priority: 1,
+                    updatedById: 1,
+                    updatedByLogin: 1,
+                    updatedAt: 1,
+                    assignedUserId: 1,
+                    parentId: 1,
+                    title: 1,
+                    description: 1,
+                    createdById: 1,
+                    createdByLogin: 1,
+                    createdAt: 1,
+                    deadline: 1,
+                    'documents._id': 1,
+                    'documents.name': 1,
+                    'assignedUserLogin.login': 1
+                }}
+            ]);
+
+            res.status(200).json(task);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
