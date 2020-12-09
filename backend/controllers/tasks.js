@@ -6,7 +6,107 @@ module.exports.getTasks = async (req, res) => {
 
     try {
 
-        
+        // По-умолчанию отображаются задачи, в которых пользователь ответственный
+        let query = {
+            assignedUserId: req.user.id
+        };
+
+        // Если нужно получить задачи, которые создал пользователь
+        if (req.query.createdMe) {
+            query = {
+                $or: [
+                    {assignedUserId: req.user.id},
+                    {createdById: req.user.id}
+                ]
+            }
+        }
+
+        // Фильтр статусов и приоритетов
+        if (
+            req.query.normal ||
+            req.query.low ||
+            req.query.high ||
+            req.query.urgent
+        ) {
+
+            const priority = {$in: []};
+            req.query.normal ? priority.$in.push('normal') : false;
+            req.query.low ? priority.$in.push('low') : false;
+            req.query.high ? priority.$in.push('high') : false;
+            req.query.urgent ? priority.$in.push('urgent') : false;
+
+            // Если есть параметры приоритета и "создан мной" одновременно
+            if (req.query.createdMe) {
+                query = {
+                    $and: [
+                        {$or: [
+                            {assignedUserId: req.user.id},
+                            {createdById: req.user.id}
+                        ]},
+                        {$and: [{priority}]}
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        {$or: [
+                            {assignedUserId: req.user.id}
+                        ]},
+                        {$and: [{priority}]}
+                    ]
+                };
+            }
+        }
+
+        if (
+            req.query.notStarted ||
+            req.query.started ||
+            req.query.completed ||
+            req.query.canceled ||
+            req.query.deffered
+        ) {
+            const status = {$in: []};
+            req.query.notStarted ? status.$in.push('not_started') : false;
+            req.query.started ? status.$in.push('started') : false;
+            req.query.completed ? status.$in.push('completed') : false;
+            req.query.canceled ? status.$in.push('canceled') : false;
+            req.query.deffered ? status.$in.push('deffered') : false;
+
+            // Если есть параметры статуса и "создан мной" одновременно
+            if (req.query.createdMe) {
+                if (query.$and) {
+                    query.$and[1].$and.push({status});
+                } else {
+                    query = {
+                        $and: [
+                            {$or: [
+                                {assignedUserId: req.user.id},
+                                {createdById: req.user.id}
+                            ]},
+                            {$and: [{status}]}
+                        ]
+                    };
+                }
+            } else {
+                if (query.$and) {
+                    query.$and[1].$and.push({status});
+                } else {
+                    query = {
+                        $and: [
+                            {$or: [
+                                {assignedUserId: req.user.id}
+                            ]},
+                            {$and: [{status}]}
+                        ]
+                    };
+                }
+            }
+        }
+
+        const tasks = await Tasks.find(query, 'status priority assignedUserId title deadline createdById createdByLogin createdAt');
+        const count = await Tasks.countDocuments(query);
+
+        res.status(200).json({tasks, count});
 
     } catch (err) {
         return errorHandler(res, err);
