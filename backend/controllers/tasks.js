@@ -221,8 +221,6 @@ module.exports.updateTask = async (req, res) => {
 
         const task = await Tasks.findById(req.params.id);
 
-        console.log('task', task);
-
         // Ограничение прав редактирования
         if (req.user.role !== 'director' && req.user.role !== 'admin' &&
         task.createdById != req.user.id && task.assignedUserId != req.user.id) {
@@ -289,4 +287,32 @@ module.exports.removeTask = async (req, res) => {
     } catch (err) {
         return errorHandler(res, err);
     }
+}
+
+module.exports.completedTask = async (req, res) => {
+
+    try {
+
+        const task = await Tasks.findById(req.params.id);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+        task.createdById != req.user.id && task.assignedUserId != req.user.id) {
+            return res.status(409).json({errors: 'Вы не можете редактировать эту задачу.'});
+        }
+
+        const newTask = await Tasks.findOneAndUpdate(
+            {_id: req.params.id},
+            {$set: {
+                status: 'completed'
+            }},
+            {new: true}
+        );
+
+        res.status(200).json(newTask);
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
 }

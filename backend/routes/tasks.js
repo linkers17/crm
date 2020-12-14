@@ -9,5 +9,6 @@ router.get('/:id', userAuth, controller.getTaskById);
 router.post('/', userAuth, controller.createTask);
 router.patch('/:id', userAuth, controller.updateTask);
 router.delete('/:id', userAuth, controller.removeTask);
+router.patch('/completed/:id', userAuth, controller.completedTask);
 
 module.exports = router;
