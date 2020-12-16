@@ -14,6 +14,7 @@ const companiesRoutes = require('./routes/companies');
 const servicesRoutes = require('./routes/services');
 const notesRoutes = require('./routes/notes');
 const tasksRoutes = require('./routes/tasks');
+const ordersRoutes = require('./routes/orders');
 
 // Файл конфигураций
 const config = require('./config/config');
@@ -59,5 +60,6 @@ app.use('/api/companies', companiesRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/notes', notesRoutes);
 app.use('/api/tasks', tasksRoutes);
+app.use('/api/orders', ordersRoutes);
 
 startApp();
