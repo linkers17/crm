@@ -51,11 +51,13 @@ const ordersSchema = new Schema({
     },
     customerId: {
         ref: 'customers',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        default: null
     },
     companyId: {
         ref: 'companies',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        default: null
     },
     amount: Number,
     description: String
