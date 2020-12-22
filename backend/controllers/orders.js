@@ -1,4 +1,6 @@
 const Orders = require('../models/Orders');
+const Tasks = require('../models/Tasks');
+const Notes = require('../models/Notes');
 const errorHandler = require('../utils/errorHandler');
 const mongoose = require('mongoose');
 
@@ -56,8 +58,6 @@ module.exports.getOrders = async (req, res) => {
             query.dateEnd['$lte'] = req.query.endDateEnd;
         }
 
-        console.log('query', query);
-
         const orders = await Orders.find(query, 'stage title dateEnd amount createdByLogin createdById createdAt');
         const count = await Orders.countDocuments(query);
 
@@ -71,7 +71,72 @@ module.exports.getOrders = async (req, res) => {
 module.exports.getOrderById = async (req, res) => {
     try {
 
-        
+        const candidate = await Orders.findById(req.params.id);
+
+        if (!candidate) {
+            return res.status(404).json({errors: 'Заказ не найден, возможно он был удален.'});
+        } else if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            candidate.assignedUserId != req.user.id) {
+            return res.status(409).json({errors: 'У вас недостаточно прав для просмотра.'});
+        } else {
+            const order = await Orders.aggregate([
+                {$match: {
+                    '_id': mongoose.Types.ObjectId(req.params.id)
+                }},
+                {$lookup: {
+                    from: 'documents',
+                    localField: 'documentIds',
+                    foreignField: '_id',
+                    as: 'documents'
+                }},
+                {$lookup: {
+                    from: 'users',
+                    localField: 'assignedUserId',
+                    foreignField: '_id',
+                    as: 'assignedUserLogin'
+                }},
+                {$lookup: {
+                    from: 'customers',
+                    localField: 'customerId',
+                    foreignField: '_id',
+                    as: 'customerInfo'
+                }},
+                {$lookup: {
+                    from: 'companies',
+                    localField: 'companyId',
+                    foreignField: '_id',
+                    as: 'companyInfo'
+                }},
+                {$project: {
+                    '_id': 1,
+                    stage: 1,
+                    title: 1,
+                    dateEnd: 1,
+                    servicesList: 1,
+                    amount: 1,
+                    createdByLogin: 1,
+                    createdById: 1,
+                    createdAt: 1,
+                    updatedByLogin: 1,
+                    updatedById: 1,
+                    updatedAt: 1,
+                    assignedUserId: 1,
+                    description: 1,
+                    'documents._id': 1,
+                    'documents.name': 1,
+                    'assignedUserLogin.login': 1,
+                    'customerInfo.surname': 1,
+                    'customerInfo.name': 1,
+                    'customerInfo.patronym': 1,
+                    'companyInfo.title': 1
+                }}
+            ]);
+
+            order[0].tasks = await Tasks.find({parentId: order[0]._id});
+            order[0].notes = await Notes.find({parentId: order[0]._id});
+
+            return res.status(200).json(order[0]);
+        }
 
     } catch (err) {
         return errorHandler(res, err);
