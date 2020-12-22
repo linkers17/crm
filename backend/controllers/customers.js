@@ -209,7 +209,12 @@ module.exports.updateCustomer = async (req, res) => {
             return res.status(409).json({errors: 'Вы не можете редактировать этого клиента'});
         }
 
-        const candidate = await Customers.findOne({email: req.body.email});
+        const candidate = await Customers.findOne(
+            {$and: [
+                {email: req.body.email},
+                {_id: {$ne: req.params.id}}
+            ]}
+        );
 
         if (candidate) {
             return res.status(409).json({errors: 'Клиент с таким email уже существует'});
