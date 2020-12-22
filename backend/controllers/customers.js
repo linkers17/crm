@@ -1,4 +1,6 @@
 const Customers = require('../models/Customers');
+const Notes = require('../models/Notes');
+const Tasks  =require('../models/Tasks');
 const errorHandler = require('../utils/errorHandler');
 const mongoose = require('mongoose');
 
@@ -303,6 +305,13 @@ module.exports.removeCustomer = async (req, res) => {
             return res.status(409).json({errors: 'Вы не можете удалить этого клиента'});
         } else {
             await Customers.deleteOne({_id: req.params.id});
+            await Notes.deleteMany({parentId: req.params.id});
+            await Tasks.deleteMany(
+                {$and: [
+                    {parentId: req.params.id},
+                    {status: {$in: ['not_started', 'started', 'deffered']}}
+                ]}
+            );
 
             return res.status(200).json({message: 'Клиент успешно удален.'});
         }
