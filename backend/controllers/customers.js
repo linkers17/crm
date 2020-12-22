@@ -305,6 +305,8 @@ module.exports.removeCustomer = async (req, res) => {
             return res.status(409).json({errors: 'Вы не можете удалить этого клиента'});
         } else {
             await Customers.deleteOne({_id: req.params.id});
+
+            // Удаляем связанные с клиентом истории общения и активные задачи
             await Notes.deleteMany({parentId: req.params.id});
             await Tasks.deleteMany(
                 {$and: [

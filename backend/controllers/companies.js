@@ -1,4 +1,6 @@
 const Companies = require('../models/Companies');
+const Notes = require('../models/Notes');
+const Tasks  =require('../models/Tasks');
 const errorHandler = require('../utils/errorHandler');
 const mongoose = require('mongoose');
 
@@ -306,6 +308,15 @@ module.exports.removeCompany = async (req, res) => {
             return res.status(409).json({errors: 'Вы не можете удалить эту компанию'});
         } else {
             await Companies.deleteOne({_id: req.params.id});
+
+            // Удаляем связанные с компанией истории общения и активные задачи
+            await Notes.deleteMany({parentId: req.params.id});
+            await Tasks.deleteMany(
+                {$and: [
+                    {parentId: req.params.id},
+                    {status: {$in: ['not_started', 'started', 'deffered']}}
+                ]}
+            );
 
             return res.status(200).json({message: 'Компания успешно удалена.'});
         }
