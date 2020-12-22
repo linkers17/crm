@@ -318,7 +318,18 @@ module.exports.updateOrder = async (req, res) => {
 module.exports.removeOrder = async (req, res) => {
     try {
 
-        
+        const order = await Orders.findById(req.params.id);
+
+        // Ограничение прав удаления
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            order.assignedUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете удалить этот заказ.'});
+        } else {
+            await Orders.deleteOne({_id: req.params.id});
+
+            return res.status(200).json({message: 'Заказ успешно удален.'});
+        }
 
     } catch (err) {
         return errorHandler(res, err);
