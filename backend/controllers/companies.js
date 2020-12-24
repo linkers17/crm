@@ -339,36 +339,34 @@ module.exports.addEmployee = async (req, res) => {
             return res.status(409).json({errors: 'Вы не можете редактировать эту компанию'});
         }
 
-        if (
-            req.body.customerId.trim() === '' ||
-            req.body.position.trim() === ''
-        ) {
-            return res.status(409).json({errors: 'Все поля обязательны для заполнения.'});
-        }
-
-        // Проверяем наличие добавляемого сотрудника в компаниях
-        const isEmployee = await Companies.findOne({
-            'employees.customerId': {
-                $in: [req.body.customerId]
-            }
-        });
-
-        if (isEmployee) {
-            return res.status(409).json({errors: 'Данный сотрудник не может быть добавлен.'});
+        if (req.body.position.trim() === '') {
+            return res.status(409).json({errors: 'Должность обязательна для заполнения.'});
         }
 
         const newCompany = await Companies.findOneAndUpdate(
-            {_id: req.params.id},
-            {$addToSet: {
-                employees: {
-                    customerId: req.body.customerId,
-                    position: req.body.position
-                }
+            {
+                _id: req.params.id,
+                'employees.customerId': req.query.customerId
+            },
+            {$set: {
+                'employees.$.position': req.body.position
             }},
             {new: true}
         );
 
         res.status(200).json(newCompany);
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}
+
+module.exports.editEmployee = async (req, res) => {
+
+    try {
+
+        
 
     } catch (err) {
         return errorHandler(res, err);

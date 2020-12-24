@@ -11,5 +11,6 @@ router.patch('/:id', userAuth, controller.updateCompany);
 router.delete('/:id', userAuth, controller.removeCompany);
 
 router.patch('/:id/employee/add', userAuth, controller.addEmployee);
+router.patch('/:id/employee/edit', userAuth, controller.editEmployee);
 
 module.exports = router;
