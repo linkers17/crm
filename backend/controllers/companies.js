@@ -411,3 +411,34 @@ module.exports.editEmployee = async (req, res) => {
     }
 
 }
+
+module.exports.removeEmployee = async (req, res) => {
+
+    try {
+
+        const company = await Companies.findById(req.params.id);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            company.assignedUserId != req.user.id) {
+
+            return res.status(409).json({errors: 'Вы не можете редактировать эту компанию'});
+        }
+
+        await Companies.findOneAndUpdate(
+            {_id: req.params.id},
+            {$pull: {
+                employees: {
+                    customerId: req.query.customerId
+                }
+            }},
+            {new: true}
+        );
+
+        res.status(200).json({errors: 'Сотрудник успешно удален.'});
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}
