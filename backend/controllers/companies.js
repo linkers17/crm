@@ -325,3 +325,53 @@ module.exports.removeCompany = async (req, res) => {
         return errorHandler(res, err);
     }
 }
+
+module.exports.addEmployee = async (req, res) => {
+
+    try {
+
+        const company = await Companies.findById(req.params.id);
+
+        // Ограничение прав редактирования
+        if (req.user.role !== 'director' && req.user.role !== 'admin' &&
+            company.assignedUserId != req.user.id) {
+            
+            return res.status(409).json({errors: 'Вы не можете редактировать эту компанию'});
+        }
+
+        if (
+            req.body.customerId.trim() === '' ||
+            req.body.position.trim() === ''
+        ) {
+            return res.status(409).json({errors: 'Все поля обязательны для заполнения.'});
+        }
+
+        // Проверяем наличие добавляемого сотрудника в компаниях
+        const isEmployee = await Companies.findOne({
+            'employees.customerId': {
+                $in: [req.body.customerId]
+            }
+        });
+
+        if (isEmployee) {
+            return res.status(409).json({errors: 'Данный сотрудник не может быть добавлен.'});
+        }
+
+        const newCompany = await Companies.findOneAndUpdate(
+            {_id: req.params.id},
+            {$addToSet: {
+                employees: {
+                    customerId: req.body.customerId,
+                    position: req.body.position
+                }
+            }},
+            {new: true}
+        );
+
+        res.status(200).json(newCompany);
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}
