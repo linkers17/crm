@@ -3,8 +3,9 @@ const Customers = require('../models/Customers');
 const Companies = require('../models/Companies');
 const findAccess = require('../utils/findAccess');
 const errorHandler = require('../utils/errorHandler');
+const mongoose = require('mongoose');
 
-module.exports.getUserById = async (req, res) => {
+module.exports.getUserByIdForRole = async (req, res) => {
 
     // director -> 5f97c367e890e82ac8c6003f
     // admin -> 5f982c4da87f830668df9bbd
@@ -26,6 +27,63 @@ module.exports.getUserById = async (req, res) => {
     }
 
 };
+
+module.exports.getUserById = async (req, res) => {
+
+    try {
+
+        const candidate = await Users.findById(req.params.id);
+
+        if (!candidate) {
+            res.status(404).json({errors: 'Пользователь не найден, возможно он был удален.'});
+        } else {
+            
+            const user = await Users.aggregate([
+                {$match: {
+                    '_id': mongoose.Types.ObjectId(req.params.id)
+                }},
+                {$lookup: {
+                    from: 'contacts',
+                    localField: 'contacts.contactId',
+                    foreignField: '_id',
+                    as: 'contactsList'
+                }},
+                {$project: {
+                    '_id': 1,
+                    userImg: 1,
+                    login: 1,
+                    role: 1,
+                    surname: 1,
+                    name: 1,
+                    patronym: 1,
+                    bithday: 1,
+                    address: 1,
+                    email: 1,
+                    phones: 1,
+                    contacts: 1,
+                    'contactsList._id': 1,
+                    'contactsList.img': 1,
+                    'contactsList.name': 1
+                }}
+            ]);
+
+            user[0].contactsList.map(contact => {
+                contact.value = user[0].contacts.find(el => {
+                    if ((el.contactId).toString() === (contact._id).toString()) return el;
+                    return false;
+                }).value;
+            });
+
+            delete user[0].contacts;
+
+            res.status(200).json(user);
+        }
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}
 
 module.exports.updateUserById = async (req, res) => {
 
