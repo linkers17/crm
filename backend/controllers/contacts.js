@@ -150,7 +150,27 @@ module.exports.removeContact = async (req, res) => {
 
         const contactInfo = await Contacts.findById(req.params.id);
         await Contacts.deleteOne({_id: req.params.id});
+
+        // Обновляем список контактов в таблице пользователей
         await Users.updateMany({}, {
+            $pull: {
+                contacts: {
+                    contactId: req.params.id
+                }
+            }
+        });
+
+        // Обновляем список контактов в таблице клиентов
+        await Customers.updateMany({}, {
+            $pull: {
+                contacts: {
+                    contactId: req.params.id
+                }
+            }
+        });
+
+        // Обновляем список контактов в таблице компаний
+        await Companies.updateMany({}, {
             $pull: {
                 contacts: {
                     contactId: req.params.id
