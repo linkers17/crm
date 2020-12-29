@@ -66,7 +66,19 @@ const companiesSchema = new Schema({
     noteIds: {
         ref: 'notes',
         type: [Schema.Types.ObjectId]
-    }
+    },
+    contacts: [
+        {
+            contactId: {
+                ref: 'contacts',
+                type: Schema.Types.ObjectId
+            },
+            value: {
+                type: String,
+                default: ''
+            }
+        }
+    ]
 }, {timestamps: true});
 
 module.exports = mongoose.model('companies', companiesSchema);

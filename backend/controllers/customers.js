@@ -1,6 +1,7 @@
 const Customers = require('../models/Customers');
 const Notes = require('../models/Notes');
 const Tasks  =require('../models/Tasks');
+const Contacts  =require('../models/Contacts');
 const errorHandler = require('../utils/errorHandler');
 const mongoose = require('mongoose');
 
@@ -170,6 +171,16 @@ module.exports.createCustomer = async (req, res) => {
             }
         }
 
+        // Заполняем id мессенджера или соц. сети и значение из формы
+        let contactsUser;
+        const contacts = await Contacts.find({}, 'id');
+        contactsUser = contacts.map((id, idx) => {
+            return {
+                contactId: id._id,
+                value: req.body.contacts[idx]
+            }
+        });
+
         const customer = await new Customers({
             surname: req.body.surname,
             name: req.body.name,
@@ -188,7 +199,8 @@ module.exports.createCustomer = async (req, res) => {
             assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
             documentIds: req.body.documentIds,
             createdById: req.user.id,
-            createdByLogin: req.user.login
+            createdByLogin: req.user.login,
+            contacts: contactsUser
         }).save();
 
         res.status(201).json(customer);
