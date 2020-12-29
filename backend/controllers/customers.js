@@ -263,8 +263,7 @@ module.exports.updateCustomer = async (req, res) => {
             req.body.addressRoom.trim() === '' ||
             req.body.phones.length === 0 ||
             req.body.email.trim() === '' ||
-            req.body.assignedUserId.trim() === '' ||
-            req.body.documentIds.length === 0
+            req.body.assignedUserId.trim() === ''
         ) {
             
             return res.status(409).json({errors: 'Заполните обязательные поля'});
@@ -289,6 +288,16 @@ module.exports.updateCustomer = async (req, res) => {
                 }
             }
 
+            // Заполняем id мессенджера или соц. сети и значение из формы
+            let contactsUser;
+            const contacts = await Contacts.find({}, 'id');
+            contactsUser = contacts.map((id, idx) => {
+                return {
+                    contactId: id._id,
+                    value: req.body.contacts[idx]
+                }
+            });
+
             const newCustomer = await Customers.findOneAndUpdate(
                 {_id: req.params.id},
                 {
@@ -308,7 +317,8 @@ module.exports.updateCustomer = async (req, res) => {
                         description: req.body.description,
                         doNotCall: req.body.doNotCall,
                         assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
-                        documentIds: req.body.documentIds
+                        documentIds: req.body.documentIds,
+                        contacts: contactsUser
                     }
                 },
                 {new: true}
