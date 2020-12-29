@@ -1,6 +1,7 @@
 const Companies = require('../models/Companies');
 const Notes = require('../models/Notes');
-const Tasks  =require('../models/Tasks');
+const Tasks = require('../models/Tasks');
+const Contacts = require('../models/Contacts');
 const errorHandler = require('../utils/errorHandler');
 const mongoose = require('mongoose');
 
@@ -98,6 +99,12 @@ module.exports.getCompanyById = async (req, res) => {
                     foreignField: '_id',
                     as: 'employeesList'
                 }},
+                {$lookup: {
+                    from: 'contacts',
+                    localField: 'contacts.contactId',
+                    foreignField: '_id',
+                    as: 'contactsList'
+                }},
                 {$project: {
                     '_id': 1,
                     phones: 1,
@@ -121,7 +128,11 @@ module.exports.getCompanyById = async (req, res) => {
                     'employeesList._id': 1,
                     'employeesList.surname': 1,
                     'employeesList.name': 1,
-                    'employeesList.patronym': 1
+                    'employeesList.patronym': 1,
+                    contacts: 1,
+                    'contactsList._id': 1,
+                    'contactsList.img': 1,
+                    'contactsList.name': 1
                 }}
             ]);
 
@@ -133,6 +144,15 @@ module.exports.getCompanyById = async (req, res) => {
             });
 
             delete company[0].employees;
+
+            company[0].contactsList.map(contact => {
+                contact.value = company[0].contacts.find(el => {
+                    if ((el.contactId).toString() === (contact._id).toString()) return el;
+                    return false;
+                }).value;
+            });
+
+            delete company[0].contacts;
 
             res.status(200).json(company);
 
@@ -181,6 +201,16 @@ module.exports.createCompany = async (req, res) => {
             return res.status(409).json({errors: 'Компания с таким email уже существует'});
         }
 
+        // Заполняем id мессенджера или соц. сети и значение из формы
+        let contactsUser;
+        const contacts = await Contacts.find({}, 'id');
+        contactsUser = contacts.map((id, idx) => {
+            return {
+                contactId: id._id,
+                value: req.body.contacts[idx]
+            }
+        });
+
         const company = await new Companies({
             title: req.body.title,
             addressPostalCode: req.body.addressPostalCode,
@@ -195,7 +225,8 @@ module.exports.createCompany = async (req, res) => {
             assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
             documentIds: req.body.documentIds,
             createdById: req.user.id,
-            createdByLogin: req.user.login
+            createdByLogin: req.user.login,
+            contacts: contactsUser
         }).save();
 
         res.status(201).json(company);
@@ -234,9 +265,7 @@ module.exports.updateCompany = async (req, res) => {
             req.body.addressStreet.trim() === '' ||
             req.body.addressHome.trim() === '' ||
             req.body.phones.length === 0 ||
-            req.body.emails.length === 0 ||
-            req.body.assignedUserId.trim() === '' ||
-            req.body.documentIds.length === 0
+            req.body.emails.length === 0
         ) {
             return res.status(409).json({errors: 'Заполните обязательные поля'});
         } else {
@@ -268,6 +297,16 @@ module.exports.updateCompany = async (req, res) => {
                 }
             }
 
+            // Заполняем id мессенджера или соц. сети и значение из формы
+            let contactsUser;
+            const contacts = await Contacts.find({}, 'id');
+            contactsUser = contacts.map((id, idx) => {
+                return {
+                    contactId: id._id,
+                    value: req.body.contacts[idx]
+                }
+            });
+
             const newCompany = await Companies.findOneAndUpdate(
                 {_id: req.params.id},
                 {$set: {
@@ -282,7 +321,8 @@ module.exports.updateCompany = async (req, res) => {
                     site: req.body.site,
                     description: req.body.description,
                     assignedUserId: req.user.role === 'manager' ? req.user.id : req.body.assignedUserId,
-                    documentIds: req.body.documentIds
+                    documentIds: req.body.documentIds,
+                    contacts: contactsUser
                 }},
                 {new: true}
             );
