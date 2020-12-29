@@ -2,6 +2,8 @@ const fs = require('fs');
 
 const Contacts = require('../models/Contacts');
 const Users = require('../models/Users');
+const Customers = require('../models/Customers');
+const Companies = require('../models/Companies');
 const errorHandler = require('../utils/errorHandler');
 const {PLACEHOLDER_CONTACT_PATH} = require('../config/config');
 
@@ -55,6 +57,26 @@ module.exports.createContact = async (req, res) => {
         try {
             // Добавляем в таблицу пользователей созданный контакт
             await Users.updateMany({}, {
+                $push: {
+                    contacts: {
+                        contactId: contact._id,
+                        value: ''
+                    }
+                }
+            });
+
+            // Добавляем в таблицу клиентов созданный контакт
+            await Customers.updateMany({}, {
+                $push: {
+                    contacts: {
+                        contactId: contact._id,
+                        value: ''
+                    }
+                }
+            });
+
+            // Добавляем в таблицу компаний созданный контакт
+            await Companies.updateMany({}, {
                 $push: {
                     contacts: {
                         contactId: contact._id,
@@ -143,7 +165,7 @@ module.exports.removeContact = async (req, res) => {
             });
         }
 
-        res.status(200).json({message: 'Категория успешно удалена'});
+        res.status(200).json({message: 'Контакт успешно удален.'});
 
     } catch (err) {
         return errorHandler(res, err);
