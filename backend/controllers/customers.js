@@ -107,6 +107,12 @@ module.exports.getCustomerById = async (req, res) => {
                     foreignField: '_id',
                     as: 'notes'
                 }},
+                {$lookup: {
+                    from: 'contacts',
+                    localField: 'contacts.contactId',
+                    foreignField: '_id',
+                    as: 'contactsList'
+                }},
                 {$project: {
                     '_id': 1,
                     phones: 1,
@@ -129,9 +135,22 @@ module.exports.getCustomerById = async (req, res) => {
                     createdAt: 1,
                     'documents._id': 1,
                     'documents.name': 1,
-                    'assignedUserLogin.login': 1
+                    'assignedUserLogin.login': 1,
+                    contacts: 1,
+                    'contactsList._id': 1,
+                    'contactsList.img': 1,
+                    'contactsList.name': 1
                 }}
             ]);
+
+            customer[0].contactsList.map(contact => {
+                contact.value = customer[0].contacts.find(el => {
+                    if ((el.contactId).toString() === (contact._id).toString()) return el;
+                    return false;
+                }).value;
+            });
+
+            delete customer[0].contacts;
 
             return res.status(200).json(customer);
 
