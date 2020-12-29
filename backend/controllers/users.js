@@ -1,9 +1,14 @@
+const fs = require('fs');
+const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+
 const Users = require('../models/Users');
 const Customers = require('../models/Customers');
 const Companies = require('../models/Companies');
+const Contacts = require('../models/Contacts');
 const findAccess = require('../utils/findAccess');
 const errorHandler = require('../utils/errorHandler');
-const mongoose = require('mongoose');
+const {PLACEHOLDER_NO_PHOTO} = require('../config/config');
 
 module.exports.getUserByIdForRole = async (req, res) => {
 
@@ -86,6 +91,184 @@ module.exports.getUserById = async (req, res) => {
 }
 
 module.exports.updateUserById = async (req, res) => {
+
+    try {
+
+        const user = await Users.findById(req.params.id);
+
+        // Ограничение прав редактирования. Редактировать пользователя может только сам пользователь и больше никто
+        if (req.user.id != user._id) {
+
+            // Удаляем файл в случае ошибки запроса
+            if (req.file) {
+                fs.unlink(req.file.path, err => {
+                    if (err) throw err;
+                });
+            }
+
+            return res.status(403).json({errors: 'Вы не можете редактировать чужой профиль.'});
+
+        } else {
+
+            // Проверка email
+            const candidateIsEmail = await Users.findOne(
+                {$and: [
+                    {email: req.body.email},
+                    {_id: {$ne: req.params.id}}
+                ]}
+            );
+
+            // Проверка login
+            const candidateIsLogin = await Users.findOne(
+                {$and: [
+                    {login: req.body.login},
+                    {_id: {$ne: req.params.id}}
+                ]}
+            );
+
+            if (candidateIsLogin && candidateIsEmail === null) {
+
+                // Удаляем файл в случае ошибки запроса
+                if (req.file) {
+                    fs.unlink(req.file.path, err => {
+                        if (err) throw err;
+                    });
+                }
+
+                return res.status(409).json({errors: 'Пользователь с таким логином уже зарегистрирован'});
+            }
+        
+            if (candidateIsEmail && candidateIsLogin === null) {
+                
+                // Удаляем файл в случае ошибки запроса
+                if (req.file) {
+                    fs.unlink(req.file.path, err => {
+                        if (err) throw err;
+                    });
+                }
+                
+                return res.status(409).json({errors: 'Пользователь с таким email уже зарегистрирован'});
+            }
+        
+            if (candidateIsEmail && candidateIsLogin) {
+                
+                // Удаляем файл в случае ошибки запроса
+                if (req.file) {
+                    fs.unlink(req.file.path, err => {
+                        if (err) throw err;
+                    });
+                }
+                
+                return res.status(409).json({errors: [
+                        'Пользователь с таким email уже зарегистрирован',
+                        'Пользователь с таким логином уже зарегистрирован'
+                    ]});
+            }
+
+            // Проверка на заполнение обязательных полей
+            if (
+                req.body.login.trim() === '' ||
+                req.body.surname.trim() === '' ||
+                req.body.name.trim() === '' ||
+                req.body.patronym.trim() === '' ||
+                req.body.birthday.trim() === '' ||
+                req.body.address.trim() === '' ||
+                req.body.phones.length === 0 ||
+                req.body.email.trim() === ''
+            ) {
+                
+                // Удаляем файл в случае ошибки запроса
+                if (req.file) {
+                    fs.unlink(req.file.path, err => {
+                        if (err) throw err;
+                    });
+                }
+                
+                return res.status(409).json({errors: 'Заполните обязательные поля'});
+            }
+
+            // Проверка на заполнение телефонов
+            if (req.body.phones) {
+                for (let i = 0; i < req.body.phones.length; i++) { 
+                    if (req.body.phones[i].trim() === '') {
+                        
+                        // Удаляем файл в случае ошибки запроса
+                        if (req.file) {
+                            fs.unlink(req.file.path, err => {
+                                if (err) throw err;
+                            });
+                        }
+                
+                        return res.status(409).json({errors: 'Номер телефона не может быть пустым'});
+                    }
+                }
+            }
+
+            let salt;
+            let lastPassword = user.password;
+            let newPassword = null;
+
+            // Проверяем, совпадают ли введенные пароли, если введены и совпадают, тогда хешируем пароль
+            if (req.body.password.trim() && (req.body.password.trim() === req.body.passwordConfirm.trim())) {
+                salt = bcrypt.genSaltSync(10);    // Соль для хеширования пароля
+                newPassword = req.body.password;
+            } else if (req.body.password.trim() && (req.body.password.trim() !== req.body.passwordConfirm.trim())) {
+
+                // Удаляем файл в случае ошибки запроса
+                if (req.file) {
+                    fs.unlink(req.file.path, err => {
+                        if (err) throw err;
+                    });
+                }
+
+                return res.status(409).json({errors: 'Пароли не совпадают.'});
+            }
+
+            // Заполняем id мессенджера или соц. сети и значение из формы
+            let contactsUser;
+            const contacts = await Contacts.find({}, 'id');
+            contactsUser = contacts.map((id, idx) => {
+                return {
+                    contactId: id._id,
+                    value: req.body.contacts[idx]
+                }
+            });
+
+            const newUser = await Users.findByIdAndUpdate(
+                {_id: req.params.id},
+                {$set: {
+                    surname: req.body.surname,
+                    name: req.body.name,
+                    patronym: req.body.patronym,
+                    birthday: req.body.birthday,
+                    address: req.body.address,
+                    phones: req.body.phones,
+                    email: req.body.email,
+                    login: req.body.login,
+                    userImg: req.file ? req.file.path : 'uploads\\no-photo.png',
+                    contacts: contactsUser,
+                    password: newPassword ? bcrypt.hashSync(newPassword, salt) : lastPassword
+                }},
+                {new: true}
+            );
+            
+            // Удаляем старое изображение (кроме placeholder)
+            if (user.userImg !== PLACEHOLDER_NO_PHOTO) {
+                fs.unlink(user.userImg, err => {
+                    if (err) throw err;
+                });
+            }
+
+            res.status(200).json(newUser);
+        }
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}
+
+module.exports.updateUserByIdForRole = async (req, res) => {
 
     const id = req.params.id;
 

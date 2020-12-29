@@ -2,3 +2,4 @@
 /backend/config/*config.js
 /backend/uploads/documents/*
 /backend/uploads/contact-images/*
+/backend/uploads/user-photos/*
