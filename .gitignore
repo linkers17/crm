@@ -3,3 +3,5 @@
 /backend/uploads/documents/*
 /backend/uploads/contact-images/*
 /backend/uploads/user-photos/*
+
+/frontend/node_modules
