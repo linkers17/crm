@@ -5,9 +5,13 @@ import {RouterModule, Routes} from "@angular/router";
 import {RegisterComponent} from "../../auth/components/register/register.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/register', pathMatch: 'full'},
-  {path: 'register', component: RegisterComponent}
-];
+  {
+    path: '', component: AuthLayoutComponent, children: [
+      {path: '', redirectTo: '/register', pathMatch: 'full'},
+      {path: 'register', component: RegisterComponent}
+    ]
+  }
+]
 
 @NgModule({
   declarations: [AuthLayoutComponent],
