@@ -9,6 +9,12 @@ export class AuthLayoutComponent implements OnInit {
 
   constructor() { }
 
+  links = [
+    {title: 'Вход', nav: 'login'},
+    {title: 'Регистрация', nav: 'register'}
+  ];
+  activeLink = this.links[0].title;
+
   ngOnInit(): void {
   }
 

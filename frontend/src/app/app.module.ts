@@ -16,9 +16,11 @@ import {AuthLayoutModule} from "./shared/auth-layout/auth-layout.module";
 
     // Layouts Modules
     AuthLayoutModule,
-    // /Layouts Modules
+    // */ Layouts Modules
 
+    // Pages Modules
     AuthModule
+    // */ Pages Modules
   ],
   providers: [],
   bootstrap: [AppComponent]

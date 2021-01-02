@@ -1,3 +1,21 @@
-<p>auth-layout works!</p>
+<div class="container">
+  <div class="page">
+    <a [routerLink]="['/']" class="logo-link">
+      <img src="/assets/logo-svg.svg" alt="logo" class="logo-image">
+      <span class="logo-title">CRM</span>
+    </a>
 
-<router-outlet></router-outlet>
+    <div class="card-form">
+      <mat-card>
+        <nav mat-tab-nav-bar>
+          <a mat-tab-link *ngFor="let link of links"
+             (click)="activeLink = link.title;"
+             [active]="activeLink === link.title"
+             [routerLink]="['/', link.nav]"
+          >{{ link.title }}</a>
+        </nav>
+        <router-outlet></router-outlet>
+      </mat-card>
+    </div>
+  </div>
+</div>
