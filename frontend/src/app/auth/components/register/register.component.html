@@ -1,1 +1,76 @@
-<p>register works!</p>
+<form>
+
+  <div class="form-row">
+    <mat-form-field>
+      <mat-label>Login</mat-label>
+      <input type="text" name="login" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input type="email" name="email" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Пароль</mat-label>
+      <input [type]="hide ? 'password' : 'text'" name="password" matInput>
+      <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Скрыть пароль'" [attr.aria-pressed]="hide">
+        <mat-icon>{{ hide ? 'visibility_off' :  'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field>
+      <mat-label>Фамилия</mat-label>
+      <input type="text" name="surname" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Имя</mat-label>
+      <input type="text" name="name" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Отчество</mat-label>
+      <input type="text" name="patronym" matInput>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row form-row--center">
+    <mat-form-field>
+      <mat-label>Дата рождения</mat-label>
+      <input type="date" name="birthday" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <ngx-mat-file-input [accept]="accept" [placeholder]="'Фото'">
+        <mat-icon>attach_file</mat-icon>
+      </ngx-mat-file-input>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field class="mat-form-field--fill">
+    <mat-label>Адрес</mat-label>
+    <textarea matInput [matTextareaAutosize]="false" [placeholder]="'650000, г. Кемерово, ул. Советская, 17-15'"></textarea>
+  </mat-form-field>
+
+  <div class="form-row form-row--center">
+    <div>
+      <span class="phones-title">Телефоны:</span>
+      <div class="phones-row" *ngFor="let phone of phones">
+        <mat-form-field>
+          <mat-label>Телефон</mat-label>
+          <span matPrefix>+7 &nbsp;</span>
+          <input type="tel" [name]="'phones' + phone.id" matInput placeholder="900-000-0000" [(ngModel)]="phone.input">
+        </mat-form-field>
+        <button class="phones-btn--remove" type="button" mat-mini-fab color="warn" (click)="removePhone(phone.id)" *ngIf="phones.length > 1">
+          <mat-icon class="icon-color--white">{{ hide ? 'close' :  'close'}}</mat-icon>
+        </button>
+      </div>
+      <button type="button" mat-mini-fab color="primary" (click)="addPhone()" [disabled]="phones[phones.length - 1].input.trim() === ''">
+        <mat-icon class="icon-color--white">add</mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

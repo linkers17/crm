@@ -6,10 +6,21 @@
   justify-content: center;
 }
 
-.card-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card {
+  &-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-form {
+    width: 632px;
+    max-width: 632px;
+  }
+
+  &-nav {
+    margin-bottom: 15px;
+  }
 }
 
 .logo {

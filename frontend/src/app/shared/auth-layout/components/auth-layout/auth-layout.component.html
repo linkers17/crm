@@ -5,9 +5,9 @@
       <span class="logo-title">CRM</span>
     </a>
 
-    <div class="card-form">
-      <mat-card>
-        <nav mat-tab-nav-bar>
+    <div class="card-wrap">
+      <mat-card class="card-form">
+        <nav mat-tab-nav-bar class="card-nav">
           <a mat-tab-link *ngFor="let link of links"
              (click)="activeLink = link.title;"
              [active]="activeLink === link.title"

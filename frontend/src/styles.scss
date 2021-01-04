@@ -2,5 +2,62 @@
 
 @import "normalize";
 
+* {
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+
+  &--center {
+    justify-content: space-around;
+  }
+}
+
+.mat-icon {
+  color: #000;
+  font-size: 24px;
+
+  &-button {
+    font-size: initial;
+  }
+}
+
+.mat-form-field--fill {
+  width: 100%;
+}
+
+.icon-color {
+  &--white {
+    color: #fff;
+  }
+}
+
+// phones input
+
+.phones {
+  &-title {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  &-row {
+    display: flex;
+    align-items: center;
+  }
+  &-btn {
+    &--remove.mat-mini-fab {
+      margin-left: 15px;
+    }
+  }
+}
+
+// */ phones input
