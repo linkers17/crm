@@ -22,6 +22,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
+.button-submit {
+  &.mat-raised-button {
+    display: block;
+    margin: 20px auto 0;
+  }
+}
+
+.social-input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .mat-icon {
   color: #000;
   font-size: 24px;
@@ -61,3 +73,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 // */ phones input
+
+.img-input {
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+}
