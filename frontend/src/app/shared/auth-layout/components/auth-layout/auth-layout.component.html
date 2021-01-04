@@ -9,8 +9,8 @@
       <mat-card class="card-form">
         <nav mat-tab-nav-bar class="card-nav">
           <a mat-tab-link *ngFor="let link of links"
-             (click)="activeLink = link.title;"
-             [active]="activeLink === link.title"
+             (click)="activeLink = link.nav;"
+             [active]="activeLink === link.nav"
              [routerLink]="['/', link.nav]"
           >{{ link.title }}</a>
         </nav>
