@@ -1,1 +1,36 @@
-<p>login works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field class="mat-form-field--more">
+    <mat-label>Login</mat-label>
+    <input type="text" formControlName="login" matInput>
+    <mat-error *ngIf="form.get('login').hasError('required') && form.get('login').touched">
+      Поле <strong>Login</strong> обязательно для заполнения
+    </mat-error>
+    <mat-error *ngIf="form.get('login').hasError('pattern') && form.get('login').touched">
+      В поле <strong>Login</strong> допустимы латинские буквы и цифры
+    </mat-error>
+    <mat-error *ngIf="form.get('login').hasError('minlength') && form.get('login').touched">
+      <strong>Login</strong> должен содержать минимум {{ form.get('login').errors.minlength.requiredLength }} символа
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field  class="mat-form-field--more">
+    <mat-label>Пароль</mat-label>
+    <input [type]="hide ? 'password' : 'text'" formControlName="password" matInput>
+    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Скрыть пароль'" [attr.aria-pressed]="hide">
+      <mat-icon>{{ hide ? 'visibility_off' :  'visibility'}}</mat-icon>
+    </button>
+    <mat-error *ngIf="form.get('password').hasError('required') && form.get('password').touched">
+      Поле <strong>Пароль</strong> обязательно для заполнения
+    </mat-error>
+    <mat-error *ngIf="form.get('password').hasError('pattern') && form.get('password').touched">
+      Поле <strong>Пароль</strong> должно содержать цифры, прописные и строчные латинские символы
+    </mat-error>
+    <mat-error *ngIf="form.get('password').hasError('minlength') && form.get('password').touched">
+      <strong>Пароль</strong> должен содержать минимум {{ form.get('password').errors.minlength.requiredLength }} символа (ов)
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" class="button-submit" type="submit" [disabled]="form.invalid">Войти</button>
+
+</form>
