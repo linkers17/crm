@@ -4,11 +4,26 @@
     <mat-form-field>
       <mat-label>Login</mat-label>
       <input type="text" formControlName="login" matInput>
+      <mat-error *ngIf="form.get('login').hasError('required') && form.get('login').touched">
+        Поле <strong>Login</strong> обязательно для заполнения
+      </mat-error>
+      <mat-error *ngIf="form.get('login').hasError('pattern') && form.get('login').touched">
+        В поле <strong>Login</strong> допустимы латинские буквы и цифры
+      </mat-error>
+      <mat-error *ngIf="form.get('login').hasError('minlength') && form.get('login').touched">
+        <strong>Login</strong> должен содержать минимум {{ form.get('login').errors.minlength.requiredLength }} символа
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input type="email" formControlName="email" matInput>
+      <mat-error *ngIf="form.get('email').hasError('required') && form.get('email').touched">
+        Поле <strong>Email</strong> обязательно для заполнения
+      </mat-error>
+      <mat-error *ngIf="form.get('email').hasError('email') && form.get('email').touched">
+        Введите корректный Email
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -17,6 +32,15 @@
       <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Скрыть пароль'" [attr.aria-pressed]="hide">
         <mat-icon>{{ hide ? 'visibility_off' :  'visibility'}}</mat-icon>
       </button>
+      <mat-error *ngIf="form.get('password').hasError('required') && form.get('password').touched">
+        Поле <strong>Пароль</strong> обязательно для заполнения
+      </mat-error>
+      <mat-error *ngIf="form.get('password').hasError('pattern') && form.get('password').touched">
+        Поле <strong>Пароль</strong> должно содержать цифры, прописные и строчные латинские символы
+      </mat-error>
+      <mat-error *ngIf="form.get('password').hasError('minlength') && form.get('password').touched">
+        <strong>Пароль</strong> должен содержать минимум {{ form.get('password').errors.minlength.requiredLength }} символа (ов)
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -24,16 +48,25 @@
     <mat-form-field>
       <mat-label>Фамилия</mat-label>
       <input type="text" formControlName="surname" matInput>
+      <mat-error *ngIf="form.get('surname').hasError('required') && form.get('surname').touched">
+        Поле <strong>Фамилия</strong> обязательно для заполнения
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Имя</mat-label>
       <input type="text" formControlName="name" matInput>
+      <mat-error *ngIf="form.get('name').hasError('required') && form.get('name').touched">
+        Поле <strong>Имя</strong> обязательно для заполнения
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Отчество</mat-label>
       <input type="text" formControlName="patronym" matInput>
+      <mat-error *ngIf="form.get('patronym').hasError('required') && form.get('patronym').touched">
+        Поле <strong>Отчество</strong> обязательно для заполнения
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -41,6 +74,9 @@
     <mat-form-field>
       <mat-label>Дата рождения</mat-label>
       <input type="date" formControlName="birthday" matInput>
+      <mat-error *ngIf="form.get('birthday').hasError('required') && form.get('birthday').touched">
+        Поле <strong>Дата рождения</strong> обязательно для заполнения
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -53,7 +89,11 @@
   <mat-form-field class="mat-form-field--fill">
     <mat-label>Адрес</mat-label>
     <textarea matInput formControlName="address" [matTextareaAutosize]="false" [placeholder]="'650000, г. Кемерово, ул. Советская, 17-15'"></textarea>
+    <mat-error *ngIf="form.get('address').hasError('required') && form.get('address').touched">
+      Поле <strong>Адрес</strong> обязательно для заполнения
+    </mat-error>
   </mat-form-field>
+
   <div class="form-row form-row--center">
     <div>
       <span class="phones-title">Телефоны:</span>
@@ -63,6 +103,16 @@
             <mat-label>Телефон</mat-label>
             <span matPrefix>+7 &nbsp;</span>
             <input type="tel" formControlName="{{ i }}" matInput placeholder="900-000-0000">
+            <mat-error *ngIf="phone.hasError('required') && phone.touched">
+              Поле <strong>Телефон</strong> обязательно для заполнения
+            </mat-error>
+            <mat-error *ngIf="phone.hasError('maxlength')">
+              Поле <strong>Телефон</strong> обязательно для заполнения
+              <strong>Телефон</strong> должен содержать максимум {{ phone.errors.minlength.requiredLength }} символов
+            </mat-error>
+            <mat-error *ngIf="phone.hasError('pattern')">
+              Поле <strong>Телефон</strong> должно содержать только цифры
+            </mat-error>
           </mat-form-field>
           <button class="phones-btn--remove" type="button" mat-mini-fab color="warn" (click)="removePhone(i)" *ngIf="phoneGroups.controls.length > 1">
             <mat-icon class="icon-color--white">{{ hide ? 'close' :  'close'}}</mat-icon>
