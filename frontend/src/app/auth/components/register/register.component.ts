@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-register',
@@ -7,21 +8,77 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
+  form: FormGroup;
+
   accept = '.png, .jpg, .jpeg';
   hide = true;
-  phones = [{id: 1, input: ''}];
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.form = new FormGroup({
+      login: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern(/^[a-zA-z0-9]+$/m)
+      ]),
+      email: new FormControl(null, [
+        Validators.required,
+        Validators.email
+      ]),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(8)
+      ]),
+      surname: new FormControl(null, [
+        Validators.required
+      ]),
+      name: new FormControl(null, [
+        Validators.required
+      ]),
+      patronym: new FormControl(null, [
+        Validators.required
+      ]),
+      birthday: new FormControl(null, [
+        Validators.required
+      ]),
+      userImg: new FormControl(null),
+      address: new FormControl(null, [
+        Validators.required
+      ]),
+      phones: new FormArray([
+        new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^[0-9]+$/m),
+          Validators.maxLength(10)
+        ])
+      ])
+    });
+  }
+
+  // Метод для вывода массива телефонов
+  get phoneGroups(): FormArray {
+    return this.form.get('phones') as FormArray
+  }
 
   addPhone(): void {
-    this.phones = this.phones.filter(phoneInput => phoneInput.input.trim() !== '');
-    this.phones.push({id: this.phones[this.phones.length - 1].id + 1, input: ''});
+    (<FormArray>this.form.controls.phones).push(new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^[0-9]+$/m),
+      Validators.maxLength(10)
+    ]));
   }
 
   removePhone(id: number): void {
-    this.phones = this.phones.filter(phoneInput => phoneInput.id !== id);
+    (<FormArray>this.form.controls.phones).removeAt(id);
   }
 
+  onSubmit(): void {
+    console.log('form', this.form);
+    console.log('values', this.form.value);
+  }
 }
