@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
+import {ForgetComponent} from "../forget/forget.component";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,9 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   hide = true;
 
-  constructor() { }
+  constructor(
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -34,5 +38,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
 
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ForgetComponent);
   }
 }

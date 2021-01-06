@@ -10,15 +10,18 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import {RouterModule} from "@angular/router";
+import { ForgetComponent } from './components/forget/forget.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
-  declarations: [RegisterComponent, LoginComponent],
+  declarations: [RegisterComponent, LoginComponent, ForgetComponent],
   imports: [
     CommonModule,
     MatInputModule,
     NgxMatFileInputModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule

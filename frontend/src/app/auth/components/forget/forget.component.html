@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Сброс пароля</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <mat-form-field class="mat-form-field--more">
+      <mat-label>Login или email</mat-label>
+      <input type="text" formControlName="user" matInput>
+      <mat-error *ngIf="form.get('user').hasError('required') && form.get('user').touched">
+        Поле обязательно для заполнения
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button mat-dialog-close color="primary" class="button-submit" type="submit" [disabled]="form.invalid">Сбросить пароль</button>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Закрыть</button>
+</mat-dialog-actions>

@@ -31,8 +31,9 @@
     </mat-error>
   </mat-form-field>
 
-  <p>Забыли пароль? Воспользуйтесь <a [routerLink]="['/forget']">формой</a> восстановления пароля</p>
-
-  <button mat-raised-button color="accent" class="button-submit" type="submit" [disabled]="form.invalid">Войти</button>
+  <div class="buttons">
+    <button mat-raised-button color="primary" class="button-submit" type="submit" [disabled]="form.invalid">Войти</button>
+    <button mat-raised-button color="warn" class="button-submit" type="button" (click)="openDialog()">Забыли пароль?</button>
+  </div>
 
 </form>
