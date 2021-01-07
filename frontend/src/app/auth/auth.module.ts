@@ -12,6 +12,8 @@ import { LoginComponent } from './components/login/login.component';
 import {RouterModule} from "@angular/router";
 import { ForgetComponent } from './components/forget/forget.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {StoreModule} from "@ngrx/store";
+import {reducer} from "./store/reducers";
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ForgetComponent],
@@ -24,7 +26,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    StoreModule.forFeature('auth', reducer)
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
