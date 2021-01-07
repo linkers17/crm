@@ -138,5 +138,5 @@
       </mat-form-field>
     </div>
   </div>
-  <button mat-raised-button color="accent" class="button-submit" type="submit" [disabled]="form.invalid">Зарегистрироваться</button>
+  <button mat-raised-button color="accent" class="button-submit" type="submit" [disabled]="form.invalid || (isSubmitting$ | async)">Зарегистрироваться</button>
 </form>

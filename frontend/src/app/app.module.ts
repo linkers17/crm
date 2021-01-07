@@ -8,6 +8,7 @@ import {AuthLayoutModule} from "./shared/auth-layout/auth-layout.module";
 import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {environment} from "../environments/environment";
       maxAge: 25,
       logOnly: environment.production
     }),
+    HttpClientModule,
 
     // Layouts Modules
     AuthLayoutModule,

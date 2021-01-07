@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {registerAction} from "../../store/actions/register.action";
+import {Observable} from "rxjs";
+import {isSubmittingSelector} from "../../store/selectors";
 
 @Component({
   selector: 'app-register',
@@ -15,12 +17,16 @@ export class RegisterComponent implements OnInit {
   accept = '.png, .jpg, .jpeg';
   hide = true;
 
+  // Selectors
+  isSubmitting$: Observable<boolean>;
+
   constructor(
     private store: Store
   ) { }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.initializeValues();
   }
 
   initializeForm(): void {
@@ -63,6 +69,13 @@ export class RegisterComponent implements OnInit {
         ])
       ])
     });
+  }
+
+  initializeValues(): void {
+    this.isSubmitting$ = this.store
+      .pipe(
+        select(isSubmittingSelector)
+      );
   }
 
   // Метод для вывода массива телефонов

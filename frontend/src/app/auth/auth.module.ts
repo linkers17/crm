@@ -14,6 +14,7 @@ import { ForgetComponent } from './components/forget/forget.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {StoreModule} from "@ngrx/store";
 import {reducer} from "./store/reducers";
+import {AuthService} from "./services/auth.service";
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ForgetComponent],
@@ -30,7 +31,8 @@ import {reducer} from "./store/reducers";
     StoreModule.forFeature('auth', reducer)
   ],
   providers: [
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
+    AuthService
   ]
 })
 export class AuthModule { }
