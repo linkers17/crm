@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Store} from "@ngrx/store";
+import {registerAction} from "../../store/actions/register.action";
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,9 @@ export class RegisterComponent implements OnInit {
   accept = '.png, .jpg, .jpeg';
   hide = true;
 
-  constructor() { }
+  constructor(
+    private store: Store
+  ) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -81,5 +85,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     console.log('form', this.form);
     console.log('values', this.form.value);
+
+    this.store.dispatch(registerAction(this.form.value));
   }
 }
