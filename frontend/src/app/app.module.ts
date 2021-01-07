@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import {AuthModule} from "./auth/auth.module";
 import {AuthLayoutModule} from "./shared/auth-layout/auth-layout.module";
 import {StoreModule} from "@ngrx/store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -15,6 +17,10 @@ import {StoreModule} from "@ngrx/store";
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
 
     // Layouts Modules
     AuthLayoutModule,
