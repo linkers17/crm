@@ -19,6 +19,7 @@ import {EffectsModule} from "@ngrx/effects";
 import {RegisterEffect} from "./store/effects/register.effect";
 import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
 import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
+import {PersistanceService} from "../shared/services/persistance.service";
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ForgetComponent],
@@ -39,7 +40,8 @@ import {SuccessMessagesModule} from "../shared/modules/success-messages/success-
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
-    AuthService
+    AuthService,
+    PersistanceService
   ]
 })
 export class AuthModule { }
