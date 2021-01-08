@@ -5,6 +5,7 @@ import {catchError, map, switchMap} from "rxjs/operators";
 import {AuthService} from "../../services/auth.service";
 import {RegisterResponseInterface} from "../../types/registerResponse.interface";
 import {of} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable()
 export class RegisterEffect {
@@ -16,8 +17,8 @@ export class RegisterEffect {
           map((response: RegisterResponseInterface) => {
             return registerSuccessAction({response})
           }),
-          catchError(() => {
-            return of(registerFailureAction())
+          catchError((errorResponse: HttpErrorResponse) => {
+            return of(registerFailureAction({errors: errorResponse.error.errors}))
           })
         )
     })

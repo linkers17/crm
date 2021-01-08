@@ -108,7 +108,7 @@
             </mat-error>
             <mat-error *ngIf="phone.hasError('maxlength')">
               Поле <strong>Телефон</strong> обязательно для заполнения
-              <strong>Телефон</strong> должен содержать максимум {{ phone.errors.minlength.requiredLength }} символов
+              <strong>Телефон</strong> должен содержать максимум {{ phone.errors['maxlength']['requiredLength'] }} символов
             </mat-error>
             <mat-error *ngIf="phone.hasError('pattern')">
               Поле <strong>Телефон</strong> должно содержать только цифры

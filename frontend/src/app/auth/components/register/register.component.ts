@@ -4,6 +4,7 @@ import {select, Store} from "@ngrx/store";
 import {registerAction} from "../../store/actions/register.action";
 import {Observable} from "rxjs";
 import {isSubmittingSelector} from "../../store/selectors";
+import {RegisterRequestInterface} from "../../types/registerRequest.interface";
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,7 @@ export class RegisterComponent implements OnInit {
     this.form = new FormGroup({
       login: new FormControl(null, [
         Validators.required,
-        Validators.minLength(3),
+        Validators.minLength(4),
         Validators.pattern(/^[a-zA-z0-9]+$/m)
       ]),
       email: new FormControl(null, [
@@ -96,9 +97,11 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('form', this.form);
     console.log('values', this.form.value);
+    const request: RegisterRequestInterface = {
+      ...this.form.value
+    }
 
-    this.store.dispatch(registerAction(this.form.value));
+    this.store.dispatch(registerAction({request}));
   }
 }
