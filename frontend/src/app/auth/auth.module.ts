@@ -17,6 +17,7 @@ import {reducer} from "./store/reducers";
 import {AuthService} from "./services/auth.service";
 import {EffectsModule} from "@ngrx/effects";
 import {RegisterEffect} from "./store/effects/register.effect";
+import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ForgetComponent],
@@ -31,7 +32,8 @@ import {RegisterEffect} from "./store/effects/register.effect";
     ReactiveFormsModule,
     RouterModule,
     StoreModule.forFeature('auth', reducer),
-    EffectsModule.forFeature([RegisterEffect])
+    EffectsModule.forFeature([RegisterEffect]),
+    BackendErrorMessagesModule
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},

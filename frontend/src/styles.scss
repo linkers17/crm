@@ -53,6 +53,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
+.mat-snack-bar-container {
+  &.backend-errors {
+    width: 530px;
+  }
+}
+
 // phones input
 
 .phones {
