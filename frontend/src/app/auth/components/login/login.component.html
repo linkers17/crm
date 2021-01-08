@@ -1,3 +1,4 @@
+<app-success-messages [successMessages]="successMessages$ | async" *ngIf="successMessages$ | async"></app-success-messages>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
   <mat-form-field class="mat-form-field--more">

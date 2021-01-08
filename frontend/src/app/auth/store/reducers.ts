@@ -6,7 +6,8 @@ const initialState: AuthStateInterface = {
   isSubmitting: false,
   currentUser: null,
   isLoggedIn: null,
-  validationErrors: null
+  validationErrors: null,
+  registerSuccess: null
 }
 
 const authReducer = createReducer(
@@ -14,17 +15,20 @@ const authReducer = createReducer(
   on(registerAction, (state): AuthStateInterface => ({
     ...state,
     isSubmitting: true,
-    validationErrors: null
+    validationErrors: null,
+    registerSuccess: null
   })),
   on(registerSuccessAction, (state): AuthStateInterface => ({
     ...state,
     isSubmitting: false,
-    validationErrors: null
+    validationErrors: null,
+    registerSuccess: 'Аккаунт успешно зарегистрирован. Можно войти в систему'
   })),
   on(registerFailureAction, (state, action): AuthStateInterface => ({
     ...state,
     isSubmitting: false,
-    validationErrors: action.errors
+    validationErrors: action.errors,
+    registerSuccess: null
   }))
 );
 

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {ForgetComponent} from "../forget/forget.component";
+import {Observable} from "rxjs";
+import {select, Store} from "@ngrx/store";
+import {successMessageSelector} from "../../store/selectors";
 
 @Component({
   selector: 'app-login',
@@ -13,12 +16,17 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   hide = true;
 
+  // Selectors
+  successMessages$: Observable<string | null>;
+
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private store: Store
   ) { }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.initializeValues();
   }
 
   initializeForm(): void {
@@ -34,6 +42,13 @@ export class LoginComponent implements OnInit {
         Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]+$/m)
       ])
     });
+  }
+
+  initializeValues(): void {
+    this.successMessages$ = this.store
+      .pipe(
+        select(successMessageSelector)
+      );
   }
 
   onSubmit(): void {

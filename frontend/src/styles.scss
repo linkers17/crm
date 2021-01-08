@@ -53,11 +53,26 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
+// snackbar styles
+
 .mat-snack-bar-container {
   &.backend-errors {
     width: 530px;
   }
 }
+
+.mat-snack-bar-container {
+  &.success-messages {
+    background: #49e89b;
+    color: #115f17;
+
+    .mat-simple-snackbar-action {
+      color: #1d1618;
+    }
+  }
+}
+
+// /* snackbar styles
 
 // phones input
 
