@@ -10,6 +10,34 @@ const errorHandler = require('../utils/errorHandler');
 const resetEmail = require('../emails/resetEmail');
 const {tlt, jwtSecret, EMAIL_FROM, EMAIL_PASS, TOKEN_EXP} = require('../config/config');
 
+// Проверка пользователя по токену
+module.exports.checkUser = async (req, res) => {
+
+    try {
+
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(401).json({errors: 'Что-то пошло не так.'});
+        }
+
+        const token = res.header().req.headers.authorization;
+
+        return res.status(200).json({
+            currentUser: {
+                login: user.login,
+                role: user.role,
+                userImg: user.userImg,
+                token: `Bearer ${token}`
+            }
+        });
+
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+
+}
+
 module.exports.login = async (req, res) => {
 
     const candidate = await User.findOne({login: req.body.login});
