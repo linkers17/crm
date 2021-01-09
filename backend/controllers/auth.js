@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer  =require('nodemailer');
 const crypto = require('crypto');
+const fs = require('fs');
 
 const User = require('../models/Users');
 const Contacts = require('../models/Contacts');
@@ -55,14 +56,38 @@ module.exports.register = async (req, res) => {
     const candidateIsEmail = await User.findOne({email: req.body.email});
 
     if (candidateIsLogin && candidateIsEmail === null) {
+
+        // Удаляем файл в случае ошибки запроса
+        if (req.file) {
+            fs.unlink(req.file.path, err => {
+                if (err) throw err;
+            });
+        }
+
         return res.status(409).json({errors: ['Пользователь с таким логином уже зарегистрирован']});
     }
 
     if (candidateIsEmail && candidateIsLogin === null) {
+
+        // Удаляем файл в случае ошибки запроса
+        if (req.file) {
+            fs.unlink(req.file.path, err => {
+                if (err) throw err;
+            });
+        }
+
         return res.status(409).json({errors: ['Пользователь с таким email уже зарегистрирован']});
     }
 
     if (candidateIsEmail && candidateIsLogin) {
+
+        // Удаляем файл в случае ошибки запроса
+        if (req.file) {
+            fs.unlink(req.file.path, err => {
+                if (err) throw err;
+            });
+        }
+
         return res.status(409).json({errors: [
                 'Пользователь с таким email уже зарегистрирован',
                 'Пользователь с таким логином уже зарегистрирован'
@@ -76,6 +101,14 @@ module.exports.register = async (req, res) => {
     if (req.body.phones) {
         for (let i = 0; i < req.body.phones.length; i++) { 
             if (req.body.phones[i].trim() === '') {
+
+                // Удаляем файл в случае ошибки запроса
+                if (req.file) {
+                    fs.unlink(req.file.path, err => {
+                        if (err) throw err;
+                    });
+                }
+
                 return res.status(409).json({errors: 'Номер телефона не может быть пустым'});
             }
         }

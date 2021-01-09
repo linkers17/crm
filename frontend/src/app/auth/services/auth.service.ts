@@ -17,6 +17,19 @@ export class AuthService {
   register(data: RegisterRequestInterface): Observable<RegisterResponseInterface> {
     const url = `${environment.API_URL}/auth/register`;
 
-    return this.http.post<RegisterResponseInterface>(url, data);
+    const formData: any = new FormData();
+    Object.keys(data).map(field => {
+      if (field !== 'userImg' && field !== 'phones' && field !== 'contacts') {
+        formData.append(field, data[field]);
+      }
+    });
+    data.phones.map(phone => {
+      formData.append('phones', phone);
+    });
+    data.userImg ?
+      formData.append('userImg', data.userImg, data.userImg.name) :
+      formData.append('userImg', null);
+
+    return this.http.post<RegisterResponseInterface>(url, formData);
   }
 }
