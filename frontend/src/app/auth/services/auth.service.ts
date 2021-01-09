@@ -4,6 +4,10 @@ import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {RegisterResponseInterface} from "../types/registerResponse.interface";
+import {LoginRequestInterface} from "../types/loginRequest.interface";
+import {LoginResponseInterface} from "../types/loginResponse.interface";
+import {CurrentUserInterface} from "../../shared/types/currentUser.interface";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +35,14 @@ export class AuthService {
       formData.append('userImg', null);
 
     return this.http.post<RegisterResponseInterface>(url, formData);
+  }
+
+  login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
+    const url = `${environment.API_URL}/auth/login`;
+
+    return this.http.post<LoginResponseInterface>(url, data)
+      .pipe(
+        map((response: LoginResponseInterface) => response.currentUser)
+      );
   }
 }

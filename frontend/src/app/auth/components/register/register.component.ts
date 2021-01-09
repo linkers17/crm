@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
 
   // Selectors
   isSubmitting$: Observable<boolean>;
-  backendErrors$: Observable<BackendErrorsInterface | null>
+  backendErrors$: Observable<BackendErrorsInterface | null>;
 
   constructor(
     private store: Store
@@ -103,7 +103,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('values', this.form.value);
     const request: RegisterRequestInterface = {
       ...this.form.value
     }
