@@ -8,8 +8,10 @@ import {AuthLayoutModule} from "./shared/auth-layout/auth-layout.module";
 import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {EffectsModule} from "@ngrx/effects";
+import {PersistanceService} from "./shared/services/persistance.service";
+import {TokenInterceptor} from "./shared/services/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,14 @@ import {EffectsModule} from "@ngrx/effects";
     AuthModule
     // */ Pages Modules
   ],
-  providers: [],
+  providers: [
+    PersistanceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
