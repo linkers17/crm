@@ -21,6 +21,7 @@ import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messag
 import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
 import {PersistanceService} from "../shared/services/persistance.service";
 import {LoginEffect} from "./store/effects/login.effect";
+import {GetCurrentUserEffect} from "./store/effects/getCurrentUser.effect";
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ForgetComponent],
@@ -35,7 +36,7 @@ import {LoginEffect} from "./store/effects/login.effect";
     ReactiveFormsModule,
     RouterModule,
     StoreModule.forFeature('auth', reducer),
-    EffectsModule.forFeature([RegisterEffect, LoginEffect]),
+    EffectsModule.forFeature([RegisterEffect, LoginEffect, GetCurrentUserEffect]),
     BackendErrorMessagesModule,
     SuccessMessagesModule
   ],
