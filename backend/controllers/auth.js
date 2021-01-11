@@ -28,7 +28,7 @@ module.exports.checkUser = async (req, res) => {
                 login: user.login,
                 role: user.role,
                 userImg: user.userImg,
-                token: `Bearer ${token}`
+                token: `${token}`
             }
         });
 

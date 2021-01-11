@@ -12,6 +12,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {EffectsModule} from "@ngrx/effects";
 import {PersistanceService} from "./shared/services/persistance.service";
 import {TokenInterceptor} from "./shared/services/token.interceptor";
+import {SiteLayoutModule} from "./shared/site-layout/site-layout.module";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {TokenInterceptor} from "./shared/services/token.interceptor";
 
     // Layouts Modules
     AuthLayoutModule,
+    SiteLayoutModule,
     // */ Layouts Modules
 
     // Pages Modules

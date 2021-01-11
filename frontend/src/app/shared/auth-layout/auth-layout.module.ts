@@ -7,10 +7,11 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {LoginComponent} from "../../auth/components/login/login.component";
 import {MatCardModule} from "@angular/material/card";
+import {GuestGuard} from "../guards/guest.guard";
 
 const routes: Routes = [
   {
-    path: '', component: AuthLayoutComponent, children: [
+    path: '', component: AuthLayoutComponent, canActivate: [GuestGuard], children: [
       {path: '', redirectTo: '/login', pathMatch: 'full'},
       {path: 'login', component: LoginComponent},
       {path: 'register', component: RegisterComponent}
