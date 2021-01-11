@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {select, Store} from "@ngrx/store";
+import {Observable} from "rxjs";
+import {CurrentUserInterface} from "../../../types/currentUser.interface";
+import {currentUserSelector} from "../../../../auth/store/selectors";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-site-layout',
@@ -7,9 +12,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiteLayoutComponent implements OnInit {
 
-  constructor() { }
+  apiUploads = `${environment.API_UPLOADS}/`;
+
+  //selectors
+  currentUser$: Observable<CurrentUserInterface | null>;
+
+  constructor(
+    private store: Store
+  ) { }
 
   ngOnInit(): void {
+    this.currentUser$ = this.store.pipe(select(currentUserSelector));
   }
 
 }

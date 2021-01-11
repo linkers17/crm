@@ -25,6 +25,9 @@ module.exports.checkUser = async (req, res) => {
 
         return res.status(200).json({
             currentUser: {
+                id: user._id,
+                name: user.name,
+                surname: user.surname,
                 login: user.login,
                 role: user.role,
                 userImg: user.userImg,
@@ -59,6 +62,9 @@ module.exports.login = async (req, res) => {
 
                 return res.status(200).json({
                     currentUser: {
+                        id: candidate._id,
+                        name: candidate.name,
+                        surname: candidate.surname,
                         login: candidate.login,
                         role: candidate.role,
                         userImg: candidate.userImg,

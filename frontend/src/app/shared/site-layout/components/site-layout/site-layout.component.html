@@ -1,1 +1,118 @@
-<p>site-layout works!</p>
+<div class="wrapper">
+  <aside class="sidebar">
+    <div class="logo sidebar-logo">
+      <a [routerLink]="['/', 'dashboard']" class="logo-link">
+        <img src="/assets/logo-svg.svg" alt="logo" class="logo-image">
+      </a>
+    </div>
+    <nav class="sidebar-nav nav">
+      <ul class="nav-list">
+        <li class="nav-item" [routerLinkActive]="'active'">
+          <a [routerLink]="['/dashboard']" class="nav-link">
+            <mat-icon >view_quilt</mat-icon>
+            <p>Обзор</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>shopping_cart</mat-icon>
+            <p>Заказы</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>group</mat-icon>
+            <p>Клиенты</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>business</mat-icon>
+            <p>Компании</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>home_repair_service</mat-icon>
+           <p>Услуги</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>content_paste</mat-icon>
+           <p>Задачи</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>text_snippet</mat-icon>
+            <p>Документы</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>insert_drive_file</mat-icon>
+           <p>Отчёты</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>bar_chart</mat-icon>
+            <p>Аналитика</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>contacts</mat-icon>
+            <p>Контакты</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>person</mat-icon>
+            <p>Пользователи</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard', '']" class="nav-link">
+            <mat-icon>history</mat-icon>
+            <p>История</p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="main-panel">
+    <mat-toolbar class="main-panel-toolbar" color="primary">
+      <h1 class="page-title main-panel-toolbar-title">Обзор</h1>
+      <div class="main-panel-toolbar-right">
+        <img
+          [src]="apiUploads + (currentUser$ | async).userImg"
+          alt="{{ (currentUser$ | async).login }}"
+          class="main-panel-toolbar-avatar"
+        >
+        <span class="main-panel-toolbar-person">{{ (currentUser$ | async).name }} {{ (currentUser$ | async).surname }}</span>
+        <div class="main-panel-toolbar-user">
+          <button mat-icon-button [mat-menu-trigger-for]="menu">
+            <mat-icon class="icon-color--white">person</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item>
+              <mat-icon>person</mat-icon>
+              <span>Профиль</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>settings</mat-icon>
+              <span>Настройки</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item>
+              <mat-icon>logout</mat-icon>
+              <span>Выйти</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </mat-toolbar>
+  </main>
+</div>
