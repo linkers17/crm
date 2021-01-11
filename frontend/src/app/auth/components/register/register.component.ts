@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {select, Store} from "@ngrx/store";
 import {registerAction} from "../../store/actions/register.action";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {isSubmittingSelector, validationErrorsSelector} from "../../store/selectors";
 import {RegisterRequestInterface} from "../../types/registerRequest.interface";
 import {BackendErrorsInterface} from "../../../shared/types/backendErrors.interface";
+import {ContactsInterface} from "../../../shared/modules/contacts/types/contacts.interface";
+import {contactsSelector} from "../../../shared/modules/contacts/store/selectors";
+import {getContactsAction} from "../../../shared/modules/contacts/store/actions/getContacts.action";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+  contactsSubscription: Subscription;
 
   accept = '.png, .jpg, .jpeg';
   hide = true;
@@ -22,14 +27,20 @@ export class RegisterComponent implements OnInit {
   // Selectors
   isSubmitting$: Observable<boolean>;
   backendErrors$: Observable<BackendErrorsInterface | null>;
+  contacts$: Observable<ContactsInterface[] | null>;
 
   constructor(
     private store: Store
   ) { }
 
   ngOnInit(): void {
+    this.fetchContacts();
     this.initializeForm();
     this.initializeValues();
+  }
+
+  ngOnDestroy(): void {
+    this.contactsSubscription.unsubscribe();
   }
 
   initializeForm(): void {
@@ -75,19 +86,31 @@ export class RegisterComponent implements OnInit {
   }
 
   initializeValues(): void {
-    this.isSubmitting$ = this.store
-      .pipe(
-        select(isSubmittingSelector)
-      );
-    this.backendErrors$ = this.store
-      .pipe(
-        select(validationErrorsSelector)
-      );
+    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector));
+    this.backendErrors$ = this.store.pipe(select(validationErrorsSelector));
+    this.contacts$ = this.store.pipe(
+      select(contactsSelector),
+      filter(contacts => contacts !== null)
+    );
+    this.contactsSubscription = this.contacts$
+      .subscribe((contacts) => {
+        this.form.addControl('contacts', new FormArray(
+          contacts.map(contact => new FormControl(''))
+        ))
+      });
   }
 
-  // Метод для вывода массива телефонов
+  fetchContacts(): void {
+    this.store.dispatch(getContactsAction());
+  }
+
+  // Методы для вывода массива телефонов и контактов
   get phoneGroups(): FormArray {
     return this.form.get('phones') as FormArray
+  }
+
+  get contactGroups(): FormArray {
+    return this.form.get('contacts') as FormArray
   }
 
   addPhone(): void {

@@ -10,5 +10,6 @@ export interface RegisterRequestInterface {
   patronym: string,
   phones: string[],
   surname: string,
-  userImg: null | FileInterface
+  userImg: null | FileInterface,
+  contacts: string[]
 }

@@ -125,18 +125,15 @@
       </button>
     </div>
 
-    <div class="social-input-wrapper">
+    <div class="social-input-wrapper" *ngIf="contacts$ | async">
       <span class="phones-title">Соц. сети и мессенджеры:</span>
-      <mat-form-field>
-        <img src="http://localhost:7777/uploads/social-media-placeholder.png" alt="Whatsapp" matPrefix class="img-input">
-        <mat-label>Whatsapp</mat-label>
-        <input type="text" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <img src="http://localhost:7777/uploads/social-media-placeholder.png" alt="Telegram" matPrefix class="img-input">
-        <mat-label>Telegram</mat-label>
-        <input type="text" matInput>
-      </mat-form-field>
+      <div class="contacts-wrapper" formArrayName="contacts">
+        <mat-form-field *ngFor="let contact of contactGroups.controls; let i = index">
+          <img [src]="'http://localhost:7777/' + (contacts$ | async)[i].img" [alt]="(contacts$ | async)[i].name" matPrefix class="img-input">
+          <mat-label>{{ (contacts$ | async)[i].name }}</mat-label>
+          <input type="text" formControlName="{{ i }}" matInput>
+        </mat-form-field>
+      </div>
     </div>
   </div>
   <button mat-raised-button color="accent" class="button-submit" type="submit" [disabled]="form.invalid || (isSubmitting$ | async)">Зарегистрироваться</button>

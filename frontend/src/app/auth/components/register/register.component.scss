@@ -3,3 +3,8 @@ button {
   background-color: transparent;
   cursor: pointer;
 }
+
+.contacts-wrapper {
+  display: flex;
+  flex-direction: column;
+}

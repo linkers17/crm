@@ -28,7 +28,10 @@ export class AuthService {
       }
     });
     data.phones.map(phone => {
-      formData.append('phones', phone);
+      formData.append('phones', `+7${phone}`);
+    });
+    data.contacts.map(contact => {
+      formData.append('contacts', contact);
     });
     data.userImg ?
       formData.append('userImg', data.userImg, data.userImg.name) :

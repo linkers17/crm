@@ -22,6 +22,7 @@ import {SuccessMessagesModule} from "../shared/modules/success-messages/success-
 import {PersistanceService} from "../shared/services/persistance.service";
 import {LoginEffect} from "./store/effects/login.effect";
 import {GetCurrentUserEffect} from "./store/effects/getCurrentUser.effect";
+import {ContactsModule} from "../shared/modules/contacts/contacts.module";
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ForgetComponent],
@@ -38,7 +39,8 @@ import {GetCurrentUserEffect} from "./store/effects/getCurrentUser.effect";
     StoreModule.forFeature('auth', reducer),
     EffectsModule.forFeature([RegisterEffect, LoginEffect, GetCurrentUserEffect]),
     BackendErrorMessagesModule,
-    SuccessMessagesModule
+    SuccessMessagesModule,
+    ContactsModule
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
