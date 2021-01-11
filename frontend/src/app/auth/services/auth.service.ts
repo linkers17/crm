@@ -22,11 +22,16 @@ export class AuthService {
     const url = `${environment.API_URL}/auth/register`;
 
     const formData: any = new FormData();
-    Object.keys(data).map(field => {
-      if (field !== 'userImg' && field !== 'phones' && field !== 'contacts') {
-        formData.append(field, data[field]);
-      }
-    });
+
+    formData.append('login', data.login);
+    formData.append('password', data.password);
+    formData.append('email', data.email);
+    formData.append('surname', data.surname);
+    formData.append('name', data.name);
+    formData.append('patronym', data.patronym);
+    formData.append('birthday', data.birthday);
+    formData.append('address', data.address);
+
     data.phones.map(phone => {
       formData.append('phones', `+7${phone}`);
     });
