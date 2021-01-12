@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {CurrentUserInterface} from "../../../types/currentUser.interface";
 import {currentUserSelector} from "../../../../auth/store/selectors";
 import {environment} from "../../../../../environments/environment";
+import {logoutAction} from "../../../../auth/store/actions/sync.action";
 
 @Component({
   selector: 'app-site-layout',
@@ -25,4 +26,7 @@ export class SiteLayoutComponent implements OnInit {
     this.currentUser$ = this.store.pipe(select(currentUserSelector));
   }
 
+  logout(): void {
+    this.store.dispatch(logoutAction());
+  }
 }

@@ -14,4 +14,6 @@ export enum ActionTypes {
   FORGET = '[Auth] Forget',
   FORGET_SUCCESS = '[Auth] Forget success',
   FORGET_FAILURE = '[Auth] Forget failure',
+
+  LOGOUT = '[Auth] Logout'
 }
