@@ -55,19 +55,19 @@
            <p>Отчёты</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="(currentUser$ | async).role === 'director'">
           <a [routerLink]="['/dashboard', '']" class="nav-link">
             <mat-icon>bar_chart</mat-icon>
             <p>Аналитика</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="(currentUser$ | async).role !== 'manager'">
           <a [routerLink]="['/dashboard', '']" class="nav-link">
             <mat-icon>contacts</mat-icon>
             <p>Контакты</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="(currentUser$ | async).role !== 'manager'">
           <a [routerLink]="['/dashboard', '']" class="nav-link">
             <mat-icon>person</mat-icon>
             <p>Пользователи</p>
@@ -92,6 +92,37 @@
           class="main-panel-toolbar-avatar"
         >
         <span class="main-panel-toolbar-person">{{ (currentUser$ | async).name }} {{ (currentUser$ | async).surname }}</span>
+        <div class="main-panel-toolbar-create">
+          <button mat-icon-button [mat-menu-trigger-for]="create">
+            <mat-icon class="icon-color--white">add</mat-icon>
+          </button>
+          <mat-menu #create="matMenu" xPosition="before">
+            <button mat-menu-item>
+              <span>Заказ</span>
+            </button>
+            <button mat-menu-item>
+              <span>Клиент</span>
+            </button>
+            <button mat-menu-item>
+              <span>Компания</span>
+            </button>
+            <button mat-menu-item>
+              <span>Услуга</span>
+            </button>
+            <button mat-menu-item>
+              <span>Задача</span>
+            </button>
+            <button mat-menu-item>
+              <span>Документ</span>
+            </button>
+            <button mat-menu-item>
+              <span>Отчёт</span>
+            </button>
+            <button mat-menu-item *ngIf="(currentUser$ | async).role !== 'manager'">
+              <span>Контакт</span>
+            </button>
+          </mat-menu>
+        </div>
         <div class="main-panel-toolbar-user">
           <button mat-icon-button [mat-menu-trigger-for]="menu">
             <mat-icon class="icon-color--white">person</mat-icon>
