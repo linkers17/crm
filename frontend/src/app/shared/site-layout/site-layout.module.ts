@@ -8,12 +8,19 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDividerModule} from "@angular/material/divider";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {ContactsListComponent} from "../modules/contacts/components/contacts-list/contacts-list.component";
+import {ContactComponent} from "../modules/contacts/components/contact/contact.component";
+import {NotManagerGuard} from "../guards/not-manager.guard";
 
 const routes: Routes = [
   {
-    path: 'dashboard', component: SiteLayoutComponent, canActivate: [AuthGuard]
+    path: 'dashboard', component: SiteLayoutComponent, canActivate: [AuthGuard], children: [
+      {path: 'contacts', component: ContactsListComponent, canActivate: [NotManagerGuard]},
+      {path: 'contact/:id', component: ContactComponent, canActivate: [NotManagerGuard]}
+    ]
   }
-]
+];
 
 @NgModule({
   declarations: [SiteLayoutComponent],
@@ -24,7 +31,8 @@ const routes: Routes = [
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule
   ]
 })
 export class SiteLayoutModule { }

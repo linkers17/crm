@@ -7,7 +7,10 @@
     </div>
     <nav class="sidebar-nav nav">
       <ul class="nav-list">
-        <li class="nav-item" [routerLinkActive]="'active'">
+        <li class="nav-item"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{exact: true}"
+        >
           <a [routerLink]="['/dashboard']" class="nav-link">
             <mat-icon >view_quilt</mat-icon>
             <p>Обзор</p>
@@ -61,8 +64,12 @@
             <p>Аналитика</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="(currentUser$ | async).role !== 'manager'">
-          <a [routerLink]="['/dashboard', '']" class="nav-link">
+        <li
+          class="nav-item"
+          *ngIf="(currentUser$ | async).role !== 'manager'"
+          [routerLinkActive]="'active'"
+        >
+          <a [routerLink]="['/dashboard', 'contacts']" class="nav-link">
             <mat-icon>contacts</mat-icon>
             <p>Контакты</p>
           </a>
@@ -93,7 +100,11 @@
         >
         <span class="main-panel-toolbar-person">{{ (currentUser$ | async).name }} {{ (currentUser$ | async).surname }}</span>
         <div class="main-panel-toolbar-create">
-          <button mat-icon-button [mat-menu-trigger-for]="create">
+          <button mat-icon-button
+                  [mat-menu-trigger-for]="create"
+                  matTooltip="Создать"
+                  matTooltipPosition="below"
+          >
             <mat-icon class="icon-color--white">add</mat-icon>
           </button>
           <mat-menu #create="matMenu" xPosition="before">
@@ -145,5 +156,6 @@
         </div>
       </div>
     </mat-toolbar>
+    <router-outlet></router-outlet>
   </main>
 </div>
