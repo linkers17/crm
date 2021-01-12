@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {ContactsInterface} from "../types/contacts.interface";
 import {environment} from "../../../../../environments/environment";
 import {ContactRequestInterface} from "../types/contactRequest.interface";
+import {BackendMessagesInterface} from "../../../types/backendMessages.interface";
 
 @Injectable()
 export class ContactsService {
@@ -49,9 +50,9 @@ export class ContactsService {
     return this.http.patch<ContactsInterface>(url, formData);
   }
 
-  removeContact(id: string): Observable<string> {
+  removeContact(id: string): Observable<BackendMessagesInterface> {
     const url = `${environment.API_URL}/contacts/${id}`;
 
-    return this.http.delete<string>(url);
+    return this.http.delete<BackendMessagesInterface>(url);
   }
 }

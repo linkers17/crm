@@ -19,3 +19,8 @@ export const errorContactsSelector = createSelector(
   contactsFeatureSelector,
   (contactsState: ContactsStateInterface) => contactsState.error
 );
+
+export const successContactsSelector = createSelector(
+  contactsFeatureSelector,
+  (contactsState: ContactsStateInterface) => contactsState.success
+);

@@ -1,11 +1,17 @@
 import {ContactsStateInterface} from "../types/contactsState.interface";
 import {Action, createReducer, on} from "@ngrx/store";
 import {getContactsAction, getContactsFailureAction, getContactsSuccessAction} from "./actions/getContacts.action";
+import {
+  removeContactAction,
+  removeContactFailureAction,
+  removeContactSuccessAction
+} from "./actions/removeContact.action";
 
 const initialState: ContactsStateInterface = {
   data: null,
   error: null,
-  isLoading: false
+  isLoading: false,
+  success: null
 };
 
 const contactsReducer = createReducer(
@@ -14,7 +20,9 @@ const contactsReducer = createReducer(
     getContactsAction,
     (state): ContactsStateInterface => ({
       ...state,
-      isLoading: true
+      isLoading: true,
+      error: null,
+      success: null
     })
   ),
   on(
@@ -30,6 +38,32 @@ const contactsReducer = createReducer(
     (state): ContactsStateInterface => ({
       ...state,
       isLoading: false
+    })
+  ),
+  on(
+    removeContactAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      isLoading: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    removeContactSuccessAction,
+    (state, action): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      success: action.message,
+      data: state.data.filter(contact => contact._id !== action.id)
+    })
+  ),
+  on(
+    removeContactFailureAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      error: 'Что-то пошло не так. Повторите попытку позже'
     })
   ),
 );
