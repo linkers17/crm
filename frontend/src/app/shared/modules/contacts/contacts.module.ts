@@ -13,6 +13,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {RouterModule} from "@angular/router";
 import {RemoveContactEffect} from "./store/effects/removeContact.effect";
 import {SuccessMessagesModule} from "../success-messages/success-messages.module";
+import {BackendErrorMessagesModule} from "../backend-error-messages/backend-error-messages.module";
 
 @NgModule({
   declarations: [ContactsListComponent, ContactComponent],
@@ -27,7 +28,8 @@ import {SuccessMessagesModule} from "../success-messages/success-messages.module
     MatButtonModule,
     MatIconModule,
     RouterModule,
-    SuccessMessagesModule
+    SuccessMessagesModule,
+    BackendErrorMessagesModule
   ],
   providers: [
     ContactsService

@@ -3,7 +3,7 @@ import {select, Store} from "@ngrx/store";
 import {getContactsAction} from "../../store/actions/getContacts.action";
 import {Observable} from "rxjs";
 import {ContactsInterface} from "../../types/contacts.interface";
-import {contactsSelector, successContactsSelector} from "../../store/selectors";
+import {contactsSelector, errorContactsSelector, successContactsSelector} from "../../store/selectors";
 import {environment} from "../../../../../../environments/environment";
 import {removeContactAction} from "../../store/actions/removeContact.action";
 import {filter, map} from "rxjs/operators";
@@ -23,6 +23,7 @@ export class ContactsListComponent implements OnInit {
   // selectors
   contacts$: Observable<ContactsInterface[] | null>;
   successMessages$: Observable<string | null>;
+  errorMessages$: Observable<string | null>;
 
   constructor(
     private store: Store
@@ -40,6 +41,7 @@ export class ContactsListComponent implements OnInit {
       filter(message => message !== null),
       map(message => message.message)
     );
+    this.errorMessages$ = this.store.pipe(select(errorContactsSelector));
   }
 
   onRemove(id: string): void {

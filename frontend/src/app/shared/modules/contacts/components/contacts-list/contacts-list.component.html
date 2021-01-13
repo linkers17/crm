@@ -1,4 +1,5 @@
 <app-success-messages *ngIf="successMessages$ | async" [successMessages]="(successMessages$ | async)"></app-success-messages>
+<app-backend-error-messages *ngIf="errorMessages$ | async" [backendErrors]="errorMessages$ | async"></app-backend-error-messages>
 <table
   mat-table
   [dataSource]="contacts$ | async"

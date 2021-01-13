@@ -9,7 +9,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class BackendErrorMessagesComponent implements OnInit {
 
-  @Input('backendErrors') backendErrorsProps: BackendErrorsInterface;
+  @Input('backendErrors') backendErrorsProps: BackendErrorsInterface | string;
 
   constructor(
     private _snackBar: MatSnackBar
