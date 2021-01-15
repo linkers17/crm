@@ -14,6 +14,10 @@ import {RouterModule} from "@angular/router";
 import {RemoveContactEffect} from "./store/effects/removeContact.effect";
 import {SuccessMessagesModule} from "../success-messages/success-messages.module";
 import {BackendErrorMessagesModule} from "../backend-error-messages/backend-error-messages.module";
+import {MatCardModule} from "@angular/material/card";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [ContactsListComponent, ContactComponent],
@@ -29,7 +33,11 @@ import {BackendErrorMessagesModule} from "../backend-error-messages/backend-erro
     MatIconModule,
     RouterModule,
     SuccessMessagesModule,
-    BackendErrorMessagesModule
+    BackendErrorMessagesModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     ContactsService

@@ -100,3 +100,45 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 20px;
   margin-right: 15px;
 }
+
+// card-site
+.card-site {
+  width: 50%;
+  margin: 100px auto 0; // TODO - перенести потом
+
+  &-header {
+    border-radius: 3px;
+    margin-top: -30px !important;
+    padding: 15px;
+    position: relative;
+    z-index: 3;
+    color: #333;
+    background: linear-gradient(60deg, #ffd740, #d6bb4f);
+
+    &--green {
+      color: #fff;
+      background: linear-gradient(60deg, #66bb6a, #43a047);
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+    }
+
+    h2 {
+      margin: 0;
+      font-weight: 300;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    span {
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: 300;
+      font-size: 14px;
+    }
+  }
+
+  &-body {
+    padding: 20px;
+  }
+}
+// */ card-site
