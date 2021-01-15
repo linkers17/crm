@@ -15,9 +15,20 @@ import {NotManagerGuard} from "../guards/not-manager.guard";
 
 const routes: Routes = [
   {
-    path: 'dashboard', component: SiteLayoutComponent, canActivate: [AuthGuard], children: [
-      {path: 'contacts', component: ContactsListComponent, canActivate: [NotManagerGuard]},
-      {path: 'contact/:id', component: ContactComponent, canActivate: [NotManagerGuard]}
+    path: 'dashboard', component: SiteLayoutComponent, canActivate: [AuthGuard], data: {title: 'Обзор'}, children: [
+      {
+        path: 'contacts',
+        component: ContactsListComponent,
+        canActivate: [NotManagerGuard],
+        data: {
+          title: 'Контакты'
+        }
+      },
+      {
+        path: 'contact/:id',
+        component: ContactComponent,
+        canActivate: [NotManagerGuard]
+      }
     ]
   }
 ];

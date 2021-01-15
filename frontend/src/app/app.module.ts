@@ -13,6 +13,8 @@ import {EffectsModule} from "@ngrx/effects";
 import {PersistanceService} from "./shared/services/persistance.service";
 import {TokenInterceptor} from "./shared/services/token.interceptor";
 import {SiteLayoutModule} from "./shared/site-layout/site-layout.module";
+import {reducer} from "./shared/store/reducers";
+import {StoreRouterConnectingModule} from "@ngrx/router-store";
 
 @NgModule({
   declarations: [
@@ -21,12 +23,13 @@ import {SiteLayoutModule} from "./shared/site-layout/site-layout.module";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(reducer),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
     }),
+    StoreRouterConnectingModule.forRoot(),
     HttpClientModule,
 
     // Layouts Modules

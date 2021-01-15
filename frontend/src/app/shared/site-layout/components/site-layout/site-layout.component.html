@@ -91,7 +91,7 @@
   </aside>
   <main class="main-panel">
     <mat-toolbar class="main-panel-toolbar" color="primary">
-      <h1 class="page-title main-panel-toolbar-title">Обзор</h1>
+      <h1 class="page-title main-panel-toolbar-title">{{ (titlePage$ | async) ? (titlePage$ | async) : 'Обзор' }}</h1>
       <div class="main-panel-toolbar-right">
         <img
           [src]="apiUploads + (currentUser$ | async).userImg"
