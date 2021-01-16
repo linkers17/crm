@@ -6,15 +6,22 @@ import {
   removeContactFailureAction,
   removeContactSuccessAction
 } from "./actions/removeContact.action";
+import {
+  getContactByIdAction,
+  getContactByIdFailureAction,
+  getContactByIdSuccessAction
+} from "./actions/getContact.action";
+import {routerNavigationAction} from "@ngrx/router-store";
 
 const initialState: ContactsStateInterface = {
   data: null,
   error: null,
   isLoading: false,
-  success: null
+  success: null,
+  currentContact: null
 };
 
-const contactsReducer = createReducer(
+const reducers = createReducer(
   initialState,
   on(
     getContactsAction,
@@ -66,8 +73,40 @@ const contactsReducer = createReducer(
       error: 'Что-то пошло не так. Повторите попытку позже'
     })
   ),
+  on(
+    getContactByIdAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      isLoading: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    getContactByIdSuccessAction,
+    (state, action): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      currentContact: action.contact
+    })
+  ),
+  on(
+    getContactByIdFailureAction,
+    (state, action): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      error: action.errors
+    })
+  ),
+  on(
+    routerNavigationAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      currentContact: null
+    })
+  )
 );
 
 export function reducer(state: ContactsStateInterface, action: Action) {
-  return contactsReducer(state, action);
+  return reducers(state, action);
 }

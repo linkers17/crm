@@ -24,3 +24,8 @@ export const successContactsSelector = createSelector(
   contactsFeatureSelector,
   (contactsState: ContactsStateInterface) => contactsState.success
 );
+
+export const currentContactSelector = createSelector(
+  contactsFeatureSelector,
+  (contactsState: ContactsStateInterface) => contactsState.currentContact
+);

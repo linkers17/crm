@@ -1,11 +1,11 @@
-<mat-card class="card-site main-panel-content-card">
+<mat-card class="card-site main-panel-content-card" *ngIf="currentContact; else loader">
   <div class="card-site-header card-site-header--green">
     <h2>Редактировать контакт</h2>
-    <span>Telegram</span>
+    <span>{{ currentContact.name }}</span>
   </div>
   <div class="card-site-body">
     <form
-      (ngSubmit)="onSubmit()"
+      (ngSubmit)="onSubmit(currentContact._id)"
       [formGroup]="form"
     >
       <mat-form-field>
@@ -22,3 +22,6 @@
     </form>
   </div>
 </mat-card>
+<ng-template #loader>
+  <mat-progress-spinner color="accent" mode="indeterminate" class="loader"></mat-progress-spinner>
+</ng-template>

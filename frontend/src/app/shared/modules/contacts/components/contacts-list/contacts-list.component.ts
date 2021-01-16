@@ -7,6 +7,8 @@ import {contactsSelector, errorContactsSelector, successContactsSelector} from "
 import {environment} from "../../../../../../environments/environment";
 import {removeContactAction} from "../../store/actions/removeContact.action";
 import {filter, map} from "rxjs/operators";
+import {ActivatedRoute} from "@angular/router";
+import {BackendErrorsInterface} from "../../../../types/backendErrors.interface";
 
 @Component({
   selector: 'app-contacts-list',
@@ -23,7 +25,7 @@ export class ContactsListComponent implements OnInit {
   // selectors
   contacts$: Observable<ContactsInterface[] | null>;
   successMessages$: Observable<string | null>;
-  errorMessages$: Observable<string | null>;
+  errorMessages$: Observable<BackendErrorsInterface | string | null>;
 
   constructor(
     private store: Store
