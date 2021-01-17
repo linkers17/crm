@@ -16,6 +16,39 @@
         </mat-error>
       </mat-form-field>
 
+      <div>
+        <input
+          type="file"
+          #input
+          class="d-n"
+          [accept]="accept"
+          (change)="onFileUpload($event)"
+        >
+        <button
+          type="button"
+          (click)="triggerClick()"
+          mat-raised-button
+          color="accent"
+        >Загрузить изображение</button>
+        <input
+          type="hidden"
+          formControlName="removeImg"
+        >
+        <button
+          type="button"
+          mat-raised-button
+          color="warn"
+          (click)="removeImg()"
+          [disabled]="isLoadImg"
+        >Удалить изображение</button>
+        <img
+          [src]="imagePreview"
+          alt="{{ currentContact.name }}"
+          class="img"
+          *ngIf="imagePreview"
+        >
+      </div>
+
       <div class="buttons">
         <button mat-raised-button color="primary" class="button-submit" type="submit" [disabled]="form.invalid || (isSubmitting$ | async)">Редактировать</button>
       </div>

@@ -13,6 +13,16 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+// display
+
+.d {
+  &-n {
+    display: none;
+  }
+}
+
+// */ display
+
 .form-row {
   display: flex;
   justify-content: space-between;

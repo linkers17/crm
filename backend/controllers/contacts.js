@@ -119,21 +119,32 @@ module.exports.updateContact = async (req, res) => {
             });
         } else {
 
+            // TODO - Временно, убрать после успешных тестов
+            console.log('body', req.body);
+
+            const update = {
+                name: req.body.name
+            }
+            if (req.body.removeImg) {
+                update.img = PLACEHOLDER_CONTACT_PATH
+            } else if (req.file) {
+                update.img = req.file.path
+            }
+
             const contactInfo = await Contacts.findById(req.params.id);
             const contact = await Contacts.findOneAndUpdate(
                 {_id: req.params.id},
-                {$set: {
-                    name: req.body.name,
-                    img: req.file ? req.file.path : PLACEHOLDER_CONTACT_PATH
-                }},
+                {$set: update},
                 {new: true}
             );
 
             // Удаляем старое изображение (кроме placeholder)
-            if (contactInfo.img !== PLACEHOLDER_CONTACT_PATH) {
-                fs.unlink(contactInfo.img, err => {
-                    if (err) throw err;
-                });
+            if (req.body.removeImg || req.file) {
+                if (contactInfo.img !== PLACEHOLDER_CONTACT_PATH) {
+                    fs.unlink(contactInfo.img, err => {
+                        if (err) throw err;
+                    });
+                }
             }
     
             res.status(200).json(contact);
