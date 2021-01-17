@@ -60,6 +60,14 @@
           type="submit"
           [disabled]="form.invalid || (isSubmitting$ | async)"
         >Редактировать</button>
+        <button
+          mat-raised-button
+          color="warn"
+          class="button-submit"
+          type="button"
+          [disabled]="form.invalid || (isSubmitting$ | async)"
+          (click)="redirectToBack()"
+        >Назад</button>
       </div>
     </form>
   </div>

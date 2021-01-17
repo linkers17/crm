@@ -16,6 +16,7 @@ import {environment} from "../../../../../../environments/environment";
 import {ContactUpdateRequestInterface} from "../../types/contactUpdateRequest.interface";
 import {updateContactAction} from "../../store/actions/updateContact.action";
 import {BackendErrorsInterface} from "../../../../types/backendErrors.interface";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-contact',
@@ -44,7 +45,8 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -128,5 +130,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     });
     this.isLoadImg = true;
     this.image = null;
+  }
+
+  redirectToBack(): void {
+    this.location.back();
   }
 }
