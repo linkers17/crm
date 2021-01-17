@@ -119,8 +119,7 @@ module.exports.updateContact = async (req, res) => {
             });
         } else {
 
-            // TODO - Временно, убрать после успешных тестов
-            console.log('body', req.body);
+            req.body.removeImg = req.body.removeImg !== 'false';
 
             const update = {
                 name: req.body.name

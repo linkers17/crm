@@ -20,6 +20,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {GetContactByIdEffect} from "./store/effects/getContact.effect";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {UpdateContactEffect} from "./store/effects/updateContact.effect";
 
 @NgModule({
   declarations: [ContactsListComponent, ContactComponent],
@@ -29,7 +30,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     EffectsModule.forFeature([
       GetContactsEffect,
       RemoveContactEffect,
-      GetContactByIdEffect
+      GetContactByIdEffect,
+      UpdateContactEffect
     ]),
     MatTableModule,
     MatButtonModule,

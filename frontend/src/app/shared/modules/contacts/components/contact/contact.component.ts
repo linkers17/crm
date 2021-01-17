@@ -5,9 +5,17 @@ import {select, Store} from "@ngrx/store";
 import {ActivatedRoute} from "@angular/router";
 import {getContactByIdAction} from "../../store/actions/getContact.action";
 import {ContactsInterface} from "../../types/contacts.interface";
-import {currentContactSelector} from "../../store/selectors";
-import {filter} from "rxjs/operators";
+import {
+  currentContactSelector,
+  errorContactsSelector,
+  isLoadingContactsSelector,
+  successContactsSelector
+} from "../../store/selectors";
+import {filter, map} from "rxjs/operators";
 import {environment} from "../../../../../../environments/environment";
+import {ContactUpdateRequestInterface} from "../../types/contactUpdateRequest.interface";
+import {updateContactAction} from "../../store/actions/updateContact.action";
+import {BackendErrorsInterface} from "../../../../types/backendErrors.interface";
 
 @Component({
   selector: 'app-contact',
@@ -31,6 +39,8 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   // selectors
   isSubmitting$: Observable<boolean>;
+  successMessages$: Observable<string | null>;
+  errorMessages$: Observable<BackendErrorsInterface | string | null>;
 
   constructor(
     private store: Store,
@@ -48,12 +58,22 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(id: string): void {
-    console.log('img', this.image);
-    console.log('form', this.form.value);
+    const request: ContactUpdateRequestInterface = {
+      ...this.form.value,
+      img: this.image
+    }
+    this.store.dispatch(updateContactAction({id, request}));
   }
 
   initializeValues(): void {
     this.id = this.route.snapshot.paramMap.get('id');
+    this.isSubmitting$ = this.store.pipe(select(isLoadingContactsSelector));
+    this.successMessages$ = this.store.pipe(
+      select(successContactsSelector),
+      filter(message => message !== null),
+      map(message => message.message)
+    );
+    this.errorMessages$ = this.store.pipe(select(errorContactsSelector));
   }
 
   initializeListeners(): void {

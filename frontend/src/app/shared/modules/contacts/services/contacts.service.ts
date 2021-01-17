@@ -5,6 +5,7 @@ import {ContactsInterface} from "../types/contacts.interface";
 import {environment} from "../../../../../environments/environment";
 import {ContactRequestInterface} from "../types/contactRequest.interface";
 import {BackendMessagesInterface} from "../../../types/backendMessages.interface";
+import {ContactUpdateRequestInterface} from "../types/contactUpdateRequest.interface";
 
 @Injectable()
 export class ContactsService {
@@ -38,14 +39,15 @@ export class ContactsService {
     return this.http.post<ContactsInterface>(url, formData);
   }
 
-  updateContact(id: string, data: ContactRequestInterface): Observable<ContactsInterface> {
+  updateContact(id: string, data: ContactUpdateRequestInterface): Observable<ContactsInterface> {
     const url = `${environment.API_URL}/contacts/${id}`;
     const formData: any = new FormData();
 
     formData.append('name', data.name);
-    data.img ?
-      formData.append('img', data.img, data.img.name) :
-      formData.append('img', data.img.name);
+    formData.append('removeImg', data.removeImg.toString());
+    if (data.img) {
+      formData.append('img', data.img);
+    }
 
     return this.http.patch<ContactsInterface>(url, formData);
   }

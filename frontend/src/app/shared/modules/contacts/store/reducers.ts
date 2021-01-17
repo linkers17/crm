@@ -12,6 +12,11 @@ import {
   getContactByIdSuccessAction
 } from "./actions/getContact.action";
 import {routerNavigationAction} from "@ngrx/router-store";
+import {
+  updateContactAction,
+  updateContactFailureAction,
+  updateContactSuccessAction
+} from "./actions/updateContact.action";
 
 const initialState: ContactsStateInterface = {
   data: null,
@@ -92,6 +97,32 @@ const reducers = createReducer(
   ),
   on(
     getContactByIdFailureAction,
+    (state, action): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      error: action.errors
+    })
+  ),
+  on(
+    updateContactAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      isLoading: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    updateContactSuccessAction,
+    (state, action): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      currentContact: action.response,
+      success: {message: 'Изменения успешно сохранены.'}
+    })
+  ),
+  on(
+    updateContactFailureAction,
     (state, action): ContactsStateInterface => ({
       ...state,
       isLoading: false,
