@@ -23,6 +23,50 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // */ display
 
+// tables
+
+th {
+  &.th-center {
+    text-align: center;
+
+    &.mat-header-cell {
+      text-align: center;
+    }
+  }
+}
+
+td {
+  &.mat-cell {
+    &--center {
+      text-align: center;
+
+      & > * {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+tr {
+  &.row-h {
+    &-50 {
+      height: 50px;
+    }
+  }
+}
+
+table {
+  &.table {
+    &-w-650 {
+      width: 650px;
+      margin: auto;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+// */ tables
+
 .form-row {
   display: flex;
   justify-content: space-between;
@@ -152,3 +196,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 // */ card-site
+
+// mat-mini-fab
+
+.btn {
+  &-28.mat-mini-fab {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+  }
+}
+
+.icon {
+  &-28 {
+    font-size: 18px;
+    margin-top: -8px;
+  }
+}
+
+// */ mat-mini-fab
+
+.link-create {
+  display: table;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: 100px;
+}
