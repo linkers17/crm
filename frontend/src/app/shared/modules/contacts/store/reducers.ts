@@ -17,6 +17,11 @@ import {
   updateContactFailureAction,
   updateContactSuccessAction
 } from "./actions/updateContact.action";
+import {
+  createContactAction,
+  createContactFailureAction,
+  createContactSuccessAction
+} from "./actions/createContact.action";
 
 const initialState: ContactsStateInterface = {
   data: null,
@@ -33,8 +38,6 @@ const reducers = createReducer(
     (state): ContactsStateInterface => ({
       ...state,
       isLoading: true,
-      error: null,
-      success: null
     })
   ),
   on(
@@ -75,7 +78,7 @@ const reducers = createReducer(
     (state): ContactsStateInterface => ({
       ...state,
       isLoading: false,
-      error: 'Что-то пошло не так. Повторите попытку позже'
+      error: {errors: 'Что-то пошло не так. Повторите попытку позже'}
     })
   ),
   on(
@@ -130,10 +133,37 @@ const reducers = createReducer(
     })
   ),
   on(
+    createContactAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      isLoading: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    createContactSuccessAction,
+    (state): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      success: {message: 'Контакт успешно создан.'}
+    })
+  ),
+  on(
+    createContactFailureAction,
+    (state, action): ContactsStateInterface => ({
+      ...state,
+      isLoading: false,
+      error: action.errors
+    })
+  ),
+  on(
     routerNavigationAction,
     (state): ContactsStateInterface => ({
       ...state,
-      currentContact: null
+      currentContact: null,
+      error: null,
+      success: null
     })
   )
 );

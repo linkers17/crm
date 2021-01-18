@@ -32,9 +32,9 @@ export class ContactsService {
     const formData: any = new FormData();
 
     formData.append('name', data.name);
-    data.img ?
-      formData.append('img', data.img, data.img.name) :
-      formData.append('img', null);
+    if (data.img) {
+      formData.append('img', data.img);
+    }
 
     return this.http.post<ContactsInterface>(url, formData);
   }

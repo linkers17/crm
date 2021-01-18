@@ -7,15 +7,12 @@ import {getContactByIdAction} from "../../store/actions/getContact.action";
 import {ContactsInterface} from "../../types/contacts.interface";
 import {
   currentContactSelector,
-  errorContactsSelector,
-  isLoadingContactsSelector,
-  successContactsSelector
+  isLoadingContactsSelector
 } from "../../store/selectors";
-import {filter, map} from "rxjs/operators";
+import {filter} from "rxjs/operators";
 import {environment} from "../../../../../../environments/environment";
 import {ContactUpdateRequestInterface} from "../../types/contactUpdateRequest.interface";
 import {updateContactAction} from "../../store/actions/updateContact.action";
-import {BackendErrorsInterface} from "../../../../types/backendErrors.interface";
 import {Location} from "@angular/common";
 
 @Component({
@@ -40,8 +37,6 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   // selectors
   isSubmitting$: Observable<boolean>;
-  successMessages$: Observable<string | null>;
-  errorMessages$: Observable<BackendErrorsInterface | string | null>;
 
   constructor(
     private store: Store,
@@ -70,12 +65,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   initializeValues(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.isSubmitting$ = this.store.pipe(select(isLoadingContactsSelector));
-    this.successMessages$ = this.store.pipe(
-      select(successContactsSelector),
-      filter(message => message !== null),
-      map(message => message.message)
-    );
-    this.errorMessages$ = this.store.pipe(select(errorContactsSelector));
   }
 
   initializeListeners(): void {
@@ -106,7 +95,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   // Загрузка файла
   onFileUpload(e: any): void {
     const file = e.target.files[0];
-    console.log('file', file);
     this.image = file;
 
     const reader = new FileReader();

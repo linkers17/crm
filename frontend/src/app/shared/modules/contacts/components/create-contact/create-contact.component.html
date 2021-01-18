@@ -1,11 +1,10 @@
-<mat-card class="card-site main-panel-content-card" *ngIf="currentContact; else loader">
-  <div class="card-site-header card-site-header--green">
-    <h2>Редактировать контакт</h2>
-    <span>{{ currentContact.name }}</span>
+<mat-card class="card-site main-panel-content-card">
+  <div class="card-site-header">
+    <h2>Создать контакт</h2>
   </div>
   <div class="card-site-body">
     <form
-      (ngSubmit)="onSubmit(currentContact._id)"
+      (ngSubmit)="onSubmit()"
       [formGroup]="form"
     >
       <mat-form-field>
@@ -15,7 +14,6 @@
           <strong>Название</strong> обязательно для заполнения
         </mat-error>
       </mat-form-field>
-
       <div>
         <input
           type="file"
@@ -28,13 +26,9 @@
           type="button"
           (click)="triggerClick()"
           mat-raised-button
-          color="accent"
+          color="primary"
           [disabled]="isSubmitting$ | async"
         >Загрузить изображение</button>
-        <input
-          type="hidden"
-          formControlName="removeImg"
-        >
         <button
           type="button"
           mat-raised-button
@@ -44,7 +38,7 @@
         >Удалить изображение</button>
         <img
           [src]="imagePreview"
-          alt="{{ currentContact.name }}"
+          [alt]="form.get('name').value"
           class="img"
           *ngIf="imagePreview"
         >
@@ -57,10 +51,10 @@
           class="button-submit"
           type="submit"
           [disabled]="form.invalid || (isSubmitting$ | async)"
-        >Редактировать</button>
+        >Создать</button>
         <button
           mat-raised-button
-          color="warn"
+          color="accent"
           class="button-submit"
           type="button"
           [disabled]="(isSubmitting$ | async)"
@@ -70,6 +64,3 @@
     </form>
   </div>
 </mat-card>
-<ng-template #loader>
-  <mat-progress-spinner color="accent" mode="indeterminate" class="loader"></mat-progress-spinner>
-</ng-template>

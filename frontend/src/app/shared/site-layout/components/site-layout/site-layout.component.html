@@ -130,7 +130,7 @@
               <span>Отчёт</span>
             </button>
             <button mat-menu-item *ngIf="(currentUser$ | async).role !== 'manager'">
-              <span>Контакт</span>
+              <a [routerLink]="['/dashboard', 'contacts', 'new']" class="main-panel-toolbar-create-link">Контакт</a>
             </button>
           </mat-menu>
         </div>

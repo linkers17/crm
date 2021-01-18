@@ -8,6 +8,7 @@ import {isSubmittingSelector, successMessageSelector, validationErrorsSelector} 
 import {RegisterRequestInterface} from "../../types/registerRequest.interface";
 import {loginAction} from "../../store/actions/login.action";
 import {BackendErrorsInterface} from "../../../shared/types/backendErrors.interface";
+import {BackendMessagesInterface} from "../../../shared/types/backendMessages.interface";
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   hide = true;
 
   // Selectors
-  successMessages$: Observable<string | null>;
+  successMessages$: Observable<BackendMessagesInterface | null>;
   isSubmitting$: Observable<boolean>;
   backendErrors$: Observable<BackendErrorsInterface | null>;
 

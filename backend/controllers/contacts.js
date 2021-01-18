@@ -39,11 +39,13 @@ module.exports.createContact = async (req, res) => {
     if (candidate) {
 
         // Удаляем файл в случае ошибки запроса
-        fs.unlink(req.file.path, err => {
-            if (err) throw err;
-        });
+        if (req.file) {
+            fs.unlink(req.file.path, err => {
+                if (err) throw err;
+            });
+        }
 
-        res.status(409).json({
+        return res.status(409).json({
             errors: [
                 'Мессенджер или соц. сеть с таким именем уже существует.'
             ]
@@ -112,7 +114,7 @@ module.exports.updateContact = async (req, res) => {
                 });
             }
 
-            res.status(409).json({
+            return res.status(409).json({
                 errors: [
                     'Мессенджер или соц. сеть с таким именем уже существует.'
                 ]

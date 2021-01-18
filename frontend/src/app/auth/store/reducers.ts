@@ -30,7 +30,7 @@ const authReducer = createReducer(
     ...state,
     isSubmitting: false,
     validationErrors: null,
-    registerSuccess: 'Аккаунт успешно зарегистрирован. Можно войти в систему'
+    registerSuccess: {message: 'Аккаунт успешно зарегистрирован. Можно войти в систему'}
   })),
   on(registerFailureAction, (state, action): AuthStateInterface => ({
     ...state,

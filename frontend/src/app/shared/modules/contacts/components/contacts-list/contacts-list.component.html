@@ -1,5 +1,3 @@
-<app-success-messages *ngIf="successMessages$ | async" [successMessages]="(successMessages$ | async)"></app-success-messages>
-<app-backend-error-messages *ngIf="errorMessages$ | async" [backendErrors]="errorMessages$ | async"></app-backend-error-messages>
 <table
   mat-table
   [dataSource]="contacts$ | async"
@@ -21,7 +19,7 @@
   <ng-container matColumnDef="view">
     <th mat-header-cell *matHeaderCellDef>Просмотр</th>
     <td mat-cell *matCellDef="let elem">
-      <a [routerLink]="['/dashboard', 'contact', elem._id]">
+      <a [routerLink]="['/dashboard', 'contacts', elem._id]">
         <button mat-mini-fab color="primary">
           <mat-icon class="icon-color--white">visibility</mat-icon>
         </button>

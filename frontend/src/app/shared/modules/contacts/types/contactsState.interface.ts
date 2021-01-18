@@ -4,7 +4,7 @@ import {BackendErrorsInterface} from "../../../types/backendErrors.interface";
 
 export interface ContactsStateInterface {
   data: ContactsInterface[] | null,
-  error: BackendErrorsInterface | string | null,
+  error: BackendErrorsInterface | null,
   isLoading: boolean,
   success: BackendMessagesInterface | null,
   currentContact: ContactsInterface | null

@@ -21,9 +21,12 @@ import {MatInputModule} from "@angular/material/input";
 import {GetContactByIdEffect} from "./store/effects/getContact.effect";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {UpdateContactEffect} from "./store/effects/updateContact.effect";
+import { CreateContactComponent } from './components/create-contact/create-contact.component';
+import {CreateContactEffect} from "./store/effects/createContact.effect";
+import {ContactPageComponent} from './components/contact-page/contact-page.component';
 
 @NgModule({
-  declarations: [ContactsListComponent, ContactComponent],
+  declarations: [ContactsListComponent, ContactComponent, CreateContactComponent, ContactPageComponent],
   imports: [
     CommonModule,
     StoreModule.forFeature('contacts', reducer),
@@ -31,7 +34,8 @@ import {UpdateContactEffect} from "./store/effects/updateContact.effect";
       GetContactsEffect,
       RemoveContactEffect,
       GetContactByIdEffect,
-      UpdateContactEffect
+      UpdateContactEffect,
+      CreateContactEffect
     ]),
     MatTableModule,
     MatButtonModule,

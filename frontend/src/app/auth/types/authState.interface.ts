@@ -1,5 +1,6 @@
 import {CurrentUserInterface} from "../../shared/types/currentUser.interface";
 import {BackendErrorsInterface} from "../../shared/types/backendErrors.interface";
+import {BackendMessagesInterface} from "../../shared/types/backendMessages.interface";
 
 export interface AuthStateInterface {
   isSubmitting: boolean,
@@ -7,5 +8,5 @@ export interface AuthStateInterface {
   currentUser: CurrentUserInterface | null,
   isLoggedIn: boolean | null,
   validationErrors: BackendErrorsInterface | null,
-  registerSuccess: string | null
+  registerSuccess: BackendMessagesInterface | null
 }
