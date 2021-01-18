@@ -3,9 +3,8 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {select, Store} from "@ngrx/store";
 import {registerAction} from "../../store/actions/register.action";
 import {Observable, Subscription} from "rxjs";
-import {isSubmittingSelector, validationErrorsSelector} from "../../store/selectors";
+import {isSubmittingSelector} from "../../store/selectors";
 import {RegisterRequestInterface} from "../../types/registerRequest.interface";
-import {BackendErrorsInterface} from "../../../shared/types/backendErrors.interface";
 import {ContactsInterface} from "../../../shared/modules/contacts/types/contacts.interface";
 import {contactsSelector} from "../../../shared/modules/contacts/store/selectors";
 import {getContactsAction} from "../../../shared/modules/contacts/store/actions/getContacts.action";
@@ -26,7 +25,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   // Selectors
   isSubmitting$: Observable<boolean>;
-  backendErrors$: Observable<BackendErrorsInterface | null>;
   contacts$: Observable<ContactsInterface[] | null>;
 
   constructor(
@@ -87,7 +85,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   initializeValues(): void {
     this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector));
-    this.backendErrors$ = this.store.pipe(select(validationErrorsSelector));
     this.contacts$ = this.store.pipe(
       select(contactsSelector),
       filter(contacts => contacts !== null)

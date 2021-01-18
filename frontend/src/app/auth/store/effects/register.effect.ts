@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {registerAction, registerFailureAction, registerSuccessAction} from "../actions/register.action";
-import {catchError, map, switchMap, tap} from "rxjs/operators";
+import {catchError, delay, map, switchMap, tap} from "rxjs/operators";
 import {AuthService} from "../../services/auth.service";
 import {RegisterResponseInterface} from "../../types/registerResponse.interface";
 import {of} from "rxjs";
@@ -29,6 +29,7 @@ export class RegisterEffect {
   redirectAfterSubmit$ = createEffect(
     () => this.actions$.pipe(
       ofType(registerSuccessAction),
+      delay(10),
       tap(() => {
         this.router.navigate(['/', 'login']);
       })

@@ -1,3 +1,5 @@
+<app-backend-error-messages [backendErrors]="backendErrors$ | async" *ngIf="backendErrors$ | async"></app-backend-error-messages>
+<app-success-messages [successMessages]="successMessages$ | async" *ngIf="successMessages$ | async"></app-success-messages>
 <a [routerLink]="['/']" class="logo-link">
   <img src="/assets/logo-svg.svg" alt="logo" class="logo-image">
   <span class="logo-title">CRM</span>
@@ -7,8 +9,7 @@
   <mat-card class="card-form">
     <nav mat-tab-nav-bar class="card-nav">
       <a mat-tab-link *ngFor="let link of links"
-         (click)="activeLink = link.nav;"
-         [active]="activeLink === link.nav"
+         [active]="(page$ | async) === link.nav"
          [routerLink]="['/', link.nav]"
       >{{ link.title }}</a>
     </nav>

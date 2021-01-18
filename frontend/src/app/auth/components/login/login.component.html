@@ -1,5 +1,3 @@
-<app-success-messages [successMessages]="successMessages$ | async" *ngIf="successMessages$ | async"></app-success-messages>
-<app-backend-error-messages [backendErrors]="backendErrors$ | async" *ngIf="backendErrors$ | async"></app-backend-error-messages>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
   <mat-form-field class="mat-form-field--more">

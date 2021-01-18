@@ -8,6 +8,7 @@ import {
   getCurrentUserSuccessAction
 } from "./actions/getCurrentUser.action";
 import {logoutAction} from "./actions/sync.action";
+import {routerNavigationAction} from "@ngrx/router-store";
 
 const initialState: AuthStateInterface = {
   isSubmitting: false,
@@ -75,6 +76,11 @@ const authReducer = createReducer(
     ...initialState,
     isLoggedIn: false
   })),
+  on(routerNavigationAction, (state): AuthStateInterface => ({
+    ...state,
+    registerSuccess: null,
+    validationErrors: null
+  }))
 );
 
 export function reducer(state: AuthStateInterface, action: Action) {

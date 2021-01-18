@@ -4,11 +4,9 @@ import {MatDialog} from "@angular/material/dialog";
 import {ForgetComponent} from "../forget/forget.component";
 import {Observable} from "rxjs";
 import {select, Store} from "@ngrx/store";
-import {isSubmittingSelector, successMessageSelector, validationErrorsSelector} from "../../store/selectors";
+import {isSubmittingSelector} from "../../store/selectors";
 import {RegisterRequestInterface} from "../../types/registerRequest.interface";
 import {loginAction} from "../../store/actions/login.action";
-import {BackendErrorsInterface} from "../../../shared/types/backendErrors.interface";
-import {BackendMessagesInterface} from "../../../shared/types/backendMessages.interface";
 
 @Component({
   selector: 'app-login',
@@ -21,9 +19,7 @@ export class LoginComponent implements OnInit {
   hide = true;
 
   // Selectors
-  successMessages$: Observable<BackendMessagesInterface | null>;
   isSubmitting$: Observable<boolean>;
-  backendErrors$: Observable<BackendErrorsInterface | null>;
 
   constructor(
     public dialog: MatDialog,
@@ -51,17 +47,9 @@ export class LoginComponent implements OnInit {
   }
 
   initializeValues(): void {
-    this.successMessages$ = this.store
-      .pipe(
-        select(successMessageSelector)
-      );
     this.isSubmitting$ = this.store
       .pipe(
         select(isSubmittingSelector)
-      );
-    this.backendErrors$ = this.store
-      .pipe(
-        select(validationErrorsSelector)
       );
   }
 

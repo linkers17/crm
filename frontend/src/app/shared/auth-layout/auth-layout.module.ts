@@ -8,13 +8,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {LoginComponent} from "../../auth/components/login/login.component";
 import {MatCardModule} from "@angular/material/card";
 import {GuestGuard} from "../guards/guest.guard";
+import {BackendErrorMessagesModule} from "../modules/backend-error-messages/backend-error-messages.module";
+import {SuccessMessagesModule} from "../modules/success-messages/success-messages.module";
 
 const routes: Routes = [
   {
     path: '', component: AuthLayoutComponent, canActivate: [GuestGuard], children: [
       {path: '', redirectTo: '/login', pathMatch: 'full'},
-      {path: 'login', component: LoginComponent},
-      {path: 'register', component: RegisterComponent}
+      {path: 'login', component: LoginComponent, data: {page: 'login'}},
+      {path: 'register', component: RegisterComponent, data: {page: 'register'}}
     ]
   }
 ]
@@ -26,7 +28,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     BrowserAnimationsModule,
     MatTabsModule,
-    MatCardModule
+    MatCardModule,
+    BackendErrorMessagesModule,
+    SuccessMessagesModule
   ]
 })
 export class AuthLayoutModule { }
