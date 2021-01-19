@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardPageComponent } from './components/dashboard-page/dashboard-page.component';
 import { MatCardModule } from '@angular/material/card';
 import {RouterModule} from "@angular/router";
+import {ChartsModule} from "ng2-charts";
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import {RouterModule} from "@angular/router";
   imports: [
     CommonModule,
     MatCardModule,
-    RouterModule
+    RouterModule,
+    ChartsModule
   ]
 })
 export class DashboardModule { }

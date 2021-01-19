@@ -155,4 +155,80 @@
       </mat-card>
     </div>
   </div>
+  <div class="dashboard-row">
+    <div class="dashboard-col col-6">
+      <mat-card class="dashboard-card">
+        <div class="dashboard-card-header card-site-header card-site-header--green">
+          <div class="dashboard-card-header-nav">
+            <span>Продажи:</span>
+            <ul class="nav dashboard-card-header-nav-list">
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn dashboard-card-header-nav-btn--active">По дням</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">По месяцам</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">По годам</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="chart-wrapper">
+            <canvas
+              baseChart
+              [datasets]="sellChartData"
+              [labels]="sellChartLabels"
+              [options]="sellChartOptions"
+              [colors]="sellChartColors"
+              [legend]="sellChartLegend"
+              [chartType]="sellChartType"
+              [plugins]="sellChartPlugins"
+            >
+            </canvas>
+          </div>
+        </div>
+        <div class="dashboard-card-footer">
+        </div>
+      </mat-card>
+    </div>
+    <div class="dashboard-col col-6">
+      <mat-card class="dashboard-card">
+        <div class="dashboard-card-header card-site-header card-site-header--purple">
+          <div class="dashboard-card-header-nav">
+            <span>Заказы:</span>
+            <ul class="nav dashboard-card-header-nav-list">
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn dashboard-card-header-nav-btn--active">По дням</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">По месяцам</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">По годам</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="chart-wrapper">
+            <canvas
+              baseChart
+              [datasets]="orderChartData"
+              [labels]="orderChartLabels"
+              [options]="orderChartOptions"
+              [colors]="orderChartColors"
+              [legend]="orderChartLegend"
+              [chartType]="orderChartType"
+              [plugins]="orderChartPlugins"
+            >
+            </canvas>
+          </div>
+        </div>
+        <div class="dashboard-card-footer">
+        </div>
+      </mat-card>
+    </div>
+  </div>
 </div>

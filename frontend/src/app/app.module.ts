@@ -15,6 +15,7 @@ import {TokenInterceptor} from "./shared/services/token.interceptor";
 import {SiteLayoutModule} from "./shared/site-layout/site-layout.module";
 import {reducer} from "./shared/store/reducers";
 import {StoreRouterConnectingModule} from "@ngrx/router-store";
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {StoreRouterConnectingModule} from "@ngrx/router-store";
     }),
     StoreRouterConnectingModule.forRoot(),
     HttpClientModule,
+    ChartsModule,
 
     // Layouts Modules
     AuthLayoutModule,
