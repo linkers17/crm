@@ -1,0 +1,158 @@
+<div class="dashboard">
+  <div class="dashboard-row">
+    <div class="dashboard-col col-4">
+      <mat-card class="dashboard-card">
+        <div class="dashboard-card-header card-site-header card-site-header--blue">
+          <h3>Ваши клиенты</h3>
+        </div>
+        <div class="dashboard-card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="table-head table-head--blue">
+              <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Город</th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr>
+                <td>Иванов</td>
+                <td>Иван</td>
+                <td>Иванович</td>
+                <td>Саратов</td>
+              </tr>
+              <tr>
+                <td>Петров</td>
+                <td>Петр</td>
+                <td>Петрович</td>
+                <td>Кемерово</td>
+              </tr>
+              <tr>
+                <td>Звягин</td>
+                <td>Роман</td>
+                <td>Николаевич</td>
+                <td>Новокузнецк</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dashboard-card-footer">
+          <a [routerLink]="['/dashboard', 'customers']">Посмотреть всех...</a>
+        </div>
+      </mat-card>
+    </div>
+    <div class="dashboard-col col-4">
+      <mat-card class="dashboard-card">
+        <div class="dashboard-card-header card-site-header card-site-header--orange">
+          <div class="dashboard-card-header-nav">
+            <span>Задачи:</span>
+            <ul class="nav dashboard-card-header-nav-list">
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn dashboard-card-header-nav-btn--active">Все</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">Срочные</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">Начались</span>
+              </li>
+              <li class="dashboard-card-header-nav-item">
+                <span class="dashboard-card-header-nav-btn">Отложены</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="dashboard-card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="table-head table-head--orange">
+            <tr>
+              <th>Задача</th>
+              <th>Статус</th>
+              <th>Приоритет</th>
+              <th>Окончание</th>
+            </tr>
+            </thead>
+            <tbody class="table-body">
+            <tr>
+              <td>Задача 1</td>
+              <td>Началась</td>
+              <td>
+                <span class="priority priority--normal">Обычный</span>
+              </td>
+              <td>24.01.2021</td>
+            </tr>
+            <tr>
+              <td>Задача 2</td>
+              <td>Отложена</td>
+              <td>
+                <span class="priority priority--low">Низкий</span>
+              </td>
+              <td>21.01.2021</td>
+            </tr>
+            <tr>
+              <td>Задача 3</td>
+              <td>Отменена</td>
+              <td>
+                <span class="priority priority--urgent">Срочно</span>
+              </td>
+              <td>20.01.2021</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dashboard-card-footer">
+          <a [routerLink]="['/dashboard', 'tasks']">Посмотреть все...</a>
+        </div>
+      </mat-card>
+    </div>
+    <div class="dashboard-col col-4">
+      <mat-card class="dashboard-card">
+        <div class="dashboard-card-header card-site-header card-site-header--red">
+          <h3>Ваши сделки</h3>
+        </div>
+        <div class="dashboard-card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="table-head table-head--red">
+            <tr>
+              <th>Дата</th>
+              <th>Наименование</th>
+              <th>Стадия</th>
+              <th>Сумма</th>
+            </tr>
+            </thead>
+            <tbody class="table-body">
+            <tr>
+              <td>08.01.2021</td>
+              <td>Юсупов</td>
+              <td>Предложение</td>
+              <td>15 000</td>
+            </tr>
+            <tr>
+              <td>10.01.2021</td>
+              <td>ООО "Рога и копыта"</td>
+              <td>Согласование</td>
+              <td>30 000</td>
+            </tr>
+            <tr>
+              <td>11.01.2021</td>
+              <td>Ветров О.И. - Установка шлагбаума</td>
+              <td>Привлечение</td>
+              <td>19 000</td>
+            </tr>
+            <tr>
+              <td>13.01.2021</td>
+              <td>КОАО "Азот"</td>
+              <td>Закрыто провалом</td>
+              <td>62 000</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dashboard-card-footer">
+          <a [routerLink]="['/dashboard', 'orders']">Посмотреть все...</a>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

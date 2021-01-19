@@ -16,10 +16,16 @@ import {CreateContactComponent} from "../modules/contacts/components/create-cont
 import {
   ContactPageComponent
 } from "../modules/contacts/components/contact-page/contact-page.component";
+import {DashboardPageComponent} from "../../dashboard/components/dashboard-page/dashboard-page.component";
+import {DashboardModule} from "../../dashboard/dashboard.module";
 
 const routes: Routes = [
   {
     path: 'dashboard', component: SiteLayoutComponent, canActivate: [AuthGuard], data: {title: 'Обзор'}, children: [
+      {
+        path: '',
+        component: DashboardPageComponent
+      },
       {
         path: 'contacts',
         component: ContactPageComponent,
@@ -51,6 +57,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    DashboardModule,
     MatIconModule,
     MatToolbarModule,
     MatMenuModule,

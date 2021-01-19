@@ -175,11 +175,40 @@ table {
       box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
     }
 
-    h2 {
+    &--blue {
+      color: #fff;
+      background: linear-gradient(60deg, #26c6da, #00acc1);
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4);
+    }
+
+    &--red {
+      color: #fff;
+      background: linear-gradient(60deg, #ef5350, #e53935);
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(244, 67, 54, 0.4);
+    }
+
+    &--orange {
+      color: #fff;
+      background: linear-gradient(60deg, #ffa726, #fb8c00);
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4);
+    }
+
+    h2, h3, h4 {
       margin: 0;
       font-weight: 300;
-      font-size: 24px;
       text-align: center;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    h4 {
+      font-size: 16px;
     }
 
     span {
@@ -222,3 +251,30 @@ table {
   margin-left: auto;
   margin-right: 100px;
 }
+
+// priority
+
+.priority, .priority--normal {
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background-color: #dedede;
+  color: #797979;
+
+  &--low {
+    background-color: #43a047;
+    color: #fff;
+  }
+
+  &--high {
+    background-color: #fb8c00;
+    color: #fff;
+  }
+
+  &--urgent {
+    background-color: #e53935;
+    color: #fff;
+  }
+}
+
+// */ priority
