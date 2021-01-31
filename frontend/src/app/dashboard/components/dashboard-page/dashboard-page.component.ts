@@ -53,7 +53,13 @@ export class DashboardPageComponent implements OnInit {
       data: [
         1, 1, 2, 3, 2, 2, 3, 2, 3, 4
       ],
-      label: 'Кол-во заказов за текущий месяц'
+      label: 'Успешные сделки за текущий месяц'
+    },
+    {
+      data: [
+        0, 1, 0, 0, 0, 2, 0, 1, 0, 1
+      ],
+      label: 'Провальные сделки за текущий месяц'
     }
   ];
 
@@ -75,6 +81,9 @@ export class DashboardPageComponent implements OnInit {
   orderChartColors: Color[] = [
     {
       backgroundColor: '#43a047'
+    },
+    {
+      backgroundColor: '#e53935'
     }
   ];
 
