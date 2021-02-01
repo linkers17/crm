@@ -18,6 +18,9 @@ import {
 } from "../modules/contacts/components/contact-page/contact-page.component";
 import {DashboardPageComponent} from "../../dashboard/components/dashboard-page/dashboard-page.component";
 import {DashboardModule} from "../../dashboard/dashboard.module";
+import {CustomersModule} from "../../customers/customers.module";
+import {CustomerPageComponent} from "../../customers/components/customer-page/customer-page.component";
+import {CustomersListComponent} from "../../customers/components/customers-list/customers-list.component";
 
 const routes: Routes = [
   {
@@ -47,6 +50,19 @@ const routes: Routes = [
             component: ContactComponent
           }
         ]
+      },
+      {
+        path: 'customers',
+        component: CustomerPageComponent,
+        data: {
+          title: 'Клиенты'
+        },
+        children: [
+          {
+            path: '',
+            component: CustomersListComponent
+          }
+        ]
       }
     ]
   }
@@ -58,6 +74,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     DashboardModule,
+    CustomersModule,
     MatIconModule,
     MatToolbarModule,
     MatMenuModule,

@@ -51,7 +51,7 @@ module.exports.getCustomers = async (req, res) => {
                 'assignedUserLogin.login': 1
             }}
         ]);
-        const customersCount = await Customers.countDocuments();
+        const customersCount = await Customers.countDocuments(query);
 
         res.status(200).json({customers, customersCount});
 

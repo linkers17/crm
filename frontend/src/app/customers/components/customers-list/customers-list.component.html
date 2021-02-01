@@ -1,0 +1,39 @@
+<div class="customers">
+  <a [routerLink]="['/dashboard', 'customers', 'new']" class="link-create">
+    <button mat-raised-button color="accent">
+      <mat-icon class="icon-color--white" matPrefix>add</mat-icon>
+      Добавить клиента
+    </button>
+  </a>
+
+  <mat-card class="customers-card">
+    <span class="customers-card-title">Фильтр:</span>
+    <form (ngSubmit)="onSubmit()" class="form">
+      <mat-form-field class="input-field">
+        <mat-label>Фамилия</mat-label>
+        <input type="text" matInput>
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Электронная почта</mat-label>
+        <input type="email" matInput>
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Дата рождения</mat-label>
+        <input type="date" matInput>
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Менеджер</mat-label>
+        <mat-select>
+          <mat-option>--</mat-option>
+          <mat-option value="one">Иванов</mat-option>
+          <mat-option value="two">Сидоров</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">
+        <mat-icon class="icon-color--white" matPrefix>search</mat-icon>
+        Найти
+      </button>
+    </form>
+  </mat-card>
+</div>
