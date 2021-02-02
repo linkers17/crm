@@ -14,3 +14,28 @@
 .input-field {
   margin-right: 30px;
 }
+
+.reset-button {
+  margin-left: 20px;
+}
+
+.table {
+  &-link {
+    text-decoration: none;
+    color: #2d49e0;
+  }
+
+  &-wrapper {
+    margin-top: 30px;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+.mat-cell {
+  text-align: center;
+}
+
+
