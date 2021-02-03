@@ -8,25 +8,27 @@
 
   <mat-card class="customers-card">
     <span class="customers-card-title">Фильтр:</span>
-    <form (ngSubmit)="onSubmit()" class="form">
+    <form (ngSubmit)="onSubmit()" class="form" [formGroup]="form">
       <mat-form-field class="input-field">
         <mat-label>Фамилия</mat-label>
-        <input type="text" matInput>
+        <input type="text" matInput formControlName="surname">
       </mat-form-field>
       <mat-form-field class="input-field">
         <mat-label>Электронная почта</mat-label>
-        <input type="email" matInput>
+        <input type="email" matInput formControlName="email">
       </mat-form-field>
       <mat-form-field class="input-field">
         <mat-label>Дата рождения</mat-label>
-        <input type="date" matInput>
+        <input type="date" matInput formControlName="birthday">
       </mat-form-field>
       <mat-form-field class="input-field">
         <mat-label>Менеджер</mat-label>
-        <mat-select>
+        <mat-select formControlName="assignedUserId">
           <mat-option>--</mat-option>
-          <mat-option value="one">Иванов</mat-option>
-          <mat-option value="two">Сидоров</mat-option>
+          <mat-option value="5f982c84a87f830668df9bbe">temp_manager</mat-option>
+          <mat-option value="5fa43fb7b0bf8d24481e1d0f">temp_manager2</mat-option>
+          <mat-option value="5f97c367e890e82ac8c6003f">superadmin</mat-option>
+          <mat-option value="5feaf16ef350ea51e4968059">test_new_user</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -35,7 +37,13 @@
         Найти
       </button>
 
-      <button mat-raised-button color="warn" type="reset" class="reset-button">
+      <button
+        mat-raised-button
+        color="warn"
+        type="reset"
+        class="reset-button"
+        (click)="resetForm()"
+      >
         <mat-icon class="icon-color--white" matPrefix>clear</mat-icon>
         Сбросить
       </button>
@@ -166,6 +174,6 @@
       </tr>
 
     </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [length]="countCustomers$ | async" [pageSize]="5" [pageSizeOptions]="[1, 5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
   </div>
 </div>

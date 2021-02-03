@@ -12,6 +12,12 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {StoreModule} from "@ngrx/store";
+import {reducer} from "./store/reducers";
+import {EffectsModule} from "@ngrx/effects";
+import {GetCustomersEffect} from "./store/effects/getCustomers.effect";
+import {CustomersService} from "./services/customers.service";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -20,6 +26,10 @@ import {MatPaginatorModule} from "@angular/material/paginator";
   imports: [
     CommonModule,
     RouterModule,
+    StoreModule.forFeature('customers', reducer),
+    EffectsModule.forFeature([
+      GetCustomersEffect
+    ]),
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -28,7 +38,11 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatSelectModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule
+  ],
+  providers: [
+    CustomersService
   ]
 })
 export class CustomersModule { }

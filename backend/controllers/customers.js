@@ -9,6 +9,9 @@ module.exports.getCustomers = async (req, res) => {
 
     try {
 
+        const limit = +req.query.limit;
+        const offset = +req.query.offset;
+
         const query = {};
 
         if (req.user.role === 'manager') {
@@ -50,7 +53,7 @@ module.exports.getCustomers = async (req, res) => {
                 assignedUserId: 1,
                 'assignedUserLogin.login': 1
             }}
-        ]);
+        ]).skip(offset).limit(limit);
         const customersCount = await Customers.countDocuments(query);
 
         res.status(200).json({customers, customersCount});
