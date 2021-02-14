@@ -21,6 +21,7 @@ import {DashboardModule} from "../../dashboard/dashboard.module";
 import {CustomersModule} from "../../customers/customers.module";
 import {CustomerPageComponent} from "../../customers/components/customer-page/customer-page.component";
 import {CustomersListComponent} from "../../customers/components/customers-list/customers-list.component";
+import {CustomerComponent} from "../../customers/components/customer/customer.component";
 
 const routes: Routes = [
   {
@@ -61,6 +62,10 @@ const routes: Routes = [
           {
             path: '',
             component: CustomersListComponent
+          },
+          {
+            path: ':id',
+            component: CustomerComponent
           }
         ]
       }

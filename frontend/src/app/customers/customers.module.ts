@@ -18,11 +18,13 @@ import {EffectsModule} from "@ngrx/effects";
 import {GetCustomersEffect} from "./store/effects/getCustomers.effect";
 import {CustomersService} from "./services/customers.service";
 import {ReactiveFormsModule} from "@angular/forms";
+import { CustomerComponent } from './components/customer/customer.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 
 @NgModule({
-  declarations: [CustomerPageComponent, CustomersListComponent],
+  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -39,7 +41,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule
   ],
   providers: [
     CustomersService

@@ -1,0 +1,123 @@
+.customer {
+  &-card {
+    display: flex;
+    margin-right: 50px;
+
+    &-row {
+      display: flex;
+      flex-direction: column;
+      margin-right: 10px;
+      padding-right: 10px;
+      border-right: 1px dashed #aaa;
+
+      &:last-child {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+      }
+    }
+
+    &-span {
+      display: block;
+      font-size: 12px;
+      color: #7b6c6c;
+      margin-bottom: 5px;
+    }
+
+    &-strong {
+      font-size: 20px;
+
+      a {
+        text-decoration: none;
+        color: #2d49e0;
+        transition: all 0.3s;
+
+        &:hover {
+          color: lighten(#2d49e0, 10%);
+        }
+      }
+    }
+  }
+
+  &-info {
+    width: 100%;
+  }
+
+  &-link-btn {
+    margin-right: 20px;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+// InformationComponent
+
+.information {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  justify-content: space-around;
+
+  &__row {
+    width: 96%;
+    margin: 15px 0;
+  }
+
+  &__col {
+    width: 30%;
+  }
+
+  &-card {
+    padding: 15px;
+    box-shadow: 0 5px 10px 2px rgba(34, 60, 80, 0.2);
+
+    &__title {
+      color: #5bbd5b;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+      border-bottom: 1px dashed #aaa;
+    }
+
+    &__name {
+      font-size: 14px;
+      color: #aaa;
+      margin-right: 15px;
+    }
+
+    &__value {
+      font-size: 18px;
+      color: #4774c7;
+
+      &_no {
+        font-size: 14px;
+        color: #aaa;
+      }
+    }
+
+    &__link {
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s;
+
+      &:hover {
+        color: darken(#4774c7, 10%);
+      }
+    }
+  }
+}
+
+// InformationComponent

@@ -1,0 +1,140 @@
+<div class="customer">
+  <div class="row">
+    <mat-card class="customer-card">
+      <div class="customer-card-row">
+        <span class="customer-card-span">ФИО:</span>
+        <strong class="customer-card-strong">Иванов Иван Иванович</strong>
+      </div>
+      <div class="customer-card-row">
+        <span class="customer-card-span">Дата рождения:</span>
+        <strong class="customer-card-strong">13.07.1984</strong>
+      </div>
+      <div class="customer-card-row">
+        <span class="customer-card-span">Дата добавления:</span>
+        <strong class="customer-card-strong">19.01.2021</strong>
+      </div>
+      <div class="customer-card-row">
+        <span class="customer-card-span">Добавил:</span>
+        <strong class="customer-card-strong">
+          <a [routerLink]="['/dashboard', 'users', ':id']">nikola</a> <!-- TODO - исправить id пользователя-->
+        </strong>
+      </div>
+      <div class="customer-card-row">
+        <span class="customer-card-span">Ответственный:</span>
+        <strong class="customer-card-strong">
+          <a [routerLink]="['/dashboard', 'users', ':id']">nikola</a> <!-- TODO - исправить id пользователя-->
+        </strong>
+      </div>
+      <div class="customer-card-row">
+        <span class="customer-card-span">Не беспокоить:</span>
+        <span>Да</span>
+      </div>
+    </mat-card>
+    <a [routerLink]="['/dashboard', 'customers', 'edit', ':id']" class="customer-link-btn"> <!--TODO - исправить потом id-->
+      <button mat-raised-button color="accent">
+        <mat-icon class="icon-color--white" matPrefix>edit</mat-icon>
+        Редактировать
+      </button>
+    </a>
+    <button mat-raised-button color="warn" (click)="onRemove()"> <!--TODO - исправить потом id-->
+      <mat-icon class="icon-color--white" matPrefix>delete</mat-icon>
+      Удалить
+    </button>
+  </div>
+  <div class="row">
+    <mat-card class="customer-info">
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Основная информация">
+          <div class="information">
+            <div class="information__col">
+              <div class="information-card">
+                <h3 class="information-card__title">Адрес</h3>
+                <div class="information-card__body">
+                  <div class="information-card__row">
+                    <span class="information-card__name">Почтовый индекс:</span>
+                    <span class="information-card__value">650000</span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Город:</span>
+                    <span class="information-card__value">Кемерово</span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Улица:</span>
+                    <span class="information-card__value">пр. Притомский</span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Дом:</span>
+                    <span class="information-card__value">18</span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Квартира:</span>
+                    <span class="information-card__value">41</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="information__col">
+              <div class="information-card">
+                <h3 class="information-card__title">Контакты</h3>
+                <div class="information-card__body">
+                  <div class="information-card__row">
+                    <span class="information-card__name">Электронная почта:</span>
+                    <span class="information-card__value">
+                      <a href="mailto:customer@customer.com" class="information-card__link">customer@customer.com</a>
+                    </span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Телефоны:</span>
+                    <span class="information-card__value">
+                      <a href="tel:+79543488965" class="information-card__link">+79543488965</a>
+                    </span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Телефоны:</span>
+                    <span class="information-card__value">
+                      <a href="tel:+79543488964" class="information-card__link">+79543488964</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="information__col">
+              <div class="information-card">
+                <h3 class="information-card__title">Социальные сети и мессенджеры</h3>
+                <div class="information-card__body">
+                  <div class="information-card__row">
+                    <span class="information-card__name">Whatsapp:</span>
+                    <span class="information-card__value information-card__value_no">нет</span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">VK:</span>
+                    <span class="information-card__value">ivanov1565</span>
+                  </div>
+                  <div class="information-card__row">
+                    <span class="information-card__name">Instagram:</span>
+                    <span class="information-card__value">ivaivanov1236</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="information__row">
+              <div class="information-card">
+                <h3 class="information-card__title">Описание</h3>
+                <div class="information-card__body">
+                  <div class="information-card__text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad asperiores assumenda at aut beatae debitis distinctio dolores eius, eligendi eos error excepturi hic impedit ipsum iusto laboriosam molestiae mollitia neque nihil obcaecati officia quasi quod reprehenderit sed sequi sint soluta velit voluptas voluptates? Commodi eum exercitationem facilis harum incidunt ipsum laudantium mollitia possimus tempore, voluptas. Commodi dicta expedita impedit labore molestias quibusdam voluptatem. Commodi deleniti eius libero nesciunt repudiandae unde vel. Adipisci aperiam assumenda cumque debitis deleniti dicta dolor earum fugiat impedit ipsum labore laboriosam libero magnam molestiae obcaecati odit officia possimus quam reiciendis, repellat sint tempore ut, veritatis?
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Документы">2</mat-tab>
+        <mat-tab label="Сделки">3</mat-tab>
+        <mat-tab label="Задачи">4</mat-tab>
+        <mat-tab label="История">5</mat-tab>
+        <mat-tab label="Статистика">6</mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>
