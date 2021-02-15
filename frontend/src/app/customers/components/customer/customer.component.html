@@ -1,42 +1,44 @@
-<div class="customer">
+<mat-spinner *ngIf="(isLoading$ | async); else success"></mat-spinner>
+<ng-template #success>
+<div class="customer" *ngIf="(currentCustomer$ | async)[0] as customer">
   <div class="row">
     <mat-card class="customer-card">
       <div class="customer-card-row">
         <span class="customer-card-span">ФИО:</span>
-        <strong class="customer-card-strong">Иванов Иван Иванович</strong>
+        <strong class="customer-card-strong">{{ customer.surname + ' ' + customer.name + ' ' + customer.patronym }}</strong>
       </div>
       <div class="customer-card-row">
         <span class="customer-card-span">Дата рождения:</span>
-        <strong class="customer-card-strong">13.07.1984</strong>
+        <strong class="customer-card-strong">{{ customer.birthday | date : 'dd.MM.y' }}</strong>
       </div>
       <div class="customer-card-row">
         <span class="customer-card-span">Дата добавления:</span>
-        <strong class="customer-card-strong">19.01.2021</strong>
+        <strong class="customer-card-strong">{{ customer.createdAt | date : 'dd.MM.y' }}</strong>
       </div>
       <div class="customer-card-row">
         <span class="customer-card-span">Добавил:</span>
         <strong class="customer-card-strong">
-          <a [routerLink]="['/dashboard', 'users', ':id']">nikola</a> <!-- TODO - исправить id пользователя-->
+          <a [routerLink]="['/dashboard', 'users', customer.createdById]">{{ customer.createdByLogin }}</a>
         </strong>
       </div>
       <div class="customer-card-row">
         <span class="customer-card-span">Ответственный:</span>
         <strong class="customer-card-strong">
-          <a [routerLink]="['/dashboard', 'users', ':id']">nikola</a> <!-- TODO - исправить id пользователя-->
+          <a [routerLink]="['/dashboard', 'users', customer.assignedUserId]">{{ customer.assignedUserLogin[0].login }}</a>
         </strong>
       </div>
       <div class="customer-card-row">
         <span class="customer-card-span">Не беспокоить:</span>
-        <span>Да</span>
+        <span>{{ customer.doNotCall ? 'Да' : 'Нет' }}</span>
       </div>
     </mat-card>
-    <a [routerLink]="['/dashboard', 'customers', 'edit', ':id']" class="customer-link-btn"> <!--TODO - исправить потом id-->
+    <a [routerLink]="['/dashboard', 'customers', 'edit', customer._id]" class="customer-link-btn">
       <button mat-raised-button color="accent">
         <mat-icon class="icon-color--white" matPrefix>edit</mat-icon>
         Редактировать
       </button>
     </a>
-    <button mat-raised-button color="warn" (click)="onRemove()"> <!--TODO - исправить потом id-->
+    <button mat-raised-button color="warn" (click)="onRemove(customer._id)">
       <mat-icon class="icon-color--white" matPrefix>delete</mat-icon>
       Удалить
     </button>
@@ -52,23 +54,23 @@
                 <div class="information-card__body">
                   <div class="information-card__row">
                     <span class="information-card__name">Почтовый индекс:</span>
-                    <span class="information-card__value">650000</span>
+                    <span class="information-card__value">{{ customer.addressPostalCode }}</span>
                   </div>
                   <div class="information-card__row">
                     <span class="information-card__name">Город:</span>
-                    <span class="information-card__value">Кемерово</span>
+                    <span class="information-card__value">{{ customer.addressCity }}</span>
                   </div>
                   <div class="information-card__row">
                     <span class="information-card__name">Улица:</span>
-                    <span class="information-card__value">пр. Притомский</span>
+                    <span class="information-card__value">{{ customer.addressStreet }}</span>
                   </div>
                   <div class="information-card__row">
                     <span class="information-card__name">Дом:</span>
-                    <span class="information-card__value">18</span>
+                    <span class="information-card__value">{{ customer.addressHome }}</span>
                   </div>
                   <div class="information-card__row">
                     <span class="information-card__name">Квартира:</span>
-                    <span class="information-card__value">41</span>
+                    <span class="information-card__value" [class.information-card__value_no]="!customer.addressRoom">{{ customer.addressRoom ? customer.addressRoom : 'нет' }}</span>
                   </div>
                 </div>
               </div>
@@ -80,19 +82,13 @@
                   <div class="information-card__row">
                     <span class="information-card__name">Электронная почта:</span>
                     <span class="information-card__value">
-                      <a href="mailto:customer@customer.com" class="information-card__link">customer@customer.com</a>
+                      <a href="mailto:{{customer.email}}" class="information-card__link">{{ customer.email }}</a>
                     </span>
                   </div>
-                  <div class="information-card__row">
-                    <span class="information-card__name">Телефоны:</span>
+                  <div class="information-card__row" *ngFor="let phone of customer.phones">
+                    <span class="information-card__name">Телефон:</span>
                     <span class="information-card__value">
-                      <a href="tel:+79543488965" class="information-card__link">+79543488965</a>
-                    </span>
-                  </div>
-                  <div class="information-card__row">
-                    <span class="information-card__name">Телефоны:</span>
-                    <span class="information-card__value">
-                      <a href="tel:+79543488964" class="information-card__link">+79543488964</a>
+                      <a href="tel:{{phone}}" class="information-card__link">{{ phone }}</a>
                     </span>
                   </div>
                 </div>
@@ -102,17 +98,9 @@
               <div class="information-card">
                 <h3 class="information-card__title">Социальные сети и мессенджеры</h3>
                 <div class="information-card__body">
-                  <div class="information-card__row">
-                    <span class="information-card__name">Whatsapp:</span>
-                    <span class="information-card__value information-card__value_no">нет</span>
-                  </div>
-                  <div class="information-card__row">
-                    <span class="information-card__name">VK:</span>
-                    <span class="information-card__value">ivanov1565</span>
-                  </div>
-                  <div class="information-card__row">
-                    <span class="information-card__name">Instagram:</span>
-                    <span class="information-card__value">ivaivanov1236</span>
+                  <div class="information-card__row" *ngFor="let contact of customer.contactsList">
+                    <span class="information-card__name">{{ contact.name }}:</span>
+                    <span class="information-card__value" [class.information-card__value_no]="!contact.value">{{ contact.value ? contact.value : 'нет' }}</span>
                   </div>
                 </div>
               </div>
@@ -122,7 +110,7 @@
                 <h3 class="information-card__title">Описание</h3>
                 <div class="information-card__body">
                   <div class="information-card__text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad asperiores assumenda at aut beatae debitis distinctio dolores eius, eligendi eos error excepturi hic impedit ipsum iusto laboriosam molestiae mollitia neque nihil obcaecati officia quasi quod reprehenderit sed sequi sint soluta velit voluptas voluptates? Commodi eum exercitationem facilis harum incidunt ipsum laudantium mollitia possimus tempore, voluptas. Commodi dicta expedita impedit labore molestias quibusdam voluptatem. Commodi deleniti eius libero nesciunt repudiandae unde vel. Adipisci aperiam assumenda cumque debitis deleniti dicta dolor earum fugiat impedit ipsum labore laboriosam libero magnam molestiae obcaecati odit officia possimus quam reiciendis, repellat sint tempore ut, veritatis?
+                    {{ customer.description ? customer.description : 'Нет данных.'}}
                   </div>
                 </div>
               </div>
@@ -138,3 +126,4 @@
     </mat-card>
   </div>
 </div>
+</ng-template>

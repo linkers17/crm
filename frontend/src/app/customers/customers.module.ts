@@ -20,6 +20,8 @@ import {CustomersService} from "./services/customers.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import { CustomerComponent } from './components/customer/customer.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import {GetCustomerByIdEffect} from "./store/effects/getCustomer.effect";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 
@@ -30,7 +32,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     RouterModule,
     StoreModule.forFeature('customers', reducer),
     EffectsModule.forFeature([
-      GetCustomersEffect
+      GetCustomersEffect,
+      GetCustomerByIdEffect
     ]),
     MatIconModule,
     MatButtonModule,
@@ -42,7 +45,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatSortModule,
     MatPaginatorModule,
     ReactiveFormsModule,
-    MatTabsModule
+    MatTabsModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     CustomersService

@@ -155,7 +155,7 @@ module.exports.getCustomerById = async (req, res) => {
 
             delete customer[0].contacts;
 
-            return res.status(200).json(customer);
+            return res.status(200).json({customer});
 
         }
 
