@@ -7,6 +7,11 @@ import {
   getCustomerByIdSuccessAction
 } from "./actions/getCustomer.action";
 import {routerNavigationAction} from "@ngrx/router-store";
+import {
+  removeCustomerAction,
+  removeCustomerFailureAction,
+  removeCustomerSuccessAction
+} from "./actions/removeCustomer.action";
 
 const initialState: CustomersStateInterface = {
   data: null,
@@ -61,6 +66,33 @@ const customerReducer = createReducer(
   ),
   on(
     getCustomerByIdFailureAction,
+    (state, action): CustomersStateInterface => ({
+      ...state,
+      isLoading: false,
+      error: action.errors
+    })
+  ),
+  on(
+    removeCustomerAction,
+    (state): CustomersStateInterface => ({
+      ...state,
+      isLoading: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    removeCustomerSuccessAction,
+    (state, action): CustomersStateInterface => ({
+      ...state,
+      isLoading: false,
+      success: action.message,
+      data: state.data.filter(customer => customer._id !== action.id),
+      count: state.count - 1
+    })
+  ),
+  on(
+    removeCustomerFailureAction,
     (state, action): CustomersStateInterface => ({
       ...state,
       isLoading: false,

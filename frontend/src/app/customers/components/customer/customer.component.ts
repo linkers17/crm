@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
 import {GetCustomerInterface} from "../../types/getCustomer.interface";
 import {currentCustomerSelector, isLoadingCustomersSelector} from "../../store/selectors";
+import {removeCustomerAction} from "../../store/actions/removeCustomer.action";
 
 @Component({
   selector: 'app-customer',
@@ -36,6 +37,6 @@ export class CustomerComponent implements OnInit {
   }
 
   onRemove(id: string): void {
-
+    this.store.dispatch(removeCustomerAction({id, redirect: true}));
   }
 }

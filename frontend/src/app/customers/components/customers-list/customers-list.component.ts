@@ -13,6 +13,7 @@ import {getCustomersAction} from "../../store/actions/getCustomers.action";
 import {filter, tap} from "rxjs/operators";
 import {countCustomersSelector, customersSelector} from "../../store/selectors";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {removeCustomerAction} from "../../store/actions/removeCustomer.action";
 
 @Component({
   selector: 'app-customers-list',
@@ -144,8 +145,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   // Удаление клиента
-  onRemove(_id: string): void {
-
+  onRemove(id: string): void {
+    this.store.dispatch(removeCustomerAction({id, redirect: false}));
   }
 
   ngOnDestroy(): void {

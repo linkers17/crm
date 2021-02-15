@@ -24,6 +24,7 @@ import {GetCustomerByIdEffect} from "./store/effects/getCustomer.effect";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
 import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
+import {RemoveCustomerEffect} from "./store/effects/removeCustomer.effect";
 
 
 
@@ -35,7 +36,8 @@ import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messag
     StoreModule.forFeature('customers', reducer),
     EffectsModule.forFeature([
       GetCustomersEffect,
-      GetCustomerByIdEffect
+      GetCustomerByIdEffect,
+      RemoveCustomerEffect
     ]),
     MatIconModule,
     MatButtonModule,
