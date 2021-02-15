@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {catchError, map, switchMap, tap} from "rxjs/operators";
+import {catchError, delay, map, switchMap, tap} from "rxjs/operators";
 import {of} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Location} from "@angular/common";
@@ -35,6 +35,7 @@ export class GetCustomerByIdEffect {
   redirectAfterFailure$ = createEffect(
     () => this.actions$.pipe(
       ofType(getCustomerByIdFailureAction),
+      delay(10),
       tap(() => {
         this.location.back();
       })

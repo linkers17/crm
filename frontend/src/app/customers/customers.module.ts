@@ -22,6 +22,8 @@ import { CustomerComponent } from './components/customer/customer.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {GetCustomerByIdEffect} from "./store/effects/getCustomer.effect";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
+import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
 
 
 
@@ -46,7 +48,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatPaginatorModule,
     ReactiveFormsModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SuccessMessagesModule,
+    BackendErrorMessagesModule
   ],
   providers: [
     CustomersService
