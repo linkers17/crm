@@ -256,6 +256,8 @@ module.exports.updateCustomer = async (req, res) => {
             ]}
         );
 
+        console.log('body', req.body);
+
         if (candidate) {
             return res.status(409).json({errors: 'Клиент с таким email уже существует'});
         } else if (
@@ -269,8 +271,7 @@ module.exports.updateCustomer = async (req, res) => {
             req.body.addressHome.trim() === '' ||
             req.body.addressRoom.trim() === '' ||
             req.body.phones.length === 0 ||
-            req.body.email.trim() === '' ||
-            req.body.assignedUserId.trim() === ''
+            req.body.email.trim() === ''
         ) {
             
             return res.status(409).json({errors: 'Заполните обязательные поля'});

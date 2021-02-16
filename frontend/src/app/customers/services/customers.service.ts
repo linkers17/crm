@@ -5,6 +5,8 @@ import {environment} from "../../../environments/environment";
 import {CustomersResponseInterface} from "../types/customersResponse.interface";
 import {GetCustomerResponseInterface} from "../types/getCustomerResponse.interface";
 import {BackendMessagesInterface} from "../../shared/types/backendMessages.interface";
+import {UpdateCustomerRequestInterface} from "../types/updateCustomerRequest.interface";
+import {UpdateCustomerResponseInterface} from "../types/updateCustomerResponse.interface";
 
 @Injectable()
 export class CustomersService {
@@ -22,6 +24,11 @@ export class CustomersService {
   getCustomer(id: string): Observable<GetCustomerResponseInterface> {
     const url = `${environment.API_URL}/customers/${id}`;
     return this.http.get<GetCustomerResponseInterface>(url);
+  }
+
+  updateCustomer(id: string, data: UpdateCustomerRequestInterface): Observable<UpdateCustomerResponseInterface> {
+    const url = `${environment.API_URL}/customers/${id}`;
+    return this.http.patch<UpdateCustomerResponseInterface>(url, data);
   }
 
   removeCustomer(id: string): Observable<BackendMessagesInterface> {

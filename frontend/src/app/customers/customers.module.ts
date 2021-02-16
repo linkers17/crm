@@ -27,6 +27,7 @@ import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messag
 import {RemoveCustomerEffect} from "./store/effects/removeCustomer.effect";
 import { CustomerEditComponent } from './components/customer-edit/customer-edit.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {UpdateCustomerEffect} from "./store/effects/updateCustomer.effect";
 
 
 
@@ -39,7 +40,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     EffectsModule.forFeature([
       GetCustomersEffect,
       GetCustomerByIdEffect,
-      RemoveCustomerEffect
+      RemoveCustomerEffect,
+      UpdateCustomerEffect
     ]),
     MatIconModule,
     MatButtonModule,

@@ -14,6 +14,8 @@ import {getCustomerByIdAction} from "../../store/actions/getCustomer.action";
 import {filter} from "rxjs/operators";
 import {CurrentUserInterface} from "../../../shared/types/currentUser.interface";
 import {currentUserSelector} from "../../../auth/store/selectors";
+import {UpdateCustomerRequestInterface} from "../../types/updateCustomerRequest.interface";
+import {updateCustomerAction} from "../../store/actions/updateCustomer.action";
 
 @Component({
   selector: 'app-customer-edit',
@@ -25,7 +27,6 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   // selectors
   isSubmitting$: Observable<boolean>;
   isLoading$: Observable<boolean>;
-  currentCustomer$: Observable<GetCustomerInterface[] | null>;
   currentUser$: Observable<CurrentUserInterface | null>;
 
   customer: GetCustomerInterface;
@@ -44,8 +45,8 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.initializeListeners();
     this.initializeValues();
+    this.initializeListeners();
     this.store.dispatch(getCustomerByIdAction({id: this.id}));
   }
 
@@ -63,6 +64,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
         select(currentCustomerSelector),
         filter(currentCustomer => currentCustomer !== null))
         .subscribe((currentCustomer: GetCustomerInterface[]) => {
+          console.log('subscribe');
           this.customer = currentCustomer[0];
           this.doNotCall = this.customer.doNotCall;
           this.initializeForm();
@@ -130,7 +132,13 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(id: string): void {
-
+    const request: UpdateCustomerRequestInterface = {
+      ...this.form.value,
+      phones: this.form.value.phones.map((phone: string) => `+7${phone}`),
+      doNotCall: this.doNotCall,
+      documentIds: []   // TODO - потом добавить редактирование документов
+    };
+    this.store.dispatch(updateCustomerAction({id, request}));
   }
 
   redirectToBack(): void {

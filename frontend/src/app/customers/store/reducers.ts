@@ -12,6 +12,11 @@ import {
   removeCustomerFailureAction,
   removeCustomerSuccessAction
 } from "./actions/removeCustomer.action";
+import {
+  updateCustomerAction,
+  updateCustomerFailureAction,
+  updateCustomerSuccessAction
+} from "./actions/updateCustomer.action";
 
 const initialState: CustomersStateInterface = {
   data: null,
@@ -55,8 +60,7 @@ const customerReducer = createReducer(
       ...state,
       isLoading: true,
       error: null,
-      success: null,
-      currentCustomer: null
+      success: null
     })
   ),
   on(
@@ -103,10 +107,35 @@ const customerReducer = createReducer(
     })
   ),
   on(
+    updateCustomerAction,
+    (state): CustomersStateInterface => ({
+      ...state,
+      isSubmitting: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    updateCustomerSuccessAction,
+    (state): CustomersStateInterface => ({
+      ...state,
+      isSubmitting: false,
+      success: {message: 'Изменения успешно сохранены.'}
+    })
+  ),
+  on(
+    updateCustomerFailureAction,
+    (state, action): CustomersStateInterface => ({
+      ...state,
+      isSubmitting: false,
+      error: action.errors
+    })
+  ),
+  on(
     routerNavigationAction,
     (state): CustomersStateInterface => ({
       ...state,
-      //currentCustomer: null,
+      currentCustomer: null,
       error: null,
       success: null
     })
