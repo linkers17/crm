@@ -22,6 +22,7 @@ import {CustomersModule} from "../../customers/customers.module";
 import {CustomerPageComponent} from "../../customers/components/customer-page/customer-page.component";
 import {CustomersListComponent} from "../../customers/components/customers-list/customers-list.component";
 import {CustomerComponent} from "../../customers/components/customer/customer.component";
+import {CustomerEditComponent} from "../../customers/components/customer-edit/customer-edit.component";
 
 const routes: Routes = [
   {
@@ -62,6 +63,10 @@ const routes: Routes = [
           {
             path: '',
             component: CustomersListComponent
+          },
+          {
+            path: 'edit/:id',
+            component: CustomerEditComponent
           },
           {
             path: ':id',

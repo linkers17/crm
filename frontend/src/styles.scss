@@ -13,6 +13,13 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 // display
 
 .d {
@@ -78,6 +85,11 @@ table {
   &--center {
     justify-content: space-around;
   }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
 }
 
 .button-submit {
@@ -164,6 +176,10 @@ table {
   width: 50%;
   margin: 100px auto 0; // TODO - перенести потом
 
+  &_70 {
+    width: 70%;
+  }
+
   &-header {
     border-radius: 3px;
     margin-top: -30px !important;
@@ -232,6 +248,24 @@ table {
 
   &-body {
     padding: 20px;
+
+    &_70 {
+      width: 70%;
+    }
+
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > * {
+        width: 30%;
+      }
+
+      &-full {
+        width: 100%;
+      }
+    }
   }
 }
 // */ card-site

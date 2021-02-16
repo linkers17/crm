@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="(isLoading$ | async); else success"></mat-spinner>
+<mat-spinner class="loader" color="accent" *ngIf="(isLoading$ | async); else success"></mat-spinner>
 <ng-template #success>
 <div class="customer" *ngIf="(currentCustomer$ | async) && (currentCustomer$ | async)[0] as customer">
   <div class="row">

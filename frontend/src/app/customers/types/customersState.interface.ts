@@ -7,6 +7,7 @@ export interface CustomersStateInterface {
   data: CustomersInterface[] | null,
   error: BackendErrorsInterface | null,
   isLoading: boolean,
+  isSubmitting: boolean,
   success: BackendMessagesInterface | null,
   currentCustomer: GetCustomerInterface[] | null,
   count: number | null

@@ -25,11 +25,13 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
 import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
 import {RemoveCustomerEffect} from "./store/effects/removeCustomer.effect";
+import { CustomerEditComponent } from './components/customer-edit/customer-edit.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 
 @NgModule({
-  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent],
+  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent, CustomerEditComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -50,6 +52,7 @@ import {RemoveCustomerEffect} from "./store/effects/removeCustomer.effect";
     MatPaginatorModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatCheckboxModule,
     MatProgressSpinnerModule,
     SuccessMessagesModule,
     BackendErrorMessagesModule

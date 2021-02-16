@@ -1,0 +1,184 @@
+<mat-card class="card-site card-site_70 main-panel-content-card" *ngIf="customer; else loader">
+  <div class="card-site-header card-site-header--green">
+    <h2>Редактировать клиента</h2>
+    <span>{{ customer.surname + ' ' + customer.name + ' ' + customer.patronym}}</span>
+  </div>
+  <div class="card-site-body">
+    <form
+      (ngSubmit)="onSubmit(customer._id)"
+      [formGroup]="form"
+    >
+      <div class="card-site-body__row">
+        <mat-form-field>
+          <mat-label>Фамилия</mat-label>
+          <input type="text" matInput formControlName="surname">
+          <mat-error *ngIf="form.get('surname').hasError('required') && form.get('surname').touched">
+            <strong>Фамилия</strong> обязательна для заполнения
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Имя</mat-label>
+          <input type="text" matInput formControlName="name">
+          <mat-error *ngIf="form.get('name').hasError('required') && form.get('name').touched">
+            <strong>Имя</strong> обязательно для заполнения
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Отчество</mat-label>
+          <input type="text" matInput formControlName="patronym">
+          <mat-error *ngIf="form.get('patronym').hasError('required') && form.get('patronym').touched">
+            <strong>Отчество</strong> обязательно для заполнения
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="card-site-body__row">
+        <mat-form-field>
+          <mat-label>Дата рождения</mat-label>
+          <input type="date" matInput formControlName="birthday">
+          <mat-error *ngIf="form.get('birthday').hasError('required') && form.get('birthday').touched">
+            <strong>Дата рождения</strong> обязательна для заполнения
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input type="text" matInput formControlName="email">
+          <mat-error *ngIf="form.get('email').hasError('required') && form.get('email').touched">
+            <strong>Email</strong> обязателен для заполнения
+          </mat-error>
+          <mat-error *ngIf="form.get('email').hasError('email') && form.get('email').touched">
+            Введите корректный Email
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Веб-сайт</mat-label>
+          <input type="text" matInput formControlName="site">
+        </mat-form-field>
+      </div>
+      <div class="card-site-body__row">
+        <mat-form-field>
+          <mat-label>Почтовый индекс</mat-label>
+          <input type="text" matInput formControlName="addressPostalCode">
+          <mat-error *ngIf="form.get('addressPostalCode').hasError('required') && form.get('addressPostalCode').touched">
+            <strong>Почтовый индекс</strong> обязателен для заполнения
+          </mat-error>
+          <mat-error *ngIf="form.get('addressPostalCode').hasError('maxlength') && form.get('addressPostalCode').touched">
+            <strong>Почтовый индекс</strong> должен содержать максимум {{ form.get('addressPostalCode').errors['maxlength']['requiredLength'] }} символов
+          </mat-error>
+          <mat-error *ngIf="form.get('addressPostalCode').hasError('minlength') && form.get('addressPostalCode').touched">
+            <strong>Почтовый индекс</strong> должен содержать минимум {{ form.get('addressPostalCode').errors['minlength']['requiredLength'] }} символов
+          </mat-error>
+          <mat-error *ngIf="form.get('addressPostalCode').hasError('pattern') && form.get('addressPostalCode').touched">
+            <strong>Почтовый индекс</strong> должен содержать только цифры
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Город</mat-label>
+          <input type="text" matInput formControlName="addressCity">
+          <mat-error *ngIf="form.get('addressCity').hasError('required') && form.get('addressCity').touched">
+            <strong>Город</strong> обязателен для заполнения
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Улица</mat-label>
+          <input type="text" matInput formControlName="addressStreet">
+          <mat-error *ngIf="form.get('addressStreet').hasError('required') && form.get('addressStreet').touched">
+            <strong>Улица</strong> обязательна для заполнения
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="card-site-body__row">
+        <mat-form-field>
+          <mat-label>Дом</mat-label>
+          <input type="text" matInput formControlName="addressHome">
+          <mat-error *ngIf="form.get('addressHome').hasError('required') && form.get('addressHome').touched">
+            <strong>Дом</strong> обязателен для заполнения
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Квартира</mat-label>
+          <input type="text" matInput formControlName="addressRoom">
+          <mat-error *ngIf="form.get('addressRoom').hasError('pattern') && form.get('addressRoom').touched">
+            <strong>Квартира</strong> должна содержать только цифры
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox [checked]="doNotCall">Не беспокоить</mat-checkbox>
+      </div>
+      <div class="card-site-body__row">
+        <div>
+          <span class="phones-title">Телефоны:</span>
+          <div formArrayName="phones">
+            <div class="phones-row" *ngFor="let phone of phoneGroups.controls; let i = index">
+              <mat-form-field>
+                <mat-label>Телефон</mat-label>
+                <span matPrefix>+7 &nbsp;</span>
+                <input type="tel" formControlName="{{ i }}" matInput placeholder="900-000-0000">
+                <mat-error *ngIf="phone.hasError('required') && phone.touched">
+                  Поле <strong>Телефон</strong> обязательно для заполнения
+                </mat-error>
+                <mat-error *ngIf="phone.hasError('maxlength')">
+                  <strong>Телефон</strong> должен содержать максимум {{ phone.errors['maxlength']['requiredLength'] }} символов
+                </mat-error>
+                <mat-error *ngIf="phone.hasError('pattern')">
+                  Поле <strong>Телефон</strong> должно содержать только цифры
+                </mat-error>
+              </mat-form-field>
+              <button class="phones-btn--remove" type="button" mat-mini-fab color="warn" (click)="removePhone(i)" *ngIf="phoneGroups.controls.length > 1">
+                <mat-icon class="icon-color--white">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <button type="button" mat-mini-fab color="primary" (click)="addPhone()" [disabled]="phoneGroups.invalid">
+            <mat-icon class="icon-color--white">add</mat-icon>
+          </button>
+        </div>
+        <div class="social-input-wrapper" *ngIf="customer.contactsList && customer.contactsList.length">
+          <span class="phones-title">Соц. сети и мессенджеры:</span>
+          <div class="contacts-wrapper" formArrayName="contacts">
+            <mat-form-field *ngFor="let contact of contactGroups.controls; let i = index">
+              <img [src]="'http://localhost:7777/' + customer.contactsList[i].img" [alt]="customer.contactsList[i].name" matPrefix class="img-input">
+              <mat-label>{{ customer.contactsList[i].name }}</mat-label>
+              <input type="text" formControlName="{{ i }}" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-form-field>
+          <mat-label>Менеджер</mat-label>
+          <mat-select formControlName="assignedUserId">
+            <mat-option>--</mat-option>
+            <mat-option value="5f982c84a87f830668df9bbe">temp_manager</mat-option>
+            <mat-option value="5fa43fb7b0bf8d24481e1d0f">temp_manager2</mat-option>
+            <mat-option value="5f97c367e890e82ac8c6003f">superadmin</mat-option>
+            <mat-option value="5feaf16ef350ea51e4968059">test_new_user</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="card-site-body__row">
+        <mat-form-field class="card-site-body__row-full">
+          <mat-label>Описание</mat-label>
+          <textarea formControlName="description" matInput rows="5"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="buttons">
+        <button
+          mat-raised-button
+          color="primary"
+          class="button-submit"
+          type="submit"
+          [disabled]="form.invalid || (isSubmitting$ | async)"
+        >Редактировать</button>
+        <button
+          mat-raised-button
+          color="warn"
+          class="button-submit"
+          type="button"
+          [disabled]="(isSubmitting$ | async)"
+          (click)="redirectToBack()"
+        >Назад</button>
+      </div>
+    </form>
+  </div>
+</mat-card>
+<ng-template #loader>
+  <mat-progress-spinner color="accent" mode="indeterminate" class="loader"></mat-progress-spinner>
+</ng-template>

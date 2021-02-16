@@ -15,6 +15,11 @@ export const isLoadingCustomersSelector = createSelector(
   (customersState: CustomersStateInterface) => customersState.isLoading
 );
 
+export const isSubmittingCustomersSelector = createSelector(
+  customersFeatureSelectors,
+  (customersState: CustomersStateInterface) => customersState.isSubmitting
+);
+
 export const errorCustomersSelector = createSelector(
   customersFeatureSelectors,
   (customersState: CustomersStateInterface) => customersState.error

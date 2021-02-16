@@ -16,6 +16,7 @@ import {
 const initialState: CustomersStateInterface = {
   data: null,
   isLoading: false,
+  isSubmitting: false,
   error: null,
   currentCustomer: null,
   success: null,
@@ -28,7 +29,8 @@ const customerReducer = createReducer(
     getCustomersAction,
     (state): CustomersStateInterface => ({
       ...state,
-      isLoading: true
+      isLoading: true,
+      currentCustomer: null
     })
   ),
   on(
@@ -53,7 +55,8 @@ const customerReducer = createReducer(
       ...state,
       isLoading: true,
       error: null,
-      success: null
+      success: null,
+      currentCustomer: null
     })
   ),
   on(
@@ -103,7 +106,7 @@ const customerReducer = createReducer(
     routerNavigationAction,
     (state): CustomersStateInterface => ({
       ...state,
-      currentCustomer: null,
+      //currentCustomer: null,
       error: null,
       success: null
     })

@@ -4,6 +4,7 @@ const Tasks  =require('../models/Tasks');
 const Contacts  =require('../models/Contacts');
 const errorHandler = require('../utils/errorHandler');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 module.exports.getCustomers = async (req, res) => {
 
@@ -154,6 +155,9 @@ module.exports.getCustomerById = async (req, res) => {
             });
 
             delete customer[0].contacts;
+
+            // Форматируем дату
+            customer[0].birthday = moment(customer[0].birthday).format('YYYY-MM-DD');
 
             return res.status(200).json({customer});
 
