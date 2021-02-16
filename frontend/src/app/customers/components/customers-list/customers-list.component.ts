@@ -86,7 +86,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
       filter(customers => customers !== null)
     );
     this.subscription.add(this.customers$.subscribe(data => this.dataSource = new MatTableDataSource(data)));
-    this.subscription.add(this.currentUser$.subscribe(currentUser => this.disabled = currentUser.role === 'manager'));
+    this.subscription.add(this.currentUser$.pipe(filter(currentUser => currentUser !== null)).subscribe(currentUser => this.disabled = currentUser.role === 'manager'));
     this.baseUrl = this.router.url.split('?')[0].replace('/dashboard', '');
   }
 

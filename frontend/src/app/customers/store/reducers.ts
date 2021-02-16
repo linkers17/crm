@@ -34,8 +34,7 @@ const customerReducer = createReducer(
     getCustomersAction,
     (state): CustomersStateInterface => ({
       ...state,
-      isLoading: true,
-      currentCustomer: null
+      isLoading: true
     })
   ),
   on(

@@ -53,7 +53,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   initializeValues(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.currentUser$ = this.store.pipe(select(currentUserSelector));
-    this.subscription.add(this.currentUser$.subscribe(currentUser => this.disabled = currentUser.role === 'manager'));
+    this.subscription.add(this.currentUser$.pipe(filter(currentUser => currentUser !== null)).subscribe(currentUser => this.disabled = currentUser.role === 'manager'));
     this.isLoading$ = this.store.pipe(select(isLoadingCustomersSelector));
     this.isSubmitting$ = this.store.pipe(select(isSubmittingCustomersSelector));
   }
@@ -64,7 +64,6 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
         select(currentCustomerSelector),
         filter(currentCustomer => currentCustomer !== null))
         .subscribe((currentCustomer: GetCustomerInterface[]) => {
-          console.log('subscribe');
           this.customer = currentCustomer[0];
           this.doNotCall = this.customer.doNotCall;
           this.initializeForm();
