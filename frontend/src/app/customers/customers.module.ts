@@ -32,11 +32,12 @@ import { CustomerOrdersComponent } from './components/customer-orders/customer-o
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {AppModule} from "../app.module";
 import {PipesModule} from "../shared/pipes/pipes.module";
+import { CustomerCreateComponent } from './components/customer-create/customer-create.component';
 
 
 
 @NgModule({
-  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent, CustomerEditComponent, CustomerOrdersComponent],
+  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent, CustomerEditComponent, CustomerOrdersComponent, CustomerCreateComponent],
   imports: [
     CommonModule,
     RouterModule,

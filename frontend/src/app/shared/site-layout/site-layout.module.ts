@@ -23,6 +23,7 @@ import {CustomerPageComponent} from "../../customers/components/customer-page/cu
 import {CustomersListComponent} from "../../customers/components/customers-list/customers-list.component";
 import {CustomerComponent} from "../../customers/components/customer/customer.component";
 import {CustomerEditComponent} from "../../customers/components/customer-edit/customer-edit.component";
+import {CustomerCreateComponent} from "../../customers/components/customer-create/customer-create.component";
 
 const routes: Routes = [
   {
@@ -65,12 +66,25 @@ const routes: Routes = [
             component: CustomersListComponent
           },
           {
+            path: 'new',
+            component: CustomerCreateComponent,
+            data: {
+              title: 'Создание клиента'
+            }
+          },
+          {
             path: 'edit/:id',
-            component: CustomerEditComponent
+            component: CustomerEditComponent,
+            data: {
+              title: 'Редактирование клиента'
+            }
           },
           {
             path: ':id',
-            component: CustomerComponent
+            component: CustomerComponent,
+            data: {
+              title: 'Карточка клиента'
+            }
           }
         ]
       }
