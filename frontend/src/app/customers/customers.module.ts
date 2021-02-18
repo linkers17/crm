@@ -30,6 +30,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {UpdateCustomerEffect} from "./store/effects/updateCustomer.effect";
 import { CustomerOrdersComponent } from './components/customer-orders/customer-orders.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {AppModule} from "../app.module";
+import {PipesModule} from "../shared/pipes/pipes.module";
 
 
 
@@ -60,7 +62,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
     MatProgressSpinnerModule,
     SuccessMessagesModule,
     BackendErrorMessagesModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    PipesModule
   ],
   providers: [
     CustomersService
