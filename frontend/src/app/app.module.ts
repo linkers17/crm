@@ -16,6 +16,7 @@ import {SiteLayoutModule} from "./shared/site-layout/site-layout.module";
 import {reducer} from "./shared/store/reducers";
 import {StoreRouterConnectingModule} from "@ngrx/router-store";
 import {ChartsModule} from "ng2-charts";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {ChartsModule} from "ng2-charts";
     StoreRouterConnectingModule.forRoot(),
     HttpClientModule,
     ChartsModule,
+    MatNativeDateModule,
 
     // Layouts Modules
     AuthLayoutModule,

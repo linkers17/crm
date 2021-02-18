@@ -1,0 +1,58 @@
+.orders {
+  padding: 20px 0;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    &-title {
+      margin: 0 20px 0 0;
+    }
+  }
+
+  &__filter {
+    width: 98%;
+    margin: 0 auto 20px;
+
+    &-card {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      box-shadow: 0 5px 10px 2px rgba(34, 60, 80, 0.2);
+
+      &-title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-right: 15px;
+      }
+
+      &-form {
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+
+  &__table {
+    width: 98%;
+    margin: auto;
+  }
+}
+
+.table {
+  &-link {
+    text-decoration: none;
+    color: #2d49e0;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+.mat-cell {
+  text-align: center;
+}

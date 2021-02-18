@@ -28,11 +28,13 @@ import {RemoveCustomerEffect} from "./store/effects/removeCustomer.effect";
 import { CustomerEditComponent } from './components/customer-edit/customer-edit.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {UpdateCustomerEffect} from "./store/effects/updateCustomer.effect";
+import { CustomerOrdersComponent } from './components/customer-orders/customer-orders.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 
 
 @NgModule({
-  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent, CustomerEditComponent],
+  declarations: [CustomerPageComponent, CustomersListComponent, CustomerComponent, CustomerEditComponent, CustomerOrdersComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -57,7 +59,8 @@ import {UpdateCustomerEffect} from "./store/effects/updateCustomer.effect";
     MatCheckboxModule,
     MatProgressSpinnerModule,
     SuccessMessagesModule,
-    BackendErrorMessagesModule
+    BackendErrorMessagesModule,
+    MatDatepickerModule
   ],
   providers: [
     CustomersService
