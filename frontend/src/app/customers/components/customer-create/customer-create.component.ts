@@ -11,6 +11,7 @@ import {CurrentUserInterface} from "../../../shared/types/currentUser.interface"
 import {currentUserSelector} from "../../../auth/store/selectors";
 import {getContactsAction} from "../../../shared/modules/contacts/store/actions/getContacts.action";
 import {UpdateCustomerRequestInterface} from "../../types/updateCustomerRequest.interface";
+import {createCustomerAction} from "../../store/actions/createCustomer.action";
 
 @Component({
   selector: 'app-customer-create',
@@ -123,6 +124,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       doNotCall: this.doNotCall,
       documentIds: []   // TODO - потом добавить редактирование документов
     };
+    this.store.dispatch(createCustomerAction({request}));
   }
 
   redirectToBack(): void {

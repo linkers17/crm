@@ -8,8 +8,6 @@ export class StagePipe implements PipeTransform {
 
   transform(value: string): string {
 
-    console.log('value', value);
-
     switch (value) {
       case 'prospecting':
         return 'Привлечение клиента';

@@ -17,6 +17,16 @@ import {
   updateCustomerFailureAction,
   updateCustomerSuccessAction
 } from "./actions/updateCustomer.action";
+import {
+  createContactAction, createContactFailureAction,
+  createContactSuccessAction
+} from "../../shared/modules/contacts/store/actions/createContact.action";
+import {ContactsStateInterface} from "../../shared/modules/contacts/types/contactsState.interface";
+import {
+  createCustomerAction,
+  createCustomerFailureAction,
+  createCustomerSuccessAction
+} from "./actions/createCustomer.action";
 
 const initialState: CustomersStateInterface = {
   data: null,
@@ -124,6 +134,31 @@ const customerReducer = createReducer(
   ),
   on(
     updateCustomerFailureAction,
+    (state, action): CustomersStateInterface => ({
+      ...state,
+      isSubmitting: false,
+      error: action.errors
+    })
+  ),
+  on(
+    createCustomerAction,
+    (state): CustomersStateInterface => ({
+      ...state,
+      isSubmitting: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    createCustomerSuccessAction,
+    (state): CustomersStateInterface => ({
+      ...state,
+      isSubmitting: false,
+      success: {message: 'Клиент успешно создан.'}
+    })
+  ),
+  on(
+    createCustomerFailureAction,
     (state, action): CustomersStateInterface => ({
       ...state,
       isSubmitting: false,

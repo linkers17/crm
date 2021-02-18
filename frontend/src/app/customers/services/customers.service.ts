@@ -26,6 +26,11 @@ export class CustomersService {
     return this.http.get<GetCustomerResponseInterface>(url);
   }
 
+  createCustomer(data: UpdateCustomerRequestInterface): Observable<UpdateCustomerResponseInterface> {
+    const url = `${environment.API_URL}/customers`;
+    return this.http.post<UpdateCustomerResponseInterface>(url, data);
+  }
+
   updateCustomer(id: string, data: UpdateCustomerRequestInterface): Observable<UpdateCustomerResponseInterface> {
     const url = `${environment.API_URL}/customers/${id}`;
     return this.http.patch<UpdateCustomerResponseInterface>(url, data);

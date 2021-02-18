@@ -33,6 +33,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {AppModule} from "../app.module";
 import {PipesModule} from "../shared/pipes/pipes.module";
 import { CustomerCreateComponent } from './components/customer-create/customer-create.component';
+import {CreateCustomerEffect} from "./store/effects/createCustomer.effect";
 
 
 
@@ -46,7 +47,8 @@ import { CustomerCreateComponent } from './components/customer-create/customer-c
       GetCustomersEffect,
       GetCustomerByIdEffect,
       RemoveCustomerEffect,
-      UpdateCustomerEffect
+      UpdateCustomerEffect,
+      CreateCustomerEffect
     ]),
     MatIconModule,
     MatButtonModule,
