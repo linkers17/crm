@@ -1,4 +1,4 @@
-<mat-card class="card-site card-site_70 main-panel-content-card">
+<mat-card class="card-site card-site_70 main-panel-content-card" *ngIf="!loader; else load">
   <div class="card-site-header card-site-header--orange">
     <h2>Создать клиента</h2>
   </div>
@@ -178,3 +178,6 @@
     </form>
   </div>
 </mat-card>
+<ng-template #load>
+  <mat-progress-spinner color="accent" mode="indeterminate" class="loader"></mat-progress-spinner>
+</ng-template>
