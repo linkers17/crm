@@ -16,8 +16,11 @@
             <p>Обзор</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a [routerLink]="['/dashboard', '']" class="nav-link">
+        <li
+          class="nav-item"
+          [routerLinkActive]="'active'"
+        >
+          <a [routerLink]="['/dashboard', 'orders']" class="nav-link">
             <mat-icon>shopping_cart</mat-icon>
             <p>Заказы</p>
           </a>
@@ -112,10 +115,10 @@
           </button>
           <mat-menu #create="matMenu" xPosition="before">
             <button mat-menu-item>
-              <span>Заказ</span>
+              <a [routerLink]="['/dashboard', 'orders', 'new']" class="main-panel-toolbar-create-link">Заказ</a>
             </button>
             <button mat-menu-item>
-              <span>Клиент</span>
+              <a [routerLink]="['/dashboard', 'customers', 'new']" class="main-panel-toolbar-create-link">Клиент</a>
             </button>
             <button mat-menu-item>
               <span>Компания</span>
