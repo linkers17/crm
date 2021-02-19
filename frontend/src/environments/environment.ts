@@ -5,7 +5,14 @@
 export const environment = {
   production: false,
   API_URL: 'http://localhost:7777/api',
-  API_UPLOADS: 'http://localhost:7777'
+  API_UPLOADS: 'http://localhost:7777',
+  STAGES: [
+    {title: 'Привлечение клиента', value: 'prospecting'},
+    {title: 'Предложение', value: 'offer'},
+    {title: 'Согласование', value: 'negotiation'},
+    {title: 'Закрыто успешно', value: 'closed won'},
+    {title: 'Закрыто провалом', value: 'closed loose'}
+  ]
 };
 
 /*

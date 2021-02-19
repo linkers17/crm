@@ -6,6 +6,7 @@ import * as _moment from 'moment';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
+import {environment} from "../../../../environments/environment";
 
 const moment = _moment;
 export const MY_FORMATS = {
@@ -107,12 +108,7 @@ export class CustomerOrdersComponent implements OnInit {
   // Столбцы таблицы
 
   // Временные значения стадий заказа
-  stagesList = [
-    {title: 'Привлечение клиента', value: 'prospecting'},
-    {title: 'Предложение', value: 'offer'},
-    {title: 'Согласование', value: 'negotiation'},
-    {title: 'Закрыто успешно', value: 'closed won'},
-    {title: 'Закрыто провалом', value: 'closed loose'}];
+  stagesList = environment.STAGES;
 
   constructor() { }
 

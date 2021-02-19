@@ -18,11 +18,6 @@ import {
   updateCustomerSuccessAction
 } from "./actions/updateCustomer.action";
 import {
-  createContactAction, createContactFailureAction,
-  createContactSuccessAction
-} from "../../shared/modules/contacts/store/actions/createContact.action";
-import {ContactsStateInterface} from "../../shared/modules/contacts/types/contactsState.interface";
-import {
   createCustomerAction,
   createCustomerFailureAction,
   createCustomerSuccessAction
@@ -170,6 +165,7 @@ const customerReducer = createReducer(
     (state): CustomersStateInterface => ({
       ...state,
       currentCustomer: null,
+      data: null,
       error: null,
       success: null
     })
