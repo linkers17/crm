@@ -23,6 +23,8 @@ module.exports.generateAgreement = async (req, res) => {
             company = await Companies.findById(req.body.companyId);
         }
 
+        req.body.assignedUserId = req.body.assignedUserId ? req.body.assignedUserId : req.user.id;
+
         const user = await Users.findById(req.body.assignedUserId);
 
         // Стороны договора

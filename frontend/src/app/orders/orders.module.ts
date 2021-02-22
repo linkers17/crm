@@ -4,7 +4,7 @@ import { OrderPageComponent } from './components/order-page/order-page.component
 import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
 import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
 import {RouterModule} from "@angular/router";
-import { OrderCreateComponent } from './components/order-create/order-create.component';
+import {IFrameDocumentComponent, OrderCreateComponent} from './components/order-create/order-create.component';
 import {MatCardModule} from "@angular/material/card";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -17,11 +17,13 @@ import {reducer} from "./store/reducers";
 import {EffectsModule} from "@ngrx/effects";
 import {MatTableModule} from "@angular/material/table";
 import {MatIconModule} from "@angular/material/icon";
+import {OrdersServices} from "./services/orders.services";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 
 @NgModule({
-  declarations: [OrderPageComponent, OrderCreateComponent],
+  declarations: [OrderPageComponent, OrderCreateComponent, IFrameDocumentComponent],
   imports: [
     CommonModule,
     SuccessMessagesModule,
@@ -37,7 +39,11 @@ import {MatIconModule} from "@angular/material/icon";
     StoreModule.forFeature('orders', reducer),
     EffectsModule.forFeature([]),
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule
+  ],
+  providers: [
+    OrdersServices
   ]
 })
 export class OrdersModule { }

@@ -13,6 +13,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {isSubmittingOrdersSelector} from "../../store/selectors";
 import {ActivatedRoute} from "@angular/router";
 import {UpdateOrderRequestInterface} from "../../types/updateOrderRequest.interface";
+import {OrdersServices} from "../../services/orders.services";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-order-create',
@@ -27,6 +29,8 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   customerId: string;
   loader: boolean = true;
+  submit: boolean = false;
+  path: string = environment.API_UPLOADS;
   form: FormGroup;
   disabled: boolean;
   customers: any[];  // TODO - поменять тип
@@ -72,7 +76,9 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ordersService: OrdersServices,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -207,6 +213,58 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
 
   // Сгенерировать документ
   generateDoc(): void {
+    const request: UpdateOrderRequestInterface = {
+      ...this.form.value,
+      servicesList: this.servicesListSelected.map(service => {
+        delete service.id;
+        return service;
+      }),
+      documentIds: []
+    }
+    if (!request.hasOwnProperty('customerId')) {
+      request.customerId = '';
+    }
 
+    if (!request.hasOwnProperty('companyId')) {
+      request.companyId = '';
+    }
+
+    this.submit = true;
+    this.subscription.add(
+      this.ordersService.generateAgreement(request)
+        .subscribe(response => {
+          this.submit = false;
+          this.path = this.path + `/${response.path}`;
+          this.openDialog();
+          console.log('response', response);
+        })
+    );
   }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(IFrameDocumentComponent);
+
+    this.subscription.add(
+      dialogRef.afterClosed()
+        .subscribe(result => {
+          console.log('result', result);
+        })
+    );
+  }
+}
+
+@Component({
+  selector: 'IFrameDocument',
+  template: `
+    <mat-dialog-content class="mat-typography">
+        <iframe width="100%" height="500" src="http://localhost:7777/uploads/documents/superadmin.pdf" frameborder="0"></iframe>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Закрыть</button>
+      <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>-->
+    </mat-dialog-actions>
+  `
+})
+export class IFrameDocumentComponent {
+
 }
