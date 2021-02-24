@@ -1,0 +1,145 @@
+@mixin col($col) {
+  flex: 0 0 100% / (12 / $col);
+  max-width: 100% / (12 / $col);
+}
+
+.report {
+  &-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__radio-list {
+      & > * {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+
+  &-col {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  &-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    margin: 30px 0;
+    width: 100%;
+
+    &-body {
+      &__row {
+        display: flex;
+      }
+
+      &__col {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        flex-grow: 1;
+      }
+
+      &__title {
+        color: #564f4f;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      &__value {
+        font-weight: 700;
+        text-align: center;
+        font-size: 24px;
+      }
+    }
+
+    &_green {
+      background-color: #43a047;
+      color: #fff;
+    }
+
+    &_yellow {
+      background-color: #ffd740;
+      color: #302d2d;
+    }
+
+    &_red {
+      color: #fff;
+      background-color: #e53935;
+    }
+  }
+
+  &_bold {
+    font-weight: 700;
+  }
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-stat {
+  &-title {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  &-body {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+
+// cols
+
+.col {
+  &-1 {
+    @include col(1);
+  }
+
+  &-2 {
+    @include col(2);
+  }
+
+  &-3 {
+    @include col(3);
+  }
+  &-4 {
+    @include col(4);
+  }
+  &-5 {
+    @include col(5);
+  }
+  &-6 {
+    @include col(6);
+  }
+  &-8 {
+    @include col(8);
+  }
+
+  &-12 {
+    @include col(12);
+  }
+
+  &-9 {
+    @include col(9);
+  }
+}
+
+// */ cols

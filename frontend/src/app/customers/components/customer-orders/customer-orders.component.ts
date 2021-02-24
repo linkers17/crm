@@ -86,13 +86,13 @@ export class CustomerOrdersComponent implements OnInit {
     },
     {
       stage: 'closed won',
-      dateEnd: '2020-12-22T09:44:12.416Z',
+      dateEnd: '2021-01-27T09:44:12.416Z',
       _id: '5fdb42e00ba68343e8e8b1a0',
       title: 'Тест заказ 5',
       amount: 51800,
       createdById: '5fa43fb7b0bf8d24481e1d0f',
       createdByLogin: 'nikolaeva',
-      createdAt: '2020-12-18T11:37:04.922Z'
+      createdAt: '2021-01-24T11:37:04.922Z'
     },
     {
       stage: 'prospecting',
@@ -102,7 +102,7 @@ export class CustomerOrdersComponent implements OnInit {
       amount: 53300,
       createdById: '5f982c84a87f830668df9bbe',
       createdByLogin: 'nikolaeva',
-      createdAt: '2021-01-14T12:21:54.832Z'
+      createdAt: '2021-02-11T12:21:54.832Z'
     }
   ]);
   // Столбцы таблицы

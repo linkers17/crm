@@ -58,8 +58,11 @@
             <p>Документы</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a [routerLink]="['/dashboard', '']" class="nav-link">
+        <li
+          class="nav-item"
+          [routerLinkActive]="'active'"
+        >
+          <a [routerLink]="['/dashboard', 'reports']" class="nav-link">
             <mat-icon>insert_drive_file</mat-icon>
            <p>Отчёты</p>
           </a>

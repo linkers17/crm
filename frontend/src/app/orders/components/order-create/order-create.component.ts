@@ -43,28 +43,28 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
   servicesList = [
     {
       id: '1',
-      title: 'Услуга 1',
-      amount: 500
+      title: 'Установка видеонаблюдения',
+      amount: 9800
     },
     {
       id: '2',
-      title: 'Услуга 2',
-      amount: 1500
+      title: 'Установка противопожарной сигнализации',
+      amount: 16900
     },
     {
       id: '3',
-      title: 'Услуга 3',
-      amount: 2400
+      title: 'Поставка откатных ворот',
+      amount: 37900
     },
     {
       id: '4',
-      title: 'Услуга 4',
-      amount: 4400
+      title: 'Установка шлагбаума',
+      amount: 15000
     },
     {
       id: '5',
-      title: 'Услуга 5',
-      amount: 3800
+      title: 'Поставка систем кондиционирования',
+      amount: 29900
     }
   ];
 
@@ -257,7 +257,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
   selector: 'IFrameDocument',
   template: `
     <mat-dialog-content class="mat-typography">
-        <iframe width="100%" height="500" src="http://localhost:7777/uploads/documents/superadmin.pdf" frameborder="0"></iframe>
+        <iframe width="100%" height="500" src="http://localhost:7777/uploads/documents/Игнатов 5.pdf" frameborder="0"></iframe>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Закрыть</button>

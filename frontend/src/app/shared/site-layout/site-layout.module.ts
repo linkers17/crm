@@ -27,6 +27,9 @@ import {CustomerCreateComponent} from "../../customers/components/customer-creat
 import {OrderPageComponent} from "../../orders/components/order-page/order-page.component";
 import {OrderCreateComponent} from "../../orders/components/order-create/order-create.component";
 import {OrdersModule} from "../../orders/orders.module";
+import {ReportsModule} from "../../reports/reports.module";
+import {ReportPageComponent} from "../../reports/components/report-page/report-page.component";
+import {ReportListComponent} from "../../reports/components/report-list/report-list.component";
 
 const routes: Routes = [
   {
@@ -124,6 +127,40 @@ const routes: Routes = [
             }
           }*/
         ]
+      },
+      {
+        path: 'reports',
+        component: ReportPageComponent,
+        data: {
+          title: 'Отчеты'
+        },
+        children: [
+          {
+            path: '',
+            component: ReportListComponent
+          },
+          /*{
+            path: 'new',
+            component: OrderCreateComponent,
+            data: {
+              title: 'Создание заказа'
+            }
+          },*/
+          /*{
+            path: 'edit/:id',
+            component: OrderEditComponent,
+            data: {
+              title: 'Редактирование клиента'
+            }
+          },
+          {
+            path: ':id',
+            component: OrderComponent,
+            data: {
+              title: 'Карточка клиента'
+            }
+          }*/
+        ]
       }
     ]
   }
@@ -137,6 +174,7 @@ const routes: Routes = [
     DashboardModule,
     CustomersModule,
     OrdersModule,
+    ReportsModule,
     MatIconModule,
     MatToolbarModule,
     MatMenuModule,

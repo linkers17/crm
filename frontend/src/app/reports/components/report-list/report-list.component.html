@@ -1,0 +1,182 @@
+<div class="report">
+  <mat-card class="report-filter">
+    <span class="report_bold">Выберите период:</span>
+    <mat-radio-group aria-label="period" class="report-filter__radio-list">
+      <mat-radio-button value="1">Вчера</mat-radio-button>
+      <mat-radio-button value="2">Сегодня</mat-radio-button>
+      <mat-radio-button value="3" checked>7 дней</mat-radio-button>
+      <mat-radio-button value="4">30 дней</mat-radio-button>
+      <mat-radio-button value="5">Квартал</mat-radio-button>
+      <mat-radio-button value="6">Год</mat-radio-button>
+      <mat-radio-button value="7">Свой</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field>
+      <mat-label>Выберите диапазон дат</mat-label>
+      <mat-date-range-input [rangePicker]="picker" disabled>
+        <input matStartDate placeholder="Start date">
+        <input matEndDate placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button mat-flat-button color="primary">Сформировать отчет</button>
+  </mat-card>
+  <div class="report-row">
+    <div class="report-col col-3">
+      <mat-card class="report-card">
+        <div class="report-card-header card-site-header card-site-header--green">
+          <h3>Клиенты</h3>
+        </div>
+        <div class="report-card-body">
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Всего</span>
+              <span class="report-card-body__value">21</span>
+            </div>
+          </div>
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Новых</span>
+              <span class="report-card-body__value">5</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Текущих</span>
+              <span class="report-card-body__value">14</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Упущенных</span>
+              <span class="report-card-body__value">2</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="report-col col-3">
+      <mat-card class="report-card">
+        <div class="report-card-header card-site-header card-site-header--purple">
+          <h3>Компании</h3>
+        </div>
+        <div class="report-card-body">
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Всего</span>
+              <span class="report-card-body__value">11</span>
+            </div>
+          </div>
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Новых</span>
+              <span class="report-card-body__value">2</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Текущих</span>
+              <span class="report-card-body__value">8</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Упущенных</span>
+              <span class="report-card-body__value">1</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="report-col col-3">
+      <mat-card class="report-card">
+        <div class="report-card-header card-site-header">
+          <h3>Задачи</h3>
+        </div>
+        <div class="report-card-body">
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Всего</span>
+              <span class="report-card-body__value">27</span>
+            </div>
+          </div>
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Выполнено</span>
+              <span class="report-card-body__value">19</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Провалено</span>
+              <span class="report-card-body__value">8</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="report-col col-3">
+      <mat-card class="report-card">
+        <div class="report-card-header card-site-header card-site-header--red">
+          <h3>Сделки</h3>
+        </div>
+        <div class="report-card-body">
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Всего</span>
+              <span class="report-card-body__value">16</span>
+            </div>
+          </div>
+          <div class="report-card-body__row">
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Успешных</span>
+              <span class="report-card-body__value">8</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Провальных</span>
+              <span class="report-card-body__value">2</span>
+            </div>
+            <div class="report-card-body__col">
+              <span class="report-card-body__title">Текущие</span>
+              <span class="report-card-body__value">6</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div class="report-row">
+    <div class="report-col col-9">
+      <mat-card class="report-card">
+        <div class="report-card-header card-site-header card-site-header--blue">
+          <h3>Динамика оплат счетов</h3>
+        </div>
+        <div class="report-card-body">
+          <div class="chart-wrapper">
+            <canvas
+              baseChart
+              [datasets]="sellChartData"
+              [labels]="sellChartLabels"
+              [options]="sellChartOptions"
+              [colors]="sellChartColors"
+              [legend]="sellChartLegend"
+              [chartType]="sellChartType"
+              [plugins]="sellChartPlugins"
+            >
+            </canvas>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="report-col col-3 flex-column">
+      <mat-card class="report-card report-card_yellow card-stat">
+        <div class="card-stat-title">Сумма выставленных счетов</div>
+        <div class="card-stat-body">1 151 750 р.</div>
+      </mat-card>
+
+      <mat-card class="report-card report-card_green card-stat">
+        <div class="card-stat-title">Оплаченные счета</div>
+        <div class="card-stat-body">398 400 р.</div>
+      </mat-card>
+
+      <mat-card class="report-card report-card_red card-stat">
+        <div class="card-stat-title">Неоплаченные счета</div>
+        <div class="card-stat-body">753 350 р.</div>
+      </mat-card>
+    </div>
+  </div>
+</div>
