@@ -1,6 +1,6 @@
 <div class="orders">
   <div class="orders__header">
-    <h2 class="orders__header-title">Всего заказов: 4</h2>
+    <h2 class="orders__header-title">Всего заказов: {{ countOrders$ | async }}</h2>
     <a [routerLink]="['/dashboard', 'orders', 'new']" [queryParams]="{customerId: customerIdProps}">
       <button mat-raised-button color="primary">
         <mat-icon class="icon-color--white" matPrefix>add</mat-icon>
@@ -23,8 +23,12 @@
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Стоимость сделки</mat-label>
-          <input matInput type="number" formControlName="amount">
+          <mat-label>Стоимость сделки, от</mat-label>
+          <input matInput type="number" formControlName="minAmount">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Стоимость сделки, до</mat-label>
+          <input matInput type="number" formControlName="maxAmount">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Стадия сделки</mat-label>
@@ -135,7 +139,7 @@
         </ng-container>
 
         <!-- createdByLogin -->
-        <ng-container matColumnDef="createdByLogin">
+        <ng-container matColumnDef="assignedUserLogin">
           <th
             mat-header-cell
             *matHeaderCellDef
@@ -145,8 +149,8 @@
             mat-cell
             *matCellDef="let row"
           >
-            <a [routerLink]="['/dashboard', 'users', row.createdById]" class="table-link">
-              {{ row.createdByLogin }}
+            <a [routerLink]="['/dashboard', 'users', row.assignedUserId]" class="table-link">
+              {{ row.assignedUserLogin[0].login }}
             </a>
           </td>
         </ng-container>
@@ -186,7 +190,7 @@
         </tr>
 
       </table>
-      <mat-paginator [length]="4" [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [length]="countOrders$ | async" [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 

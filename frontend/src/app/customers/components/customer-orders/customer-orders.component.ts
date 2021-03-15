@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
@@ -7,6 +7,17 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {environment} from "../../../../environments/environment";
+import {merge, Observable, Subscription} from "rxjs";
+import {select, Store} from "@ngrx/store";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {currentUserSelector} from "../../../auth/store/selectors";
+import {CurrentUserInterface} from "../../../shared/types/currentUser.interface";
+import {countOrdersSelector, ordersSelector} from "../../../orders/store/selectors";
+import {OrdersInterface} from "../../../orders/types/orders.interface";
+import {filter, tap} from "rxjs/operators";
+import {stringify} from "query-string";
+import {DatePipe} from "@angular/common";
+import {getOrdersAction} from "../../../orders/store/actions/getOrders.action";
 
 const moment = _moment;
 export const MY_FORMATS = {
@@ -37,20 +48,21 @@ export const MY_FORMATS = {
     }
   ]
 })
-export class CustomerOrdersComponent implements OnInit {
+export class CustomerOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input('customerId') customerIdProps: string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   form: FormGroup;
+  disabled: boolean;
+  idCustomer: string;
+  queryParams: any = {};   // Параметры фильтра
 
-  // Потом перенести в форму
   date = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
   });
-  //
 
   // ТАБЛИЦА
   displayedColumns: string[] = [
@@ -59,80 +71,123 @@ export class CustomerOrdersComponent implements OnInit {
     'createdAt',
     'amount',
     'dateEnd',
-    'createdByLogin',
+    'assignedUserLogin',
     'view',
     'remove'
   ];
-  dataSource: MatTableDataSource<any> = new MatTableDataSource([
-    {
-      stage: 'offer',
-      dateEnd: null,
-      title: 'Тест заказ',
-      amount: 150000,
-      createdById: '5fa43fb7b0bf8d24481e1d0f',
-      createdByLogin: 'nikolaeva',
-      createdAt: '2020-12-15T11:33:23.324Z',
-      _id: '5fdb42030ba68343e8e8b19a'
-    },
-    {
-      stage: 'closed won',
-      dateEnd: '2020-12-17T11:35:48.515Z',
-      _id: '5fdb42940ba68343e8e8b19e',
-      title: 'Тест заказ 4',
-      amount: 22000,
-      createdById: '5fa43fb7b0bf8d24481e1d0f',
-      createdByLogin: 'nikolaeva',
-      createdAt: '2020-12-16T11:35:48.524Z'
-    },
-    {
-      stage: 'closed won',
-      dateEnd: '2020-12-22T09:44:12.416Z',
-      _id: '5fdb42e00ba68343e8e8b1a0',
-      title: 'Тест заказ 5',
-      amount: 51800,
-      createdById: '5fa43fb7b0bf8d24481e1d0f',
-      createdByLogin: 'nikolaeva',
-      createdAt: '2020-12-18T11:37:04.922Z'
-    },
-    {
-      stage: 'prospecting',
-      dateEnd: null,
-      _id: '5fdb4d626c8b4c45487c858b',
-      title: 'Тест заказ 6',
-      amount: 53300,
-      createdById: '5f982c84a87f830668df9bbe',
-      createdByLogin: 'nikolaeva',
-      createdAt: '2021-01-14T12:21:54.832Z'
-    }
-  ]);
-  // Столбцы таблицы
+  dataSource: MatTableDataSource<OrdersInterface>;
 
   // Временные значения стадий заказа
   stagesList = environment.STAGES;
 
-  constructor() { }
+  // selectors
+  currentUser$: Observable<CurrentUserInterface | null>;
+  countOrders$: Observable<number | null>;
+  orders$: Observable<OrdersInterface[] | null>;
+
+  subscription: Subscription = new Subscription();
+
+  constructor(
+    private store: Store,
+    private router: Router,
+    private route: ActivatedRoute,
+    private datePipe: DatePipe
+  ) { }
+
+  // сортировка и пагинация таблицы
+  ngAfterViewInit(): void {
+
+    this.initializeListeners();
+
+    let sort$ = this.sort.sortChange.pipe(
+      tap(() => this.paginator.pageIndex = 0)
+    );
+
+    this.subscription.add(
+      merge(sort$, this.paginator.page)
+        .pipe(
+          tap(() => this.initializeListeners())
+        )
+        .subscribe()
+    );
+  }
 
   ngOnInit(): void {
+    this.initializeValues();
     this.initializeForm();
+  }
+
+  initializeValues(): void {
+    this.currentUser$ = this.store.pipe(select(currentUserSelector));
+    this.countOrders$ = this.store.pipe(select(countOrdersSelector));
+    this.orders$ = this.store.pipe(
+      select(ordersSelector),
+      filter(orders => orders !== null)
+    );
+    this.subscription.add(this.orders$.subscribe(data => this.dataSource = new MatTableDataSource(data)));
+    this.subscription.add(this.currentUser$.pipe(filter(currentUser => currentUser !== null)).subscribe(currentUser => this.disabled = currentUser.role === 'manager'));
+    this.idCustomer = this.route.snapshot.params.id;
   }
 
   initializeForm(): void {
     this.form = new FormGroup({
-      amount: new FormControl(null),
+      minAmount: new FormControl(null),
+      maxAmount: new FormControl(null),
       assignedUserId: new FormControl(null),
-      stage: new FormControl()
+      stage: new FormControl(),
+      date: this.date
     })
   }
 
-  onSubmit(): void {
+  initializeListeners(): void {
+    this.subscription.add(
+      this.route.queryParams
+        .subscribe((params: Params) => {
+          this.fetchOrders();
+        })
+    );
+  }
 
+  fetchOrders(): void {
+    const offset = (this.paginator.pageIndex + 1) * this.paginator.pageSize - this.paginator.pageSize;
+    const stringifiedParams = stringify({
+      ...this.queryParams,
+      customerId: this.idCustomer,
+      limit: this.paginator.pageSize,
+      offset
+    });
+    const apiUrlWithParams = `/orders?${stringifiedParams}`;
+    this.store.dispatch(getOrdersAction({url: apiUrlWithParams}));
+  }
+
+  onSubmit(): void {
+    this.queryParams = {};
+    if (this.form.value.stage && this.form.value.stage.length > 0) {
+      this.form.value.stage.map((key: string) => {
+        this.queryParams[key] = true
+      });
+    }
+    this.form.value.assignedUserId ? this.queryParams['assignedUserId'] = this.form.value.assignedUserId : false;
+    this.form.value.minAmount ? this.queryParams['minAmount'] = this.form.value.minAmount : false;
+    this.form.value.maxAmount ? this.queryParams['maxAmount'] = this.form.value.maxAmount : false;
+    this.form.value.date.start ? this.queryParams['startDateEnd'] = this.datePipe.transform(this.form.value.date.start._d, 'yyyy-MM-dd') : false;
+    this.form.value.date.end ? this.queryParams['endDateEnd'] = this.datePipe.transform(this.form.value.date.end._d, 'yyyy-MM-dd') : false;
+
+    this.fetchOrders();
   }
 
   resetForm(): void {
     this.form.reset();
+    this.queryParams = {};
+
+    this.fetchOrders();
   }
 
   onRemove(_id: string): void {
 
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { OrderPageComponent } from './components/order-page/order-page.component';
 import {SuccessMessagesModule} from "../shared/modules/success-messages/success-messages.module";
 import {BackendErrorMessagesModule} from "../shared/modules/backend-error-messages/backend-error-messages.module";
@@ -17,6 +17,8 @@ import {reducer} from "./store/reducers";
 import {EffectsModule} from "@ngrx/effects";
 import {MatTableModule} from "@angular/material/table";
 import {MatIconModule} from "@angular/material/icon";
+import {GetOrdersEffect} from "./store/effects/getOrders.effect";
+import {OrdersService} from "./services/orders.service";
 
 
 
@@ -35,9 +37,15 @@ import {MatIconModule} from "@angular/material/icon";
     MatButtonModule,
     MatProgressSpinnerModule,
     StoreModule.forFeature('orders', reducer),
-    EffectsModule.forFeature([]),
+    EffectsModule.forFeature([
+      GetOrdersEffect
+    ]),
     MatTableModule,
     MatIconModule
+  ],
+  providers: [
+    OrdersService,
+    DatePipe
   ]
 })
 export class OrdersModule { }

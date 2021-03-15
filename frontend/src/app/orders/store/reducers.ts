@@ -1,5 +1,6 @@
 import {OrdersStateInterface} from "../types/ordersState.interface";
-import {Action, createReducer} from "@ngrx/store";
+import {Action, createReducer, on} from "@ngrx/store";
+import {getOrdersAction, getOrdersFailureAction, getOrdersSuccessAction} from "./actions/getOrders.action";
 
 const initialState: OrdersStateInterface = {
   data: null,
@@ -12,7 +13,30 @@ const initialState: OrdersStateInterface = {
 }
 
 const orderReducer = createReducer(
-  initialState
+  initialState,
+  on(
+    getOrdersAction,
+    (state): OrdersStateInterface => ({
+      ...state,
+      isLoading: true
+    })
+  ),
+  on(
+    getOrdersSuccessAction,
+    (state, action): OrdersStateInterface => ({
+      ...state,
+      isLoading: false,
+      data: action.orders,
+      count: action.ordersCount
+    })
+  ),
+  on(
+    getOrdersFailureAction,
+    (state): OrdersStateInterface => ({
+      ...state,
+      isLoading: false
+    })
+  ),
 );
 
 export function reducer(state: OrdersStateInterface, action: Action) {

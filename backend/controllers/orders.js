@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 module.exports.getOrders = async (req, res) => {
     try {
 
+        const limit = +req.query.limit;
+        const offset = +req.query.offset;
+
         // По-умолчанию отображаются заказы, в которых пользователь ответственный
         const query = {};
         if (req.user.role === 'manager') {
@@ -73,10 +76,30 @@ module.exports.getOrders = async (req, res) => {
             query.dateEnd['$lte'] = req.query.endDateEnd;
         }
 
-        const orders = await Orders.find(query, 'stage title dateEnd amount createdByLogin createdById createdAt');
-        const count = await Orders.countDocuments(query);
+        const orders = await Orders.aggregate([
+            {$match: query},
+            {$lookup: {
+                    from: 'users',
+                    localField: 'assignedUserId',
+                    foreignField: '_id',
+                    as: 'assignedUserLogin'
+                }},
+            {$project: {
+                    '_id': 1,
+                    stage: 1,
+                    dateEnd: 1,
+                    title: 1,
+                    amount: 1,
+                    createdById: 1,
+                    createdByLogin: 1,
+                    createdAt: 1,
+                    assignedUserId: 1,
+                    'assignedUserLogin.login': 1
+                }}
+        ]).skip(offset).limit(limit);
+        const ordersCount = await Orders.countDocuments(query);
 
-        res.status(200).json({orders, count});
+        res.status(200).json({orders, ordersCount});
 
     } catch (err) {
         return errorHandler(res, err);

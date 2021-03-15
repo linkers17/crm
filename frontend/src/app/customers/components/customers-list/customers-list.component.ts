@@ -74,11 +74,11 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    this.initializeValies();
+    this.initializeValues();
     this.initializeForm();
   }
 
-  initializeValies(): void {
+  initializeValues(): void {
     this.currentUser$ = this.store.pipe(select(currentUserSelector));
     this.countCustomers$ = this.store.pipe(select(countCustomersSelector));
     this.customers$ = this.store.pipe(
