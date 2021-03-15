@@ -13,6 +13,21 @@ module.exports.getOrders = async (req, res) => {
             query.assignedUserId = mongoose.Types.ObjectId(req.user.id);
         }
 
+        // Фильтр ответственного менеджера
+        if (req.query.assignedUserId && req.user.role !== 'manager') {
+            query.assignedUserId = mongoose.Types.ObjectId(req.query.assignedUserId);
+        }
+
+        // Фильтр клиента
+        if (req.query.customerId) {
+            query.customerId = mongoose.Types.ObjectId(req.query.customerId);
+        }
+
+        // Фильтр компании
+        if (req.query.companyId) {
+            query.companyId = mongoose.Types.ObjectId(req.query.companyId);
+        }
+
         // Фильтр стадий заказа
         if (
             req.query.prospecting ||
