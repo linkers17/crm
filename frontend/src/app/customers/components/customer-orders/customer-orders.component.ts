@@ -14,7 +14,7 @@ import {currentUserSelector} from "../../../auth/store/selectors";
 import {CurrentUserInterface} from "../../../shared/types/currentUser.interface";
 import {countOrdersSelector, ordersSelector} from "../../../orders/store/selectors";
 import {OrdersInterface} from "../../../orders/types/orders.interface";
-import {filter, tap} from "rxjs/operators";
+import {filter, first, tap} from "rxjs/operators";
 import {stringify} from "query-string";
 import {DatePipe} from "@angular/common";
 import {getOrdersAction} from "../../../orders/store/actions/getOrders.action";
@@ -58,6 +58,7 @@ export class CustomerOrdersComponent implements OnInit, AfterViewInit, OnDestroy
   disabled: boolean;
   idCustomer: string;
   queryParams: any = {};   // Параметры фильтра
+  ordersCount: number;    // Всего заказов без фильтра
 
   date = new FormGroup({
     start: new FormControl(),
@@ -120,6 +121,14 @@ export class CustomerOrdersComponent implements OnInit, AfterViewInit, OnDestroy
   initializeValues(): void {
     this.currentUser$ = this.store.pipe(select(currentUserSelector));
     this.countOrders$ = this.store.pipe(select(countOrdersSelector));
+    this.subscription.add(
+      this.countOrders$
+        .pipe(
+          filter(count => count !== null),
+          first()
+        )
+        .subscribe(count => this.ordersCount = count)
+    );
     this.orders$ = this.store.pipe(
       select(ordersSelector),
       filter(orders => orders !== null)

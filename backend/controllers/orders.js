@@ -65,7 +65,7 @@ module.exports.getOrders = async (req, res) => {
         // Фильтр даты завершения заказа
         if (req.query.startDateEnd) {
             query.dateEnd = {
-                $gte: req.query.startDateEnd
+                $gte: new Date(req.query.startDateEnd)
             }
         }
 
@@ -73,7 +73,7 @@ module.exports.getOrders = async (req, res) => {
             if (!query.dateEnd) {
                 query.dateEnd = {};
             }
-            query.dateEnd['$lte'] = req.query.endDateEnd;
+            query.dateEnd['$lte'] = new Date(req.query.endDateEnd);
         }
 
         const orders = await Orders.aggregate([

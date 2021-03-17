@@ -1,6 +1,6 @@
 <div class="orders">
   <div class="orders__header">
-    <h2 class="orders__header-title">Всего заказов: {{ countOrders$ | async }}</h2>
+    <h2 class="orders__header-title">Всего заказов: {{ ordersCount }}</h2>
     <a [routerLink]="['/dashboard', 'orders', 'new']" [queryParams]="{customerId: customerIdProps}">
       <button mat-raised-button color="primary">
         <mat-icon class="icon-color--white" matPrefix>add</mat-icon>
