@@ -34,6 +34,12 @@
         justify-content: space-between;
         align-items: center;
       }
+
+      &-btn-container {
+        button {
+          margin-right: 15px;
+        }
+      }
     }
   }
 

@@ -47,21 +47,23 @@
           </mat-select>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit">
-          <mat-icon class="icon-color--white" matPrefix>search</mat-icon>
-          Найти
-        </button>
+        <div class="orders__filter-card-btn-container">
+          <button mat-raised-button color="primary" type="submit">
+            <mat-icon class="icon-color--white" matPrefix>search</mat-icon>
+            Найти
+          </button>
 
-        <button
-          mat-raised-button
-          color="warn"
-          type="reset"
-          class="reset-button"
-          (click)="resetForm()"
-        >
-          <mat-icon class="icon-color--white" matPrefix>clear</mat-icon>
-          Сбросить
-        </button>
+          <button
+            mat-raised-button
+            color="warn"
+            type="reset"
+            class="reset-button"
+            (click)="resetForm()"
+          >
+            <mat-icon class="icon-color--white" matPrefix>clear</mat-icon>
+            Сбросить
+          </button>
+        </div>
       </form>
     </mat-card>
   </div>
