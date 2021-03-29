@@ -33,7 +33,7 @@
         <mat-form-field>
           <mat-label>Количество</mat-label>
           <input type="number" matInput formControlName="quantity" min="1">
-          <mat-error *ngIf="form.get('servicesList.quantity').hasError('required') && form.get('quantity').touched">
+          <mat-error *ngIf="form.get('servicesList.quantity').hasError('min') && form.get('servicesList.quantity').touched">
             Количество не может быть меньше 1
           </mat-error>
         </mat-form-field>
@@ -41,7 +41,7 @@
           mat-raised-button
           color="accent"
           type="button"
-          [disabled]="(isSubmitting$ | async) || servicesList.length === 0"
+          [disabled]="(isSubmitting$ | async) || servicesList.length === 0 || (form.get('servicesList.quantity').hasError('min') && form.get('servicesList.quantity').touched)"
           (click)="addService()"
         >Добавить услугу</button>
       </div>
