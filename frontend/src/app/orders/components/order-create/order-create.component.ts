@@ -183,7 +183,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     this.servicesListSelected = this.servicesListSelected.concat([{
       title: serviceSelected.title,
       amount: serviceSelected.amount,
-      quantity: this.form.controls['servicesList'].value.quantity,
+      quantity: Number(this.form.controls['servicesList'].value.quantity) ? this.form.controls['servicesList'].value.quantity : 1,
       id: serviceSelected.id
     }]);
     // Удаляем услугу из массива
