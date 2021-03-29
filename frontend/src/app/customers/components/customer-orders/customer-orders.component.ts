@@ -196,6 +196,40 @@ export class CustomerOrdersComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
+  // Проверяем значение минимальной стоимости при потере фокуса
+  minCurrentValue(): void {
+    const value = this.form.controls['minAmount'].value;
+    const maxValue = this.form.controls['maxAmount'].value;
+
+    if (value < 0) {
+      this.form.controls['minAmount'].patchValue(maxValue ? 0 : null);
+      return;
+    }
+
+    if (value > maxValue && maxValue && value) {
+      this.form.controls['minAmount'].patchValue(maxValue);
+    } else if (!value) {
+      this.form.controls['minAmount'].patchValue(null);
+    }
+  }
+
+  // Проверяем значение максимальной стоимости при потере фокуса
+  maxCurrentValue(): void {
+    const value = this.form.controls['maxAmount'].value;
+    const minValue = this.form.controls['minAmount'].value;
+
+    if (value < 0) {
+      this.form.controls['maxAmount'].patchValue(minValue ? minValue : null);
+      return;
+    }
+
+    if (value < minValue && minValue && value) {
+      this.form.controls['maxAmount'].patchValue(minValue);
+    } else if (!value) {
+      this.form.controls['maxAmount'].patchValue(null);
+    }
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

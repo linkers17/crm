@@ -24,11 +24,11 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Стоимость сделки, от</mat-label>
-          <input matInput type="number" formControlName="minAmount">
+          <input matInput type="number" formControlName="minAmount" min="0" (blur)="minCurrentValue()">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Стоимость сделки, до</mat-label>
-          <input matInput type="number" formControlName="maxAmount">
+          <input matInput type="number" formControlName="maxAmount" min="0" (blur)="maxCurrentValue()">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Стадия сделки</mat-label>
