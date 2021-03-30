@@ -27,6 +27,7 @@ import {CustomerCreateComponent} from "../../customers/components/customer-creat
 import {OrderPageComponent} from "../../orders/components/order-page/order-page.component";
 import {OrderCreateComponent} from "../../orders/components/order-create/order-create.component";
 import {OrdersModule} from "../../orders/orders.module";
+import {OrdersListComponent} from "../../orders/components/orders-list/orders-list.component";
 
 const routes: Routes = [
   {
@@ -98,10 +99,10 @@ const routes: Routes = [
           title: 'Заказы'
         },
         children: [
-          /*{
+          {
             path: '',
             component: OrdersListComponent
-          },*/
+          },
           {
             path: 'new',
             component: OrderCreateComponent,

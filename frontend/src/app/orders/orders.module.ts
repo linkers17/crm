@@ -19,11 +19,16 @@ import {MatTableModule} from "@angular/material/table";
 import {MatIconModule} from "@angular/material/icon";
 import {GetOrdersEffect} from "./store/effects/getOrders.effect";
 import {OrdersService} from "./services/orders.service";
+import { OrdersListComponent } from './components/orders-list/orders-list.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSortModule} from "@angular/material/sort";
+import {PipesModule} from "../shared/pipes/pipes.module";
 
 
 
 @NgModule({
-  declarations: [OrderPageComponent, OrderCreateComponent],
+  declarations: [OrderPageComponent, OrderCreateComponent, OrdersListComponent],
   imports: [
     CommonModule,
     SuccessMessagesModule,
@@ -41,7 +46,11 @@ import {OrdersService} from "./services/orders.service";
       GetOrdersEffect
     ]),
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatDatepickerModule,
+    MatPaginatorModule,
+    MatSortModule,
+    PipesModule
   ],
   providers: [
     OrdersService,

@@ -9,6 +9,8 @@ module.exports.getOrders = async (req, res) => {
 
         const limit = +req.query.limit;
         const offset = +req.query.offset;
+        const sort = {};
+        req.query.sortActive ? sort[req.query.sortActive] = req.query.sortDirection === 'asc' ? 1 : -1 : false;
 
         // По-умолчанию отображаются заказы, в которых пользователь ответственный
         const query = {};
@@ -76,7 +78,7 @@ module.exports.getOrders = async (req, res) => {
             query.dateEnd['$lte'] = new Date(req.query.endDateEnd);
         }
 
-        const orders = await Orders.aggregate([
+        let orders = Orders.aggregate([
             {$match: query},
             {$lookup: {
                     from: 'users',
@@ -96,7 +98,8 @@ module.exports.getOrders = async (req, res) => {
                     assignedUserId: 1,
                     'assignedUserLogin.login': 1
                 }}
-        ]).skip(offset).limit(limit);
+        ]);
+        orders = req.query.sortActive ? await orders.sort(sort).skip(offset).limit(limit) : await orders.skip(offset).limit(limit);
         const ordersCount = await Orders.countDocuments(query);
 
         res.status(200).json({orders, ordersCount});

@@ -145,7 +145,7 @@ export class CustomerOrdersComponent implements OnInit, AfterViewInit, OnDestroy
       assignedUserId: new FormControl(null),
       stage: new FormControl(),
       date: this.date
-    })
+    });
   }
 
   initializeListeners(): void {
