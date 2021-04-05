@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {OrdersResponseInterface} from "../types/ordersResponse.interface";
+import {GetOrderResponseInterface} from "../types/getOrderResponse.interface";
 
 @Injectable()
 export class OrdersService {
@@ -17,12 +18,12 @@ export class OrdersService {
     return this.http.get<OrdersResponseInterface>(currentUrl);
   }
 
-  /*getOrder(id: string): Observable<GetOrderResponseInterface> {
+  getOrder(id: string): Observable<GetOrderResponseInterface> {
     const url = `${environment.API_URL}/orders/${id}`;
     return this.http.get<GetOrderResponseInterface>(url);
   }
 
-  createOrder(data: UpdateOrderRequestInterface): Observable<UpdateOrderResponseInterface> {
+  /*createOrder(data: UpdateOrderRequestInterface): Observable<UpdateOrderResponseInterface> {
     const url = `${environment.API_URL}/orders`;
     return this.http.post<UpdateOrderResponseInterface>(url, data);
   }

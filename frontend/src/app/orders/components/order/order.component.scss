@@ -1,4 +1,4 @@
-.customer {
+.order {
   &-card {
     display: flex;
     margin-right: 50px;
@@ -45,6 +45,20 @@
 
   &-link-btn {
     margin-right: 20px;
+  }
+
+  &__more {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__information-card {
+    width: 40%;
+    margin-left: 30px;
+  }
+
+  &__services-list {
+    flex-grow: 1;
   }
 }
 

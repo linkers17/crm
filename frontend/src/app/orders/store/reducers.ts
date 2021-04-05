@@ -3,6 +3,12 @@ import {Action, createReducer, on} from "@ngrx/store";
 import {getOrdersAction, getOrdersFailureAction, getOrdersSuccessAction} from "./actions/getOrders.action";
 import {routerNavigationAction} from "@ngrx/router-store";
 import {CustomersStateInterface} from "../../customers/types/customersState.interface";
+import {
+  getCustomerByIdAction,
+  getCustomerByIdFailureAction,
+  getCustomerByIdSuccessAction
+} from "../../customers/store/actions/getCustomer.action";
+import {getOrderByIdAction, getOrderByIdFailureAction, getOrderByIdSuccessAction} from "./actions/getOrder.action";
 
 const initialState: OrdersStateInterface = {
   data: null,
@@ -37,6 +43,31 @@ const orderReducer = createReducer(
     (state): OrdersStateInterface => ({
       ...state,
       isLoading: false
+    })
+  ),
+  on(
+    getOrderByIdAction,
+    (state): OrdersStateInterface => ({
+      ...state,
+      isLoading: true,
+      error: null,
+      success: null
+    })
+  ),
+  on(
+    getOrderByIdSuccessAction,
+    (state, action): OrdersStateInterface => ({
+      ...state,
+      isLoading: false,
+      currentOrder: action.order
+    })
+  ),
+  on(
+    getOrderByIdFailureAction,
+    (state, action): OrdersStateInterface => ({
+      ...state,
+      isLoading: false,
+      error: action.errors
     })
   ),
   on(

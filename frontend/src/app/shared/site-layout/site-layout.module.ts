@@ -28,6 +28,7 @@ import {OrderPageComponent} from "../../orders/components/order-page/order-page.
 import {OrderCreateComponent} from "../../orders/components/order-create/order-create.component";
 import {OrdersModule} from "../../orders/orders.module";
 import {OrdersListComponent} from "../../orders/components/orders-list/orders-list.component";
+import {OrderComponent} from "../../orders/components/order/order.component";
 
 const routes: Routes = [
   {
@@ -116,14 +117,14 @@ const routes: Routes = [
             data: {
               title: 'Редактирование клиента'
             }
-          },
+          },*/
           {
             path: ':id',
             component: OrderComponent,
             data: {
-              title: 'Карточка клиента'
+              title: 'Карточка заказа'
             }
-          }*/
+          }
         ]
       }
     ]
